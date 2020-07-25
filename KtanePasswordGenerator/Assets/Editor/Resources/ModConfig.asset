@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
+  m_Name: ModConfig
+  m_EditorClassIdentifier: 
+  id: pwGenerator
+  title: Password Generator
+  author: Fang
+  description: "Determine a complex password using several information from the bomb.\r\n\r\nmoduleID:
+    pwGenerator\r\n\nModule created by Fang.\r\n\r\nManual: https://ktane.timwi.de/HTML/Password%20Generator.html"
+  version: 1.5
+  outputFolder: build
+  previewImage: {fileID: 2800000, guid: 8bc515c8531913e489a18685e0093aef, type: 3}

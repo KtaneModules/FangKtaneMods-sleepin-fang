@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 9f4c5b51681e3114096e7f41869e1239
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Gugi
+  fontNames:
+  - Gugi
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 944b4293dc7c8ef418f23f712f30a4d9, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
