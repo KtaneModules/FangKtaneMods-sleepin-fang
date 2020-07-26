@@ -109,11 +109,13 @@ public class zhStrokes : MonoBehaviour
                     Randomize();
                 }
                 StopAllCoroutines();
+                if (soundRef != null) soundRef.StopSound();
                 audio.PlaySoundAtTransform("corr", transform);
             }
             else {
                 module.HandleStrike();
                 StopAllCoroutines();
+                if (soundRef != null) soundRef.StopSound();
                 audio.PlaySoundAtTransform("str", transform);
                 Debug.LogFormat("[Chinese Strokes #{0}]: You inputted {1}, expected {2}. Module striked and reset.", moduleId, inputNumber, textOption.number);
                 Randomize();
