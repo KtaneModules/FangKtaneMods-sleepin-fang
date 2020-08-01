@@ -18,9 +18,9 @@ public class toolmods : MonoBehaviour
     private static int moduleIdCounter = 1;
     private int moduleId;
     private bool moduleSolved, bombSolved;
-    private float elapsedTime;
+    private float elapsedTime, elapsedZenTime;
     private double startupsec, startupms;
-    private string elapsedTimeDisplay, startupmsDisplay;
+    private string elapsedTimeDisplay, elapsedZenTimeDisplay, startupmsDisplay;
     void Awake()
     {
         moduleId = moduleIdCounter++;
@@ -37,6 +37,7 @@ public class toolmods : MonoBehaviour
         Displays[2].text = DateTime.Now.ToString("HH:mm:ss");
 
         elapsedTime += Time.deltaTime;
+        elapsedZenTime = elapsedTime - 1;
         double milisecond = Math.Floor(Math.Round(elapsedTime % 60, 2) * 100 % 100);
         string milisecondDisp;
         if (milisecond < 10) milisecondDisp = "0" + milisecond.ToString();
@@ -50,42 +51,90 @@ public class toolmods : MonoBehaviour
         {
             if (minute < 10)
             {
-                if (second < 10) elapsedTimeDisplay = "T+0" + hour + ":0" + minute + ":0" + second;
-                else elapsedTimeDisplay = "T+0" + hour + ":0" + minute + ":" + second;
+                if (second < 10) elapsedTimeDisplay = "0" + hour + ":0" + minute + ":0" + second;
+                else elapsedTimeDisplay = "0" + hour + ":0" + minute + ":" + second;
             }
             else
             {
-                if (second < 10) elapsedTimeDisplay = "T+0" + hour + ":" + minute + ":0" + second;
-                else elapsedTimeDisplay = "T+0" + hour + ":" + minute + ":" + second;
+                if (second < 10) elapsedTimeDisplay = "0" + hour + ":" + minute + ":0" + second;
+                else elapsedTimeDisplay = "0" + hour + ":" + minute + ":" + second;
             }
         }
         else if (hour != 0)
         {
             if (minute < 10)
             {
-                if (second < 10) elapsedTimeDisplay = "T+" + hour + ":0" + minute + ":0" + second;
-                else elapsedTimeDisplay = "T+" + hour + ":0" + minute + ":" + second;
+                if (second < 10) elapsedTimeDisplay = hour + ":0" + minute + ":0" + second;
+                else elapsedTimeDisplay = hour + ":0" + minute + ":" + second;
             }
             else
             {
-                if (second < 10) elapsedTimeDisplay = "T+" + hour + ":" + minute + ":0" + second;
-                else elapsedTimeDisplay = "T+" + hour + ":" + minute + ":" + second;
+                if (second < 10) elapsedTimeDisplay = hour + ":" + minute + ":0" + second;
+                else elapsedTimeDisplay = hour + ":" + minute + ":" + second;
             }
         }
         else
         {
             if (minute < 10)
             {
-                if (second < 10) elapsedTimeDisplay = "T+0" + minute + ":0" + second + "." + milisecondDisp;
-                else elapsedTimeDisplay = "T+0" + minute + ":" + second + "." + milisecondDisp;
+                if (second < 10) elapsedTimeDisplay = "0" + minute + ":0" + second + "." + milisecondDisp;
+                else elapsedTimeDisplay = "0" + minute + ":" + second + "." + milisecondDisp;
             }
             else
             {
-                if (second < 10) elapsedTimeDisplay = "T+" + minute + ":0" + second + "." + milisecondDisp;
-                else elapsedTimeDisplay = "T+" + minute + ":" + second + "." + milisecondDisp;
+                if (second < 10) elapsedTimeDisplay = minute + ":0" + second + "." + milisecondDisp;
+                else elapsedTimeDisplay = minute + ":" + second + "." + milisecondDisp;
             }
         }
-        Displays[1].text = elapsedTimeDisplay + " +" + startupsec + "." + startupmsDisplay + "s";
+        double milisecondZen = Math.Floor(Math.Round(elapsedZenTime % 60, 2) * 100 % 100);
+        string milisecondZenDisp;
+        if (milisecondZen < 10) milisecondZenDisp = "0" + milisecondZen.ToString();
+        else milisecondZenDisp = milisecondZen.ToString();
+
+        double secondZen = Math.Floor(elapsedZenTime % 60);
+        double minuteZen = Math.Floor(elapsedZenTime / 60 % 60);
+        double hourZen = Math.Floor(elapsedZenTime / 3600);
+
+        if (hourZen != 0 && hourZen < 10)
+        {
+            if (minuteZen < 10)
+            {
+                if (secondZen < 10) elapsedZenTimeDisplay = "0" + hourZen + ":0" + minuteZen + ":0" + secondZen;
+                else elapsedZenTimeDisplay = "0" + hourZen + ":0" + minuteZen + ":" + secondZen;
+            }
+            else
+            {
+                if (secondZen < 10) elapsedZenTimeDisplay = "0" + hourZen + ":" + minuteZen + ":0" + secondZen;
+                else elapsedZenTimeDisplay = "0" + hourZen + ":" + minuteZen + ":" + secondZen;
+            }
+        }
+        else if (hourZen != 0)
+        {
+            if (minuteZen < 10)
+            {
+                if (secondZen < 10) elapsedZenTimeDisplay = hourZen + ":0" + minuteZen + ":0" + secondZen;
+                else elapsedZenTimeDisplay = hourZen + ":0" + minuteZen + ":" + secondZen;
+            }
+            else
+            {
+                if (secondZen < 10) elapsedZenTimeDisplay = hourZen + ":" + minuteZen + ":0" + secondZen;
+                else elapsedZenTimeDisplay = hourZen + ":" + minuteZen + ":" + secondZen;
+            }
+        }
+        else
+        {
+            if (minuteZen < 10)
+            {
+                if (secondZen < 10) elapsedZenTimeDisplay = "0" + minuteZen + ":0" + secondZen + "." + milisecondDisp;
+                else elapsedZenTimeDisplay = "0" + minuteZen + ":" + secondZen + "." + milisecondDisp;
+            }
+            else
+            {
+                if (secondZen < 10) elapsedZenTimeDisplay = minuteZen + ":0" + secondZen + "." + milisecondDisp;
+                else elapsedZenTimeDisplay = minuteZen + ":" + secondZen + "." + milisecondDisp;
+            }
+        }
+        Displays[1].text = "T+" + elapsedTimeDisplay + " +" + startupsec + "." + startupmsDisplay + "s";
 
         decimal solvedPercentage;
         solvedPercentage = (((decimal)bomb.GetSolvedModuleNames().Count) * (decimal)100 / (decimal)bomb.GetSolvableModuleNames().Count);
@@ -176,11 +225,12 @@ public class toolmods : MonoBehaviour
                 else bombrealtimeDisp = "" + bombminute + ":" + bombsecond + "." + bombmilisecondDisp;
             }
         }
-        Displays[7].text = bombrealtimeDisp + " " + bomb.GetStrikes().ToString() + "X";
+        if (TimeModeActive) Displays[7].text = bombrealtimeDisp;
+        else if (ZenModeActive) Displays[7].text = elapsedZenTimeDisplay + " " + bomb.GetStrikes().ToString() + "X";
+        else Displays[7].text = bombrealtimeDisp + " " + bomb.GetStrikes().ToString() + "X";
     }
     void Start()
     {
-
     }
     void buttonPress()
     {
@@ -205,6 +255,8 @@ public class toolmods : MonoBehaviour
     }
 
 #pragma warning disable 414
+	bool TimeModeActive;
+	bool ZenModeActive;
     string TwitchHelpMessage = "Use !{0} s.";
 #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
