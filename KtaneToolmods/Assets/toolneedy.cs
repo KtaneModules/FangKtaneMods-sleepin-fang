@@ -17,9 +17,9 @@ public class toolneedy : MonoBehaviour
     private static int moduleIdCounter = 1;
     private int moduleId;
     private bool moduleSolved, bombSolved;
-    private float elapsedTime, elapsedZenTime;
+    private float elapsedTime;
     private double startupsec, startupms;
-    private string elapsedTimeDisplay, elapsedZenTimeDisplay, startupmsDisplay;
+    private string elapsedTimeDisplay, startupmsDisplay;
     private int solvedPercentage;
     void Awake()
     {
@@ -35,7 +35,6 @@ public class toolneedy : MonoBehaviour
     {
         Displays[2].text = DateTime.Now.ToString("HH:mm:ss");
         elapsedTime += Time.deltaTime;
-        elapsedZenTime = elapsedTime - 1;
         double milisecond = Math.Floor(Math.Round(elapsedTime % 60, 2) * 100 % 100);
         string milisecondDisp;
         if (milisecond < 10) milisecondDisp = "0" + milisecond.ToString();
@@ -84,57 +83,8 @@ public class toolneedy : MonoBehaviour
                 else elapsedTimeDisplay = minute + ":" + second + "." + milisecondDisp;
             }
         }
-                double milisecondZen = Math.Floor(Math.Round(elapsedZenTime % 60, 2) * 100 % 100);
-        string milisecondZenDisp;
-        if (milisecondZen < 10) milisecondZenDisp = "0" + milisecondZen.ToString();
-        else milisecondZenDisp = milisecondZen.ToString();
-
-        double secondZen = Math.Floor(elapsedZenTime % 60);
-        double minuteZen = Math.Floor(elapsedZenTime / 60 % 60);
-        double hourZen = Math.Floor(elapsedZenTime / 3600);
-
-        if (hourZen != 0 && hourZen < 10)
-        {
-            if (minuteZen < 10)
-            {
-                if (secondZen < 10) elapsedZenTimeDisplay = "0" + hourZen + ":0" + minuteZen + ":0" + secondZen;
-                else elapsedZenTimeDisplay = "0" + hourZen + ":0" + minuteZen + ":" + secondZen;
-            }
-            else
-            {
-                if (secondZen < 10) elapsedZenTimeDisplay = "0" + hourZen + ":" + minuteZen + ":0" + secondZen;
-                else elapsedZenTimeDisplay = "0" + hourZen + ":" + minuteZen + ":" + secondZen;
-            }
-        }
-        else if (hourZen != 0)
-        {
-            if (minuteZen < 10)
-            {
-                if (secondZen < 10) elapsedZenTimeDisplay = hourZen + ":0" + minuteZen + ":0" + secondZen;
-                else elapsedZenTimeDisplay = hourZen + ":0" + minuteZen + ":" + secondZen;
-            }
-            else
-            {
-                if (secondZen < 10) elapsedZenTimeDisplay = hourZen + ":" + minuteZen + ":0" + secondZen;
-                else elapsedZenTimeDisplay = hourZen + ":" + minuteZen + ":" + secondZen;
-            }
-        }
-        else
-        {
-            if (minuteZen < 10)
-            {
-                if (secondZen < 10) elapsedZenTimeDisplay = "0" + minuteZen + ":0" + secondZen + "." + milisecondDisp;
-                else elapsedZenTimeDisplay = "0" + minuteZen + ":" + secondZen + "." + milisecondDisp;
-            }
-            else
-            {
-                if (secondZen < 10) elapsedZenTimeDisplay = minuteZen + ":0" + secondZen + "." + milisecondDisp;
-                else elapsedZenTimeDisplay = minuteZen + ":" + secondZen + "." + milisecondDisp;
-            }
-        }
         Displays[1].text = "T+" + elapsedTimeDisplay + " +" + startupsec + "." + startupmsDisplay + "s";
 
-        
         solvedPercentage = ((bomb.GetSolvedModuleNames().Count) * 100 / bomb.GetSolvableModuleNames().Count);
         Displays[4].text = bomb.GetSolvedModuleNames().Count + "/" + bomb.GetSolvableModuleNames().Count;
 
@@ -217,7 +167,7 @@ public class toolneedy : MonoBehaviour
             }
         }
         if (TimeModeActive) Displays[6].text = bombrealtimeDisp;
-        else if (ZenModeActive) Displays[6].text = elapsedZenTimeDisplay + " " + bomb.GetStrikes().ToString() + "X";
+        else if (ZenModeActive) Displays[6].text = "N/A " + bomb.GetStrikes().ToString() + "X";
         else Displays[6].text = bombrealtimeDisp + " " + bomb.GetStrikes().ToString() + "X";
     }
     void Start()
@@ -243,7 +193,7 @@ public class toolneedy : MonoBehaviour
     IEnumerator timeGlitchiness() {
         while (!moduleSolved) {
             int displayedtimeremaining = Convert.ToInt32(Math.Floor(module.GetNeedyTimeRemaining()));
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.25f);
             while (solvedPercentage - module.GetNeedyTimeRemaining() >= 2 ) {
                 yield return null;
                 module.SetNeedyTimeRemaining(module.GetNeedyTimeRemaining() + 1);
