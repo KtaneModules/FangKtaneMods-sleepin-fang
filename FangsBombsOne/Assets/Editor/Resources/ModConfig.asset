@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
+  m_Name: ModConfig
+  m_EditorClassIdentifier: 
+  id: fangspack
+  title: Fang's Random Mission Pack
+  author: Fang
+  description: Fang's random bombs mission pack. Have fun!\r\n\r\nIncludes 47 modules
+    bomb and missions that force spawn a specific module while leaving other mods
+    spawn at random.\r\n\r\nAlso contains other random bombs.\n\nTP Supported.
+  version: 2.20
+  outputFolder: build
+  previewImage: {fileID: 2800000, guid: 224cd28df1bcb0d43b3aa2325deafb53, type: 3}

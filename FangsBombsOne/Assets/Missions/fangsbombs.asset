@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -434690030, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: fangsbombs
+  m_EditorClassIdentifier: 
+  Title: Fang's Random Bombs
+  Sections:
+  - Title: Fang's Bombs
+    MissionIDs:
+    - fang47
+    - fang47lite
+    - coordination
+    - coordination2
+    - math
+    - math2
+    - cruelorg
+    - cruelorglite
+    - rgbmadness
+    - simonassem1
+    - simonassem2
+    - ezorg
+    - ezorg2
+    - silent
+    - perspectives
+    - perspectives2
+    - wires
+    - bossmadness
+    - bossmadnesslite
+    - simonassemv2
+    - fang101
+    - 5050
+    - osa2019
+  - Title: Challenge Bomb Series
+    MissionIDs: 
+    - 214
+    - 1bambg
+    - 1bh
+    - 1coco
+    - 1coco2
+    - 1crypt
+    - 1frgbm
+    - 1planet
+    - 1rgbm
+    - 1uc
+    - 1ucipher
+    - 1ustores
+    - 2lombax
+    - 2rstores
+    - 6cycle
+    - pinkuc
+  - Title: Force spawns - 31 Modules
+    MissionIDs: 
+    - 3114
+    - 31ba
+    - 31bbg
+    - 31barr
+    - 31brainf
+    - 31cryptc
+    - 31cube
+    - 31bingo
+    - 31frgb
+    - 31fn
+    - 31fe
+    - 31fml
+    - 31fmn
+    - 31fp
+    - 31fta
+    - 31ft
+    - 31fun
+    - 31herald
+    - 31lombax
+    - 31lc
+    - 31orga
+    - 31quint
+    - 31rgb
+    - 31rp
+    - 31stores
+    - 31tr
+    - 31uc
+    - 31ustores
+    - 31uber
+    - 31tvab
+  - Title: Force spawns - 47 Modules
+    MissionIDs: 
+    - 4714
+    - 47ba
+    - 47bbg
+    - 47barr
+    - 47brainf
+    - 47cryptc
+    - 47cube
+    - 47bingo
+    - 47frgb
+    - 47fn
+    - 47fe
+    - 47fml
+    - 47fmn
+    - 47fp
+    - 47fta
+    - 47ft
+    - 47fun
+    - 47herald
+    - 47lombax
+    - 47lc
+    - 47quint
+    - 47orga
+    - 47rgb
+    - 47rp
+    - 47stores
+    - 47tr
+    - 47uc
+    - 47ustores
+    - 47uber
+    - 47tvab
+  - Title: Random Misc Stuff
+    MissionIDs: 
+    - bh5+26
+    - bh5+42
+    - brainf2+29
+    - brainf2+45
+    - stare3+28
+    - stare3+44
