@@ -14,9 +14,16 @@ MonoBehaviour:
   id: fangspack
   title: Fang's Random Mission Pack
   author: Fang
-  description: Fang's random bombs mission pack. Have fun!\r\n\r\nIncludes 47 modules
-    bomb and missions that force spawn a specific module while leaving other mods
-    spawn at random.\r\n\r\nAlso contains other random bombs.\n\nTP Supported.
-  version: 2.20
+  description: 'Fang''s random bombs mission pack. Have fun!
+
+
+    Includes 47 modules bomb and missions that force spawn a specific module while
+    leaving other mods spawn at random.
+
+    Also contains other random bombs.
+
+
+    TP Supported.'
+  version: 2.21
   outputFolder: build
-  previewImage: {fileID: 2800000, guid: 224cd28df1bcb0d43b3aa2325deafb53, type: 3}
+  previewImage: {fileID: 2800000, guid: 6d90c1859143c3343a7bda0abcd2b217, type: 3}
