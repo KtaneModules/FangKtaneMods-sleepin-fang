@@ -76,7 +76,7 @@ public class passwordDestroyer : MonoBehaviour
     int numofbars;
     string finalAnswer;
     string elapsedTimeDisplay, elapsedTimeMinDisplay, elapsedTimeSecDisplay, twofatimedisplay, strikedTimeDisplay, tempDisp, tempTime;
-    bool showing2FA, showingTime, showingStrike, dotUnlit;
+    bool showing2FA, showingTime, showingStrike, dotUnlit, initiated;
 
     // Use this for initialization
     void Awake()
@@ -145,6 +145,7 @@ public class passwordDestroyer : MonoBehaviour
         //
     }
     void Update() {
+        if (!initiated) return;
         if (pressedNumber == 0) Screens[0].text = CountUpNumberDisplay;
         if (showing2FA) Screens[1].text = identityDigit1.ToString() + " " + identityDigit2.ToString() + ".";
         if (showingTime)  Screens[1].text = DateTime.Now.ToString("HH:mm:ss");
@@ -157,6 +158,7 @@ public class passwordDestroyer : MonoBehaviour
     }
     void initiateModule() {
         //Generate Numbers, for the first time - Sv, If, 2FAST
+        initiated = true;
         Screens[0].text = submitKey;
         CountUpBaseNumber = Random.Range(1000000, 10000000);
         increaseFactor = Random.Range(100000, 1000001);
@@ -166,7 +168,7 @@ public class passwordDestroyer : MonoBehaviour
         StartCoroutine(TimeDisplay());
         StartCoroutine(display1Cycle());
         StartCoroutine(DisplayDecimal());
-        Debug.LogFormat("[Password Destroyer #{0}]: Version v1.8", moduleId);
+        Debug.LogFormat("[Password Destroyer #{0}]: Version v1.82", moduleId);
         Debug.LogFormat("[Password Destroyer #{0}]: Initial base numbers are {1} and {2}, with starting 2FA of {3} {4}.", moduleId, CountUpBaseNumber, increaseFactor, identityDigit1, identityDigit2);
     }
     //
