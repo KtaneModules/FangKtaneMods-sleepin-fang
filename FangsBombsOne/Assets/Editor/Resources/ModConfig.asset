@@ -24,6 +24,6 @@ MonoBehaviour:
 
 
     TP Supported.'
-  version: 2.21
+  version: 2.22
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 6d90c1859143c3343a7bda0abcd2b217, type: 3}

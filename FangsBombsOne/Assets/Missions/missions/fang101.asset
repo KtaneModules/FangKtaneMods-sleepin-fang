@@ -6,11 +6,11 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_enabled: 1
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -548183353, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: fang101
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   DisplayName: Defusing Fangy 101
   Description: All-in-one jumble pack ultimate collection, you're welcome.
   GeneratorSetting:
@@ -32,12 +32,6 @@ MonoBehaviour:
       SpecialComponentType: 0
       ModTypes:
       - ksmAmazeingButtons
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - bamboozledAgain
     - Count: 1
       AllowedSources: 2
       ComponentTypes: 
@@ -439,25 +433,7 @@ MonoBehaviour:
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - ultimateCipher
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - ultimateCycle
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
       - TheUltracubeModule
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - UltraStores
     - Count: 1
       AllowedSources: 2
       ComponentTypes: 
@@ -620,4 +596,28 @@ MonoBehaviour:
       SpecialComponentType: 0
       ModTypes:
       - Mastermind Simple
+    - Count: 1
+      AllowedSources: 2
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - toolneedy
+    - Count: 1
+      AllowedSources: 2
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - RAM
+    - Count: 1
+      AllowedSources: 2
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - pwDestroyer
+    - Count: 1
+      AllowedSources: 2
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - zhStrokes
   PacingEventsEnabled: 0
