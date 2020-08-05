@@ -52,13 +52,13 @@ public class zhStrokes : MonoBehaviour
         int index;
         //
         if (stageNumber == 1) index = UnityEngine.Random.Range(0, 694);
-        else if (stageNumber == 2) index = UnityEngine.Random.Range(694, 5440); //12
-        else if (stageNumber == 3) index = UnityEngine.Random.Range(5440, 7629); //12
-        else index = UnityEngine.Random.Range(7629, 7893); //13+
+        else if (stageNumber == 2) index = UnityEngine.Random.Range(694, 5440); //7
+        else if (stageNumber == 3) index = UnityEngine.Random.Range(5440, 7629); //13
+        else index = UnityEngine.Random.Range(7629, 7891); //19
         textOption = textOptions[index];
         textDisplay.text = textOption.text.ToString();
         //Randomize();
-        Debug.LogFormat("[Chinese Strokes #{0}]: Selected character: {1} (index {3}), Number of strokes: {2}", moduleId, textOption.text, textOption.number, index);
+        Debug.LogFormat("[Chinese Strokes #{0}] Stage {4}: Selected character: {1} (index {3}), Number of strokes: {2}", moduleId, textOption.text, textOption.number, index, stageNumber);
     }
     void shiftleft() {
         if (inputMode) {
@@ -86,7 +86,7 @@ public class zhStrokes : MonoBehaviour
     }
     void reset() {
         if (resettable && inputMode) {
-            Debug.LogFormat("[Chinese Strokes #{0}]: Stage reset.", moduleId, inputNumber, textOption.number);
+            Debug.LogFormat("[Chinese Strokes #{0}] Stage reset.", moduleId, inputNumber, textOption.number);
             Randomize();
             resettable = false;
         }
@@ -99,13 +99,13 @@ public class zhStrokes : MonoBehaviour
                     textDisplay.text = "赞";
                     stageDisp.text = "-";
                     NumDisp.text = "GG";
-                    Debug.LogFormat("[Chinese Strokes #{0}]: Stage 3: You inputted {1}, expected {2}. Module solved.", moduleId, inputNumber, textOption.number);
+                    Debug.LogFormat("[Chinese Strokes #{0}] Stage 4: You inputted {1}, expected {2}. Module solved.", moduleId, inputNumber, textOption.number);
                     inputMode = false;
                 }
                 else {
                     stageNumber++;
                     stageDisp.text = stageNumber.ToString();
-                    Debug.LogFormat("[Chinese Strokes #{0}]: Stage {3}: You inputted {1}, expected {2}. Proceeding to next stage.", moduleId, inputNumber, textOption.number, stageNumber);
+                    Debug.LogFormat("[Chinese Strokes #{0}] Stage {3}: You inputted {1}, expected {2}. Proceeding to next stage.", moduleId, inputNumber, textOption.number, stageNumber);
                     Randomize();
                 }
                 StopAllCoroutines();
@@ -117,7 +117,7 @@ public class zhStrokes : MonoBehaviour
                 StopAllCoroutines();
                 if (soundRef != null) soundRef.StopSound();
                 audio.PlaySoundAtTransform("str", transform);
-                Debug.LogFormat("[Chinese Strokes #{0}]: You inputted {1}, expected {2}. Module striked and reset.", moduleId, inputNumber, textOption.number);
+                Debug.LogFormat("[Chinese Strokes #{0}] Stage {3}: You inputted {1}, expected {2}. Module striked and reset.", moduleId, inputNumber, textOption.number, stageNumber);
                 Randomize();
             }
         }
