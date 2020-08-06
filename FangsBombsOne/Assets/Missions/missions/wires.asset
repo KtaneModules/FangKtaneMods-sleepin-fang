@@ -6,11 +6,11 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_enabled: 1
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -548183353, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: wires
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   DisplayName: Wires, Wires Everywhere!
   Description: Cut those wires quick!
   GeneratorSetting:
@@ -26,11 +26,6 @@ MonoBehaviour:
       SpecialComponentType: 0
       ModTypes:
       - booleanWires
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 057000000
-      SpecialComponentType: 0
-      ModTypes: []
     - Count: 1
       AllowedSources: 2
       ComponentTypes: 
@@ -63,12 +58,7 @@ MonoBehaviour:
       - thinkingWiresModule
     - Count: 1
       AllowedSources: 2
-      ComponentTypes: 050000000
-      SpecialComponentType: 0
-      ModTypes: []
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 097000000
+      ComponentTypes: 05000000
       SpecialComponentType: 0
       ModTypes: []
     - Count: 1
@@ -119,4 +109,14 @@ MonoBehaviour:
       SpecialComponentType: 0
       ModTypes:
       - WirePlacementModule
+    - Count: 1
+      AllowedSources: 2
+      ComponentTypes: 02000000
+      SpecialComponentType: 0
+      ModTypes: []
+    - Count: 1
+      AllowedSources: 2
+      ComponentTypes: 0a000000
+      SpecialComponentType: 0
+      ModTypes: []
   PacingEventsEnabled: 0

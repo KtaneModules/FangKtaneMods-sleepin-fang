@@ -15,7 +15,7 @@ MonoBehaviour:
   Description: All-in-one jumble pack ultimate collection, you're welcome.
   GeneratorSetting:
     TimeLimit: 36360
-    NumStrikes: 20
+    NumStrikes: 10
     TimeBeforeNeedyActivation: 90
     FrontFaceOnly: 0
     OptionalWidgetCount: 5

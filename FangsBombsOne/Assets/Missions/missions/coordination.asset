@@ -6,15 +6,15 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_enabled: 1
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -548183353, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: coordination
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   DisplayName: Coordination
-  Description: A1, B9, nein, 六十九...
+  Description: "A1, B9, nein, \u516D\u5341\u4E5D..."
   GeneratorSetting:
-    TimeLimit: 4935
+    TimeLimit: 5640
     NumStrikes: 10
     TimeBeforeNeedyActivation: 90
     FrontFaceOnly: 0

@@ -6,15 +6,15 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_enabled: 1
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -548183353, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: math
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   DisplayName: Meth
   Description: Meth and Math, what's the difference?
   GeneratorSetting:
-    TimeLimit: 7575
+    TimeLimit: 12120
     NumStrikes: 10
     TimeBeforeNeedyActivation: 90
     FrontFaceOnly: 0
