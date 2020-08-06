@@ -56,7 +56,7 @@ public class passwordDestroyer : MonoBehaviour
     };
     StringBuilder Switches_State = new StringBuilder("000");
     StringBuilder Submission_State = new StringBuilder("000");
-    private bool switchesTrue = true, solvedState;
+    private bool switchesTrue = true, solvedState, erroring = false;
     private int switchToToggle1, switchToToggle2;
     private int pressedNumber = 0;
     private bool inputMode = false, strikedatleastonce = false, forceSolved = false, split = false;
@@ -145,7 +145,7 @@ public class passwordDestroyer : MonoBehaviour
         //
     }
     void Update() {
-        if (!initiated) return;
+        if (!initiated || erroring) return;
         if (pressedNumber == 0) Screens[0].text = CountUpNumberDisplay;
         if (showing2FA) Screens[1].text = identityDigit1.ToString() + " " + identityDigit2.ToString() + ".";
         if (showingTime)  Screens[1].text = DateTime.Now.ToString("HH:mm:ss");
@@ -168,7 +168,7 @@ public class passwordDestroyer : MonoBehaviour
         StartCoroutine(TimeDisplay());
         StartCoroutine(display1Cycle());
         StartCoroutine(DisplayDecimal());
-        Debug.LogFormat("[Password Destroyer #{0}]: Version v1.82", moduleId);
+        Debug.LogFormat("[Password Destroyer #{0}]: Version v1.83", moduleId);
         Debug.LogFormat("[Password Destroyer #{0}]: Initial base numbers are {1} and {2}, with starting 2FA of {3} {4}.", moduleId, CountUpBaseNumber, increaseFactor, identityDigit1, identityDigit2);
     }
     //
@@ -661,6 +661,7 @@ public class passwordDestroyer : MonoBehaviour
     }
     IEnumerator DisplayError(string submitInput)
     {
+        erroring = true;
         inputMode = false;
         submitKey = "-WRONG-";
         Screens[0].text = submitKey;
@@ -679,6 +680,7 @@ public class passwordDestroyer : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         pressedNumber = 0;
         inputMode = true;
+        erroring = false;
     }
     #pragma warning disable 414
     string TwitchHelpMessage = "Use !{0} press <number> // toggle <switches position> // time // clear // split // split at <time> // submit at <time>. The time specified must match the bottom-left display.";
