@@ -1078,8 +1078,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1962571733724988}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 65.5, y: 4.8, z: 3}
-  m_LocalScale: {x: 0.19999999, y: 0.2000001, z: 0.2000001}
+  m_LocalPosition: {x: 65.9, y: 2.1, z: 3}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.2000001}
   m_Children:
   - {fileID: 4695377794158614}
   m_Father: {fileID: 4481140561170254}
@@ -1502,12 +1502,12 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: aabafdca48fe90b4b88fbabf32a3885c, type: 3}
+  - {fileID: 2100000, guid: 74d5e7d4e09882f4baf5638b113ac37f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2216,12 +2216,12 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: b80296d2f95107043b865be814c9c6e8, type: 2}
+  - {fileID: 2100000, guid: 74d5e7d4e09882f4baf5638b113ac37f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2608,17 +2608,17 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1115419637994020}
-  m_Text: A
+  m_Text: 
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
-  m_Anchor: 0
+  m_Anchor: 4
   m_Alignment: 0
   m_TabSize: 4
   m_FontSize: 144
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 16ab36dc52081b74d8cd41abf6cfccc1, type: 3}
+  m_Font: {fileID: 12800000, guid: aabafdca48fe90b4b88fbabf32a3885c, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4280887593
@@ -2843,7 +2843,7 @@ TextMesh:
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
-  m_Anchor: 0
+  m_Anchor: 4
   m_Alignment: 0
   m_TabSize: 4
   m_FontSize: 144
