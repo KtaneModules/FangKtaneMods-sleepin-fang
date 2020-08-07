@@ -498,6 +498,7 @@ public class digitalClock : MonoBehaviour
     }
 
 #pragma warning disable 414
+    bool TwitchShouldCancelCommand;
     string TwitchHelpMessage = "Use !{0} set <##:##> // reset // temp. Time specified are to be 24 hour format.";
 #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
@@ -547,7 +548,6 @@ public class digitalClock : MonoBehaviour
                     Buttons[2].OnInteractEnded();
                 }
                 yield return null;
-
             }
             else
             {
@@ -560,6 +560,11 @@ public class digitalClock : MonoBehaviour
         }
         else
             yield return "sendtochaterror Invalid command.";
+
+        if (TwitchShouldCancelCommand) {
+                Buttons[4].OnInteract();
+                yield return "cancelled";
+            }
         yield break;
     }
     IEnumerator TwitchHandleForcedSolve()

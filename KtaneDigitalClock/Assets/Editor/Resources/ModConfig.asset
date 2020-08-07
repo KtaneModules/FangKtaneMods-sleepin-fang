@@ -23,6 +23,6 @@ MonoBehaviour:
 
 
     Manual: https://ktane.timwi.de/HTML/Digital%20Clock.html'
-  version: 1.1
+  version: 1.11
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 6bc6235fb7c81ee4ca59ebeed1601c91, type: 3}
