@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0c3227c78c7c5e44982095306c423101
+guid: f943b14e8efc11840b55ef5791747aa6
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -11,7 +11,8 @@ TrueTypeFontImporter:
   fontName: DSEG14 Classic
   fontNames:
   - DSEG14 Classic
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 0c3227c78c7c5e44982095306c423101, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

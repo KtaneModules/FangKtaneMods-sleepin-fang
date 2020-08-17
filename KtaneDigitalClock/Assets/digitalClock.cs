@@ -12,6 +12,7 @@ public class digitalClock : MonoBehaviour
 
     public KMBombInfo Bomb;
     public KMAudio Audio;
+    public KMColorblindMode ColorblindMode;    
     public TextMesh[] Displays;
     public Renderer Background;
     public KMSelectable[] Buttons;
@@ -24,6 +25,7 @@ public class digitalClock : MonoBehaviour
     private string initialHourDisplay, initialHourDisplay2, initialMinuteDisplay, alarmHourDisplay, alarmHourDisplay2, alarmMinuteDisplay;
     private bool blinkOn = true, alwaysOn = true;
     private bool holdingbtn1, holdingbtn2, holdingbtn3;
+    private bool colorblindMode = false;
     string answerMinuteDisplay;
     //Logging
     static int moduleIdCounter = 1;
@@ -54,6 +56,27 @@ public class digitalClock : MonoBehaviour
         timeformat = Random.Range(0, 2);
         blinking = Random.Range(0, 2);
         generateClock();
+
+        colorblindMode = ColorblindMode.ColorblindModeActive;
+        if (colorblindMode) { 
+            if      (clockColorIndex == 0) Displays[18].text = "Orange";
+            else if (clockColorIndex == 1) Displays[18].text = "White"; 
+            else if (clockColorIndex == 2) Displays[18].text = "Blue";
+            else if (clockColorIndex == 3) Displays[18].text = "Cyan";
+            else if (clockColorIndex == 4) Displays[18].text = "Lime"; 
+            else if (clockColorIndex == 5) Displays[18].text = "Red";
+            else if (clockColorIndex == 6) Displays[18].text = "Yellow";
+            else if (clockColorIndex == 7) Displays[18].text = "Orange";
+            else if (clockColorIndex == 8) Displays[18].text = "White"; 
+            else if (clockColorIndex == 9) Displays[18].text = "Blue";
+            else if (clockColorIndex == 10) Displays[18].text = "Lime"; 
+            else if (clockColorIndex == 11) Displays[18].text = "Purple";
+            else if (clockColorIndex == 12) Displays[18].text = "Red";
+            else if (clockColorIndex == 13) Displays[18].text = "Yellow";
+        }
+        else Displays[18].text = "";
+        
+
         StartCoroutine(BlinkAnim());
     }
 
@@ -102,6 +125,7 @@ public class digitalClock : MonoBehaviour
         Displays[15].color = digitBackgroundColor[clockColorIndex];
         Displays[16].color = digitColor[clockColorIndex];
         Displays[17].color = digitBackgroundColor[clockColorIndex];
+        Displays[18].color = digitColor[clockColorIndex];
         Background.material = clockBackgroundColor[clockColorIndex];
         if (moduleSolved == false && mode == 0)
         {
@@ -384,7 +408,6 @@ public class digitalClock : MonoBehaviour
     {
         while (!moduleSolved && mode == 1)
         {
-            Debug.Log(modeElapsedTime);
             yield return new WaitForSeconds(0.5f);
             Displays[16].text = alarmclock.ToString();
             yield return new WaitForSeconds(0.5f);
@@ -499,12 +522,12 @@ public class digitalClock : MonoBehaviour
 
 #pragma warning disable 414
     bool TwitchShouldCancelCommand;
-    string TwitchHelpMessage = "Use !{0} set <##:##> // reset // temp. Time specified are to be 24 hour format.";
+    string TwitchHelpMessage = "Use !{0} set <##:##> // reset // temp // colorblind. Time specified are to be 24 hour format.";
 #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
     {
         command = command.ToLowerInvariant().Trim();
-        Match m = Regex.Match(command, @"^(?:temp|reset|set (\d{1,2}):(\d{2}))$");
+        Match m = Regex.Match(command, @"^(?:colorblind|temp|reset|set (\d{1,2}):(\d{2}))$");
         if (m.Success)
         {
             if (m.Groups[2].Success)
@@ -548,6 +571,24 @@ public class digitalClock : MonoBehaviour
                     Buttons[2].OnInteractEnded();
                 }
                 yield return null;
+            }
+            else if (m.Groups[0].Value == "colorblind") {
+                yield return null;
+                if      (clockColorIndex == 0) Displays[18].text = "Orange";
+                else if (clockColorIndex == 1) Displays[18].text = "White"; 
+                else if (clockColorIndex == 2) Displays[18].text = "Blue";
+                else if (clockColorIndex == 3) Displays[18].text = "Cyan";
+                else if (clockColorIndex == 4) Displays[18].text = "Lime"; 
+                else if (clockColorIndex == 5) Displays[18].text = "Red";
+                else if (clockColorIndex == 6) Displays[18].text = "Yellow";
+                else if (clockColorIndex == 7) Displays[18].text = "Orange";
+                else if (clockColorIndex == 8) Displays[18].text = "White"; 
+                else if (clockColorIndex == 9) Displays[18].text = "Blue";
+                else if (clockColorIndex == 10) Displays[18].text = "Lime"; 
+                else if (clockColorIndex == 11) Displays[18].text = "Purple";
+                else if (clockColorIndex == 12) Displays[18].text = "Red";
+                else if (clockColorIndex == 13) Displays[18].text = "Yellow";
+                yield break;
             }
             else
             {
