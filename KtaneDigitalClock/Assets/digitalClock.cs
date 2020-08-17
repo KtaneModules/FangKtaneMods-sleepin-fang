@@ -56,27 +56,29 @@ public class digitalClock : MonoBehaviour
         timeformat = Random.Range(0, 2);
         blinking = Random.Range(0, 2);
         generateClock();
+        string colorShown;
+
 
         colorblindMode = ColorblindMode.ColorblindModeActive;
-        if (colorblindMode) { 
-            if      (clockColorIndex == 0) Displays[18].text = "Orange";
-            else if (clockColorIndex == 1) Displays[18].text = "White"; 
-            else if (clockColorIndex == 2) Displays[18].text = "Blue";
-            else if (clockColorIndex == 3) Displays[18].text = "Cyan";
-            else if (clockColorIndex == 4) Displays[18].text = "Lime"; 
-            else if (clockColorIndex == 5) Displays[18].text = "Red";
-            else if (clockColorIndex == 6) Displays[18].text = "Yellow";
-            else if (clockColorIndex == 7) Displays[18].text = "Orange";
-            else if (clockColorIndex == 8) Displays[18].text = "White"; 
-            else if (clockColorIndex == 9) Displays[18].text = "Blue";
-            else if (clockColorIndex == 10) Displays[18].text = "Lime"; 
-            else if (clockColorIndex == 11) Displays[18].text = "Purple";
-            else if (clockColorIndex == 12) Displays[18].text = "Red";
-            else if (clockColorIndex == 13) Displays[18].text = "Yellow";
-        }
-        else Displays[18].text = "";
+        if      (clockColorIndex == 0) colorShown = "Orange";
+        else if (clockColorIndex == 1) colorShown = "White"; 
+        else if (clockColorIndex == 2) colorShown = "Blue";
+        else if (clockColorIndex == 3) colorShown = "Cyan";
+        else if (clockColorIndex == 4) colorShown = "Lime"; 
+        else if (clockColorIndex == 5) colorShown = "Red";
+        else if (clockColorIndex == 6) colorShown = "Yellow";
+        else if (clockColorIndex == 7) colorShown = "Orange";
+        else if (clockColorIndex == 8) colorShown = "White"; 
+        else if (clockColorIndex == 9) colorShown = "Blue";
+        else if (clockColorIndex == 10) colorShown = "Lime"; 
+        else if (clockColorIndex == 11) colorShown = "Purple";
+        else if (clockColorIndex == 12) colorShown = "Red";
+        else colorShown = "Yellow";
         
-
+        if (colorblindMode) Displays[18].text = colorShown;
+        else Displays[18].text = "";
+        Debug.LogFormat("[Digital Clock #{0}]: Color of the clock: {1} ", moduleId, colorShown);
+        Debug.LogFormat("[Digital Clock #{0}]: Temperature = {1}°C / {2}°F", moduleId, temp, tempf);
         StartCoroutine(BlinkAnim());
     }
 
@@ -445,26 +447,22 @@ public class digitalClock : MonoBehaviour
             Debug.LogFormat("[Digital Clock #{0}]: Rule 1 is true, +180 min.", moduleId);
         }
         //bgcolor/txcolor
-        if (clockColorIndex % 7 == 1)
-        {
-            answer += 765;
-            Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +765 min.", moduleId);
-        }
-        else if (clockColorIndex % 7 == 0 || clockColorIndex % 7 == 4)
-        {
-            Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +383 min.", moduleId);
-            answer += 383;
-        }
-        else if (clockColorIndex % 7 == 2 || clockColorIndex % 7 == 5)
-        {
-            answer += 255;
-            Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +255 min.", moduleId);
-        }
-        else if (clockColorIndex % 7 == 3 || clockColorIndex % 7 == 6)
-        {
-            answer += 510;
-            Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +510 min.", moduleId);
-        }
+            if (clockColorIndex == 0 || clockColorIndex == 4 || clockColorIndex == 7 || clockColorIndex == 11 || clockColorIndex == 10) {
+                answer += 383;
+                Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +383 min.", moduleId);
+            }
+            else if (clockColorIndex == 1 || clockColorIndex == 8) {
+                answer += 765;
+                Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +765 min.", moduleId);
+            }
+            else if (clockColorIndex == 2 || clockColorIndex == 5 || clockColorIndex == 9 || clockColorIndex == 12) {
+                answer += 255;
+                Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +255 min.", moduleId);
+            }
+            else if (clockColorIndex == 3 || clockColorIndex == 6 || clockColorIndex == 13) {
+                answer += 510;
+                Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +510 min.", moduleId);
+            }
         //blinking
         if (blinking == 1)
         {
