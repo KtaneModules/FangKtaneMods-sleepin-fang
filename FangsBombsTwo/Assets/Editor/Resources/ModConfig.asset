@@ -18,6 +18,6 @@ MonoBehaviour:
 
 
     TP Supported.'
-  version: 1.3
+  version: 1.31
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 9671fe1a7a19f4942ba3b2daab2c01a4, type: 3}

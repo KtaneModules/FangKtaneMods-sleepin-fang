@@ -354,12 +354,6 @@ MonoBehaviour:
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - numberedButtonsModule
-    - Count: 1
-      AllowedSources: 0
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
       - lyingIndicators
     - Count: 1
       AllowedSources: 0
@@ -385,4 +379,10 @@ MonoBehaviour:
       SpecialComponentType: 0
       ModTypes:
       - RAM
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - ThreeCrypticSteps
   PacingEventsEnabled: 0
