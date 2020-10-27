@@ -118,7 +118,6 @@ public class zhStrokes : MonoBehaviour
                 if (soundRef != null) soundRef.StopSound();
                 audio.PlaySoundAtTransform("str", transform);
                 Debug.LogFormat("[Chinese Strokes #{0}] Stage {3}: You inputted {1}, expected {2}. Module striked and reset.", moduleId, inputNumber, textOption.number, stageNumber);
-                Randomize();
             }
         }
     }
