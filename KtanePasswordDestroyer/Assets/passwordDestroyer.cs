@@ -76,7 +76,7 @@ public class passwordDestroyer : MonoBehaviour
     int numofbars;
     string finalAnswer;
     string elapsedTimeDisplay, elapsedTimeMinDisplay, elapsedTimeSecDisplay, twofatimedisplay, strikedTimeDisplay, tempDisp, tempTime;
-    bool showing2FA, showingTime, showingStrike, dotUnlit, initiated;
+    bool showing2FA, showingTime, showingStrike, showingSolve, dotUnlit, initiated;
 
     // Use this for initialization
     void Awake()
@@ -145,6 +145,8 @@ public class passwordDestroyer : MonoBehaviour
         //
     }
     void Update() {
+        decimal solvePercentage = Math.Round( Math.Max ((decimal)1, (((decimal) Bomb.GetSolvedModuleNames().Count) * (decimal) 100)/ (decimal) Bomb.GetModuleNames().Count), 2);
+
         if (!initiated || erroring) return;
         if (pressedNumber == 0) Screens[0].text = CountUpNumberDisplay;
         if (showing2FA) Screens[1].text = identityDigit1.ToString() + " " + identityDigit2.ToString() + ".";
@@ -153,6 +155,7 @@ public class passwordDestroyer : MonoBehaviour
             Screens[1].text = strikedTimeDisplay;
             Screens[1].color = Colours[1];
         }
+        if (showingSolve) Screens[1].text = solvePercentage + "%";
         if (dotUnlit) Screens[4].text = "";
         else Screens[4].text = ".";
     }
@@ -168,7 +171,7 @@ public class passwordDestroyer : MonoBehaviour
         StartCoroutine(TimeDisplay());
         StartCoroutine(display1Cycle());
         StartCoroutine(DisplayDecimal());
-        Debug.LogFormat("[Password Destroyer #{0}]: Version v1.83", moduleId);
+        Debug.LogFormat("[Password Destroyer #{0}]: Version v1.91", moduleId);
         Debug.LogFormat("[Password Destroyer #{0}]: Initial base numbers are {1} and {2}, with starting 2FA of {3} {4}.", moduleId, CountUpBaseNumber, increaseFactor, identityDigit1, identityDigit2);
     }
     //
@@ -257,17 +260,6 @@ public class passwordDestroyer : MonoBehaviour
     void ResetModule()
     {
         split = false;
-        timeoutreset = false;
-        strikedatleastonce = true;
-        CountUpBaseNumber = Random.Range(1000000, 10000000);
-        increaseFactor = Random.Range(100000, 1000001);
-        int rng = Random.Range(0,2);
-        if (rng == 1) increaseFactor = -increaseFactor;
-        strikedTimeDisplay = Screens[2].text;
-        strikedTime = elapsedTime;
-        Generate2FA();
-        identityDigit = identityDigit1 * 1000 + identityDigit2;
-        Debug.LogFormat("[Password Destroyer #{0}]: Generated at {1}, the new base numbers are {2} and {3}, with starting 2FA of {4} and starting switches position of {5}.", moduleId, strikedTimeDisplay, CountUpBaseNumber, increaseFactor, identityDigit, NumbersToArrows(Switches_State));
     }
     IEnumerator display1Cycle()
     {
@@ -285,6 +277,12 @@ public class passwordDestroyer : MonoBehaviour
                 if (pressedNumber == 0) { yield return new WaitForSeconds(1f); };
             }
             showingTime = false;
+            for (int i = 0; i < 5; i++)
+            {
+                if (!solvedState && pressedNumber == 0) showingSolve = true;
+                if (pressedNumber == 0) { yield return new WaitForSeconds(1f); };
+            }
+            showingSolve = false;
             if (!solvedState && pressedNumber == 0 && strikedatleastonce == true) showingStrike = true;
             for (int i = 0; i < 5; i++)
             {
@@ -345,17 +343,17 @@ public class passwordDestroyer : MonoBehaviour
                 ResetModule();
                 timeoutreset = false;
             }
-            if ((elapsedTime - strikedTime)% 1800 == 0 && elapsedTime != 0 && elapsedTime != strikedTime)
+            if ((elapsedTime - strikedTime)% 2400 == 0 && elapsedTime != 0 && elapsedTime != strikedTime)
             {   
                 timeoutreset = true;
             }
-            else if ((elapsedTime - strikedTime) % 30 == 0)
+            else if ((elapsedTime - strikedTime) % 40 == 0)
             {
                 twofatimedisplay = twofatimedisplay.Remove(numofbars);
                 numofbars -= 2;
                 Screens[3].text = twofatimedisplay;
             }
-            if ((elapsedTime - strikedTime) % 180 == 0 && elapsedTime != 0)
+            if ((elapsedTime - strikedTime) % 240 == 0 && elapsedTime != 0)
             {
                 Generate2FA();
                 identityDigit = identityDigit1 * 1000 + identityDigit2;
@@ -670,11 +668,11 @@ public class passwordDestroyer : MonoBehaviour
         submitKey = "ANSWER  ";
         Screens[0].text = submitKey;
         yield return new WaitForSeconds(0.3f);
-        submitKey = "MODULE  ";
+        submitKey = "PLEASE  ";
         Screens[0].text = submitKey;
         Screens[2].color = Colours[0];
         yield return new WaitForSeconds(0.3f);
-        submitKey = "-RESET-";
+        submitKey = "-RETRY-";
         Screens[0].text = submitKey;
         submitKey = "";
         yield return new WaitForSeconds(0.5f);
@@ -765,8 +763,6 @@ public class passwordDestroyer : MonoBehaviour
             yield break;
         }
         else {
-            yield return null;
-            yield return "sendtochaterror Unrecognised or invalid command.";
             yield break;
         }
     }
