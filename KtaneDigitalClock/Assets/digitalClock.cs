@@ -33,6 +33,7 @@ public class digitalClock : MonoBehaviour
     private bool moduleSolved;
     char alarmclock = '\u23F0';
     float modeElapsedTime = 0f;
+    string colorShown;
     void Awake()
     {
         moduleId = moduleIdCounter++;
@@ -53,13 +54,6 @@ public class digitalClock : MonoBehaviour
     void Start()
     {
         clockColorIndex = Random.Range(0, 14);
-        timeformat = Random.Range(0, 2);
-        blinking = Random.Range(0, 2);
-        generateClock();
-        string colorShown;
-
-
-        colorblindMode = ColorblindMode.ColorblindModeActive;
         if      (clockColorIndex == 0) colorShown = "Orange";
         else if (clockColorIndex == 1) colorShown = "White"; 
         else if (clockColorIndex == 2) colorShown = "Blue";
@@ -74,11 +68,14 @@ public class digitalClock : MonoBehaviour
         else if (clockColorIndex == 11) colorShown = "Purple";
         else if (clockColorIndex == 12) colorShown = "Red";
         else colorShown = "Yellow";
+        timeformat = Random.Range(0, 2);
+        blinking = Random.Range(0, 2);
+        generateClock();
+        colorblindMode = ColorblindMode.ColorblindModeActive;
+
         
         if (colorblindMode) Displays[18].text = colorShown;
         else Displays[18].text = "";
-        Debug.LogFormat("[Digital Clock #{0}]: Color of the clock: {1} ", moduleId, colorShown);
-        Debug.LogFormat("[Digital Clock #{0}]: Temperature = {1}°C / {2}°F", moduleId, temp, tempf);
         StartCoroutine(BlinkAnim());
     }
 
@@ -239,8 +236,6 @@ public class digitalClock : MonoBehaviour
         temp = Random.Range(10, 38);
         //C to F conversion: (0°C × 9/5) + 32 = 32°F
         tempf = temp * 9 / 5 + 32;
-        Debug.LogFormat("[Digital Clock #{0}]: Temperature = {1}°C / {2}°F", moduleId, temp, tempf);
-
         //Red, Cyan, Orange(text, in black background) or Orange, White (background, with black text) 
         initialHour = Random.Range(0, 24);
         initialMinute = Random.Range(0, 60);
@@ -298,8 +293,8 @@ public class digitalClock : MonoBehaviour
                 initialHourDisplay2 = (initialHour % 10).ToString();
             }
         }
-        if (timeformat == 1) Debug.LogFormat("[Digital Clock #{0}]: Generated time in 24H = {1}:{2}, displaying 12H format.", moduleId, initialHour, initialMinuteDisplay);
-        else Debug.LogFormat("[Digital Clock #{0}]: Generated time in 24H = {1}:{2}, displaying 24H format.", moduleId, initialHour, initialMinuteDisplay);
+        if (timeformat == 1) Debug.LogFormat("[Digital Clock #{0}] Generated time in 24H = {1}:{2}, displaying 12H format.", moduleId, initialHour, initialMinuteDisplay);
+        else Debug.LogFormat("[Digital Clock #{0}] Generated time in 24H = {1}:{2}, displaying 24H format.", moduleId, initialHour, initialMinuteDisplay);
 
         generateAnswer();
     }
@@ -444,39 +439,54 @@ public class digitalClock : MonoBehaviour
         if (timeformat == 0)
         {
             answer += 180;
-            Debug.LogFormat("[Digital Clock #{0}]: Rule 1 is true, +180 min.", moduleId);
+            Debug.LogFormat("[Digital Clock #{0}] Rule 1: Clock is showing 24 hr format. +180 min.", moduleId);
         }
-        //bgcolor/txcolor
-            if (clockColorIndex == 0 || clockColorIndex == 4 || clockColorIndex == 7 || clockColorIndex == 11 || clockColorIndex == 10) {
-                answer += 383;
-                Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +383 min.", moduleId);
-            }
-            else if (clockColorIndex == 1 || clockColorIndex == 8) {
-                answer += 765;
-                Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +765 min.", moduleId);
-            }
-            else if (clockColorIndex == 2 || clockColorIndex == 5 || clockColorIndex == 9 || clockColorIndex == 12) {
-                answer += 255;
-                Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +255 min.", moduleId);
-            }
-            else if (clockColorIndex == 3 || clockColorIndex == 6 || clockColorIndex == 13) {
-                answer += 510;
-                Debug.LogFormat("[Digital Clock #{0}]: Rule 2/3, +510 min.", moduleId);
-            }
+        else 
+        {
+            Debug.LogFormat("[Digital Clock #{0}] Rule 1: Clock is showing 12 hr format. +0 min.", moduleId);
+        }
+
+
+        if (clockColorIndex <= 6) Debug.LogFormat("[Digital Clock #{0}] Rule 2: Background color of the clock is Black. +0 min.", moduleId, colorShown);
+        //bg color/txcolor
+        switch (clockColorIndex) {
+            case 0 : answer += 383; Debug.LogFormat("[Digital Clock #{0}] Rule 3: Digit color of the clock is {1}. +383min.", moduleId, colorShown); break;
+            case 1 : answer += 765; Debug.LogFormat("[Digital Clock #{0}] Rule 3: Digit color of the clock is {1}. +765min.", moduleId, colorShown); break;
+            case 2 : answer += 255; Debug.LogFormat("[Digital Clock #{0}] Rule 3: Digit color of the clock is {1}. +255min.", moduleId, colorShown); break;
+            case 3 : answer += 510; Debug.LogFormat("[Digital Clock #{0}] Rule 3: Digit color of the clock is {1}. +510min.", moduleId, colorShown); break;
+            case 4 : answer += 383; Debug.LogFormat("[Digital Clock #{0}] Rule 3: Digit color of the clock is {1}. +383min.", moduleId, colorShown); break;
+            case 5 : answer += 255; Debug.LogFormat("[Digital Clock #{0}] Rule 3: Digit color of the clock is {1}. +255min.", moduleId, colorShown); break;
+            case 6 : answer += 510; Debug.LogFormat("[Digital Clock #{0}] Rule 3: Digit color of the clock is {1}. +510min.", moduleId, colorShown); break;
+            case 7 : answer += 383; Debug.LogFormat("[Digital Clock #{0}] Rule 2: Background color of the clock is {1}. +383min.", moduleId, colorShown); break;
+            case 8 : answer += 765; Debug.LogFormat("[Digital Clock #{0}] Rule 2: Background color of the clock is {1}. +765min.", moduleId, colorShown); break;
+            case 9 : answer += 255; Debug.LogFormat("[Digital Clock #{0}] Rule 2: Background color of the clock is {1}. +255min.", moduleId, colorShown); break;
+            case 10: answer += 383; Debug.LogFormat("[Digital Clock #{0}] Rule 2: Background color of the clock is {1}. +383min.", moduleId, colorShown); break;
+            case 11: answer += 383; Debug.LogFormat("[Digital Clock #{0}] Rule 2: Background color of the clock is {1}. +383min.", moduleId, colorShown); break;
+            case 12: answer += 255; Debug.LogFormat("[Digital Clock #{0}] Rule 2: Background color of the clock is {1}. +255min.", moduleId, colorShown); break;
+            case 13: answer += 510; Debug.LogFormat("[Digital Clock #{0}] Rule 2: Background color of the clock is {1}. +510min.", moduleId, colorShown); break;
+        };
+        if (clockColorIndex >= 7) Debug.LogFormat("[Digital Clock #{0}] Rule 3: Digit color of the clock is Black. +0 min.", moduleId, colorShown);
+ 
+
+
+//        0-6 bg black 7+ text black
         //blinking
         if (blinking == 1)
         {
             answer += 120;
-            Debug.LogFormat("[Digital Clock #{0}]: Rule 4 is true, +120 min.", moduleId);
+            Debug.LogFormat("[Digital Clock #{0}] Rule 4: Colon of the clock is blinking. +120 min.", moduleId);
         }
+        else 
+            Debug.LogFormat("[Digital Clock #{0}] Rule 4: Colon of the clock is not blinking. +0 min.", moduleId);
+
         //temp
         answer += temp;
         answer -= tempf;
-        Debug.LogFormat("[Digital Clock #{0}]: Rule 5, +{1}-{2} min.", moduleId, temp, tempf);
+        Debug.LogFormat("[Digital Clock #{0}] Rule 5: +{1} and -{2} min.", moduleId, temp, tempf);
 
         int hourtoAdd = answer / 60;
         int minutetoAdd = answer % 60;
-        Debug.LogFormat("[Digital Clock #{0}]: Result = +{1} min (+{2}:{3}).", moduleId, answer, hourtoAdd, minutetoAdd);
+        Debug.LogFormat("[Digital Clock #{0}] Result = +{1} min (+{2}hr {3}min).", moduleId, answer, hourtoAdd, minutetoAdd);
         if (initialMinute + minutetoAdd > 59) hourtoAdd += 1;
 
         answerHour = (initialHour + hourtoAdd) % 24;
@@ -485,7 +495,7 @@ public class digitalClock : MonoBehaviour
         if (answerMinute < 10) answerMinuteDisplay = "0" + answerMinute.ToString();
         else answerMinuteDisplay = answerMinute.ToString();
 
-        Debug.LogFormat("[Digital Clock #{0}]: Answer in 24H = {1}:{2}.", moduleId, answerHour, answerMinuteDisplay);
+        Debug.LogFormat("[Digital Clock #{0}] Answer in 24H = {1}:{2}.", moduleId, answerHour, answerMinuteDisplay);
     }
     void checkAnswer()
     {
@@ -500,7 +510,6 @@ public class digitalClock : MonoBehaviour
         else
         {
             GetComponent<KMBombModule>().HandleStrike();
-            generateClock();
             mode = 0;
             Displays[3].text = "";
             Displays[4].text = "";
