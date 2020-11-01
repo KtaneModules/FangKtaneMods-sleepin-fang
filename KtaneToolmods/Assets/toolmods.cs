@@ -16,7 +16,7 @@ public class toolmods : MonoBehaviour
     public TextMesh[] Displays;
     public Color[] Color;
     private static int moduleIdCounter = 1;
-    private int moduleId;
+    private int moduleId, solveCheck;
     private bool moduleSolved, bombSolved;
     private float elapsedTime;
     private double startupsec, startupms;
@@ -179,6 +179,12 @@ public class toolmods : MonoBehaviour
         if (TimeModeActive) Displays[7].text = bombrealtimeDisp;
         else if (ZenModeActive) Displays[7].text = "N/A " + bomb.GetStrikes().ToString() + "X";
         else Displays[7].text = bombrealtimeDisp + " " + bomb.GetStrikes().ToString() + "X";
+
+        if (solveCheck != bomb.GetSolvedModuleNames().Count) 
+        {
+            Debug.LogFormat("[Toolneedy #{0}] Solve #{1}: {2} #{4} - {3}", moduleId, bomb.GetSolvedModuleNames().Count, bomb.GetSolvedModuleNames().Last(), elapsedTimeDisplay, bomb.GetSolvedModuleNames().Where(x => x.Equals(bomb.GetSolvedModuleNames().Last())).Count() );
+            solveCheck++;
+        }
     }
     void Start()
     {

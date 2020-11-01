@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ public class toolneedy : MonoBehaviour
     private float elapsedTime;
     private double startupsec, startupms;
     private string elapsedTimeDisplay, startupmsDisplay;
-    private int solvedPercentage;
+    private int solvedPercentage, solveCheck;
     void Awake()
     {
         moduleId = moduleIdCounter++;
@@ -31,7 +31,7 @@ public class toolneedy : MonoBehaviour
         StartCoroutine(timeGlitchiness());
     }
 
-    void FixedUpdate ()
+    void Update ()
     {
         Displays[2].text = DateTime.Now.ToString("HH:mm:ss");
         elapsedTime += Time.deltaTime;
@@ -169,6 +169,12 @@ public class toolneedy : MonoBehaviour
         if (TimeModeActive) Displays[6].text = bombrealtimeDisp;
         else if (ZenModeActive) Displays[6].text = "N/A " + bomb.GetStrikes().ToString() + "X";
         else Displays[6].text = bombrealtimeDisp + " " + bomb.GetStrikes().ToString() + "X";
+
+        if (solveCheck != bomb.GetSolvedModuleNames().Count) 
+        {
+            Debug.LogFormat("[Toolneedy #{0}] Solve #{1}: {2} #{4} - {3}", moduleId, bomb.GetSolvedModuleNames().Count, bomb.GetSolvedModuleNames().Last(), elapsedTimeDisplay, bomb.GetSolvedModuleNames().Where(x => x.Equals(bomb.GetSolvedModuleNames().Last())).Count() );
+            solveCheck++;
+        }
     }
     void Start()
     {
