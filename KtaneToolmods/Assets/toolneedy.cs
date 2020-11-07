@@ -21,6 +21,8 @@ public class toolneedy : MonoBehaviour
     private double startupsec, startupms;
     private string elapsedTimeDisplay, startupmsDisplay;
     private int solvedPercentage, solveCheck;
+    private string MostRecent;
+    private List<string> SolveList = new List<string>{};
     void Awake()
     {
         moduleId = moduleIdCounter++;
@@ -172,9 +174,22 @@ public class toolneedy : MonoBehaviour
 
         if (solveCheck != bomb.GetSolvedModuleNames().Count) 
         {
-            Debug.LogFormat("[Toolneedy #{0}] Solve #{1}: {2} #{4} - {3}", moduleId, bomb.GetSolvedModuleNames().Count, bomb.GetSolvedModuleNames().Last(), elapsedTimeDisplay, bomb.GetSolvedModuleNames().Where(x => x.Equals(bomb.GetSolvedModuleNames().Last())).Count() );
+            MostRecent = GetLatestSolve(bomb.GetSolvedModuleNames(), SolveList);
+            Debug.LogFormat("[Toolneedy #{0}] Solve #{1}: {2} - {3}", moduleId, bomb.GetSolvedModuleNames().Count, MostRecent, elapsedTimeDisplay);
+
+            SolveList.Add(MostRecent);
             solveCheck++;
         }
+    }
+    private string GetLatestSolve(List<string> a, List<string> b)
+    {
+        string z = "";
+        for(int i = 0; i < b.Count; i++)
+        {
+            a.Remove(b.ElementAt(i));
+        }
+        z = a.ElementAt(0);
+        return z;
     }
     void Start()
     {
@@ -193,7 +208,7 @@ public class toolneedy : MonoBehaviour
         if (!bombSolved)
         {
             Debug.Log("Solved");
-            Debug.LogFormat("[Toolmod #{0}] Elapsed time on bomb solved: {1} after bomb activation.", moduleId, elapsedTimeDisplay);
+            Debug.LogFormat("[Toolneedy #{0}] Elapsed time on bomb solved: {1} after bomb activation.", moduleId, elapsedTimeDisplay);
         }
     }
     IEnumerator timeGlitchiness() {
