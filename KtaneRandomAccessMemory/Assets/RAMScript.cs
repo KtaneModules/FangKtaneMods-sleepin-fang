@@ -16,6 +16,7 @@ public class RAMScript : MonoBehaviour
     public TextMesh[] texts;
     public KMSelectable clear;
     public KMBombInfo Bomb;
+    public KMBombModule Module;
     int increasedDuration, increasedPercentage;
     int currentDigit, limitDigit, unitPosition;
     string currentUnit;
@@ -64,11 +65,11 @@ public class RAMScript : MonoBehaviour
         //Count for non-ignored modules
         nonIgnoredcount = Bomb.GetSolvableModuleNames().Where(x => !ignoredModules.Contains(x)).Count();
     	//nonIgnoredcount = nonIgnoredcount + 2; Debug.LogFormat("[Random Access Memory #{0}]: Please notify creator because he forgot he added 2 on non-Ignored modules for debugging!", moduleId); //For debugging 
-        StartCoroutine(checkForceSolve());
         StartCoroutine(DisplayTime());
 		Debug.LogFormat("[Random Access Memory #{0}]: Number of non-ignored modules = {1}", moduleId, nonIgnoredcount);
 		Debug.LogFormat("[Random Access Memory #{0}]: Desired Solve Percentage = {1}%", moduleId, desiredSolvePercentage);
         //StartCoroutine(solveDelay()); //Debugging
+        Module.OnActivate += delegate {StartCoroutine(checkForceSolve());};
     }
     void UpdateProgressBar()
     {

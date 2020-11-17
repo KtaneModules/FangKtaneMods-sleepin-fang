@@ -2098,6 +2098,7 @@ MonoBehaviour:
   - {fileID: 102815306560209320}
   clear: {fileID: 114582321259373300}
   Bomb: {fileID: 114817933349874938}
+  Module: {fileID: 114572365571879002}
   normal: {r: 0, g: 1, b: 0, a: 1}
   warning: {r: 1, g: 0.335, b: 0.335, a: 1}
   shutdown: {r: 1, g: 0.6413793, b: 0, a: 1}
