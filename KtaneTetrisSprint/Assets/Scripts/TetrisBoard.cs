@@ -95,7 +95,6 @@ public class TetrisBoard {
 			}
 
 			if (complete) {
-				Debug.Log ("Row " + y + " completed!");
 				list.Add (y);
 			}
 		}

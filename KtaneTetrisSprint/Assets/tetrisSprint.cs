@@ -47,6 +47,8 @@ public class tetrisSprint : MonoBehaviour {
 	private bool moduleSolved = false;
 	private bool holdingleft, holdingright;
     private List<int> grabBag = new List<int>();
+	KMAudio.KMAudioRef soundEffect;
+
 
 	void SetMaterial(GameObject go, Material mat)
 	{
@@ -185,8 +187,7 @@ public class tetrisSprint : MonoBehaviour {
 					moduleSolved = true;
 					tetr = null;
 					timeDisplay.color = new Color (0, 255, 0);
-					Audio.PlaySoundAtTransformWithRef("tetrisTheme", transform).StopSound();
-
+					soundEffect.StopSound();
 				}
 				UpdateGrid ();
 			}
@@ -212,7 +213,7 @@ public class tetrisSprint : MonoBehaviour {
             if (!started)
             {
                 OnActivation();
-				Audio.PlaySoundAtTransformWithRef("tetrisTheme", transform);
+				if (soundEffect == null) soundEffect = Audio.PlaySoundAtTransformWithRef("tetrisTheme", transform);
             }
             started = true;
             return true;
@@ -354,14 +355,12 @@ public class tetrisSprint : MonoBehaviour {
 	}
 	bool Mute()
 	{
-		if (muted) {
-			Audio.PlaySoundAtTransformWithRef("tetrisTheme", transform);
-			muted = false;
+		if (soundEffect != null) {
+			soundEffect.StopSound();
+			soundEffect = null;
 		}
-		else {
-			Audio.PlaySoundAtTransformWithRef("tetrisTheme", transform).StopSound();
-			muted = true;
-		}
+		else soundEffect = Audio.PlaySoundAtTransformWithRef("tetrisTheme", transform);
+
 		return false;
 	}
 
@@ -453,6 +452,20 @@ public class tetrisSprint : MonoBehaviour {
 			}
 			timeDisplay.text = "T+" + elapsedTimeDisplay;
 		}
+		if (moduleSolved) {
+			if (soundEffect != null) {
+				soundEffect.StopSound();
+				soundEffect = null;
+			}
+		}
+	}
+
+	void OnExplode() {
+		if (soundEffect != null)
+        {
+            soundEffect.StopSound();
+            soundEffect = null;
+        }
 	}
 	/*void Update()
 	{
