@@ -3,10 +3,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using Random = UnityEngine.Random;
 
 public class tetrisSprint : MonoBehaviour {
-
+    public class ModSettingsJSON
+    {
+        public int linesToClear;
+        public string note;
+    }
 	public GameObject Board;
 
 	public Material BoxFull;
@@ -24,6 +29,8 @@ public class tetrisSprint : MonoBehaviour {
 	public TextMesh numberDisplay;
 	public TextMesh scoreDisplay;
 	public TextMesh timeDisplay;
+	public TextMesh targetDisplay;
+	public KMModSettings modSettings;
 	private TetrisBoard GameBoard;
 
 	private const int G_WIDTH = 10; // Width of grid
@@ -36,9 +43,10 @@ public class tetrisSprint : MonoBehaviour {
 	private Tetromino tetr;
 	private int upNext;
 	private int Score;
-	private int linesLeft = 40;
-	private int piecesLeft;
+	private int linesLeft;
 	private int activation = 0;
+	private int moduleId = 0;
+	private static int moduleIdCounter = 1;
 	private int[] TetroDisplay;
 	private float elapsedTime;
 	private string elapsedTimeDisplay;
@@ -165,6 +173,7 @@ public class tetrisSprint : MonoBehaviour {
 					GameBoard.deleteRows (rows);
 				}
 				linesLeft = linesLeft - rows.Count;
+				if (linesLeft < 0) linesLeft = 0;
 				switch (rows.Count) {
 					case 1:
 						Score += 50;
@@ -179,16 +188,16 @@ public class tetrisSprint : MonoBehaviour {
 						Score += 1000;
 						break;
 				}
-				piecesLeft--;
 				if (linesLeft > 0) {
 					tetr = new Tetromino (G_WIDTH, GameBoard, GetPiece());
 				} else {
+					UpdateGrid ();
 					Module.HandlePass ();
 					moduleSolved = true;
 					tetr = null;
 					timeDisplay.color = new Color (0, 255, 0);
 					soundEffect.StopSound();
-				}
+					Debug.LogFormat("[Tetris Sprint #{0}] {1} is completed with a score of {2}, in {3}.", moduleId, targetDisplay.text, Score, elapsedTimeDisplay);				}
 				UpdateGrid ();
 			}
             else
@@ -252,20 +261,20 @@ public class tetrisSprint : MonoBehaviour {
 		}
 
 		tetr = null;
-		piecesLeft = 0;
 		upNext = Random.Range(0, 7);
+		linesLeft = FindThreshold();
+		targetDisplay.text = linesLeft.ToString() + "L";
 		UpdateGrid ();
 	}
 
 	void Start()
 	{
-
+		moduleId = moduleIdCounter++;
 
 	}
 
 	protected void OnActivation()
 	{
-		//piecesLeft = 3;
 		tetr = new Tetromino (G_WIDTH, GameBoard, GetPiece());
 		UpdateGrid ();
 	}
@@ -467,6 +476,29 @@ public class tetrisSprint : MonoBehaviour {
             soundEffect = null;
         }
 	}
+	
+    int FindThreshold()
+    {
+        try
+        {
+            ModSettingsJSON settings = JsonConvert.DeserializeObject<ModSettingsJSON>(modSettings.Settings);
+            if (settings != null)
+            {
+                if (settings.linesToClear < 10)
+                    return 10;
+                else if (settings.linesToClear > 10000)
+                    return 10000;
+                else return settings.linesToClear;
+            }
+            else return 40;
+        }
+        catch (JsonReaderException e)
+        {
+            Debug.LogFormat("[Tetris Sprint #{0}] JSON reading failed with error {1}, using default number.", moduleId, e.Message);
+            return 40;
+        }
+    }
+
 	/*void Update()
 	{
 		if (tetr != null) {
