@@ -37,7 +37,6 @@ public class tetrisSprint : MonoBehaviour {
 
 	private KMBombModule Module;
 	public KMAudio Audio;
-
 	private GameObject[,] ObjectGrid;
 	public GameObject[] ScreenGrid;
 	private Tetromino tetr;
@@ -262,15 +261,16 @@ public class tetrisSprint : MonoBehaviour {
 
 		tetr = null;
 		upNext = Random.Range(0, 7);
-		linesLeft = FindThreshold();
-		targetDisplay.text = linesLeft.ToString() + "L";
+		
+
 		UpdateGrid ();
+
 	}
 
 	void Start()
 	{
 		moduleId = moduleIdCounter++;
-
+		Module.OnActivate += delegate { linesLeft = FindThreshold(); targetDisplay.text = linesLeft.ToString() + "L";}; 
 	}
 
 	protected void OnActivation()
@@ -495,7 +495,7 @@ public class tetrisSprint : MonoBehaviour {
         catch (JsonReaderException e)
         {
             Debug.LogFormat("[Tetris Sprint #{0}] JSON reading failed with error {1}, using default number.", moduleId, e.Message);
-            return 10000;
+            return 40;
         }
     }
 

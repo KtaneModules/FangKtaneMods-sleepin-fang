@@ -99,7 +99,7 @@ public class Tetromino {
 			break;
 		}
 
-		rotation = Random.Range (0, 4);
+		//rotation = Random.Range (0, 4);
 		column = 3;
 		this.gridWidth = gridWidth;
 		this.board = board;
