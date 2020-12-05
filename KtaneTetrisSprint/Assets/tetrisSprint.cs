@@ -308,7 +308,7 @@ public class tetrisSprint : MonoBehaviour {
         {
             elapsedTime += Time.deltaTime;
 
-            if (elapsedTime >= .3f)
+		if (elapsedTime >= .3f && !TwitchPlaysActive)
             {
 				if (tetr != null) {
 					tetr.MoveLeft ();
@@ -325,7 +325,7 @@ public class tetrisSprint : MonoBehaviour {
         {
             elapsedTime += Time.deltaTime;
 
-            if (elapsedTime >= .3f)
+            if (elapsedTime >= .3f && !TwitchPlaysActive)
             {
 				if (tetr != null) {
 					tetr.MoveRight ();
@@ -372,7 +372,7 @@ public class tetrisSprint : MonoBehaviour {
 
 		return false;
 	}
-
+	bool TwitchPlaysActive;
     public readonly string TwitchHelpMessage = "Each command is a letter which can be stringed together. a: move left, d: move right, q: turn left, e: turn right, s: drop, m: mute.";
 
     public IEnumerator ProcessTwitchCommand(string command)
@@ -495,7 +495,7 @@ public class tetrisSprint : MonoBehaviour {
         catch (JsonReaderException e)
         {
             Debug.LogFormat("[Tetris Sprint #{0}] JSON reading failed with error {1}, using default number.", moduleId, e.Message);
-            return 40;
+            return 10000;
         }
     }
 
