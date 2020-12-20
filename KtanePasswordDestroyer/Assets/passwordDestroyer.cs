@@ -71,11 +71,12 @@ public class passwordDestroyer : MonoBehaviour
     int CountUpNumber, CountUpBaseNumber, increaseFactor;
     string CountUpNumberDisplay;
     int elapsedTime = 0, elapsedTimeMin, elapsedTimeSec, strikedTime, correctTime;
+    double doubleElapsedTime = 0f;
     int bombSerialNumber, moduleSerialNumber, solvePercentage;
     long calculatedValue, finalValue;
     int numofbars;
     string finalAnswer;
-    string elapsedTimeDisplay, elapsedTimeMinDisplay, elapsedTimeSecDisplay, twofatimedisplay, strikedTimeDisplay, tempDisp, tempTime;
+    string elapsedTimeDisplay, doubleElapsedTimeDisplay, elapsedTimeMinDisplay, elapsedTimeSecDisplay, twofatimedisplay, strikedTimeDisplay, tempDisp, tempTime;
     bool showing2FA, showingTime, showingStrike, showingSolve, dotUnlit, initiated;
 
     // Use this for initialization
@@ -103,28 +104,6 @@ public class passwordDestroyer : MonoBehaviour
                 return false;
             };
         }
-        //
-        //TP: Button Dictionary
-        btnDict = new Dictionary<string, KMSelectable>()
-        {
-            {"1",keypad[0]},
-            {"2",keypad[1]},
-            {"3",keypad[2]},
-            {"4",keypad[3]},
-            {"5",keypad[4]},
-            {"6",keypad[5]},
-            {"7",keypad[6]},
-            {"8",keypad[7]},
-            {"9",keypad[8]},
-            {"0",keypad[9]}
-        };
-        switchesDict = new Dictionary<string, KMSelectable>()
-        {
-            {"1",Switches[0]},
-            {"2",Switches[1]},
-            {"3",Switches[2]},
-        };
-        //
         //Generate Random Switch Position
         int random_flip = 0;
         for (int i = 0; i < 3; i++)
@@ -148,6 +127,57 @@ public class passwordDestroyer : MonoBehaviour
         decimal solvePercentage = Math.Round( Math.Max ((decimal)1, (((decimal) Bomb.GetSolvedModuleNames().Count) * (decimal) 100)/ (decimal) Bomb.GetModuleNames().Count), 2);
 
         if (!initiated || erroring) return;
+        doubleElapsedTime += Time.deltaTime;
+
+        double milisecond = Math.Floor(Math.Round(doubleElapsedTime % 60, 2) * 100 % 100);
+        string milisecondDisp;
+        if (milisecond < 10) milisecondDisp = "0" + milisecond.ToString();
+        else milisecondDisp = milisecond.ToString();
+
+        double second = Math.Floor(doubleElapsedTime % 60);
+        double minute = Math.Floor(doubleElapsedTime / 60 % 60);
+        double hour = Math.Floor(doubleElapsedTime / 3600);
+
+        if (hour != 0 && hour < 10)
+        {
+            if (minute < 10)
+            {
+                if (second < 10) doubleElapsedTimeDisplay = "0" + hour + ":0" + minute + ":0" + second;
+                else doubleElapsedTimeDisplay = "0" + hour + ":0" + minute + ":" + second;
+            }
+            else
+            {
+                if (second < 10) doubleElapsedTimeDisplay = "0" + hour + ":" + minute + ":0" + second;
+                else doubleElapsedTimeDisplay = "0" + hour + ":" + minute + ":" + second;
+            }
+        }
+        else if (hour != 0)
+        {
+            if (minute < 10)
+            {
+                if (second < 10) doubleElapsedTimeDisplay = hour + ":0" + minute + ":0" + second;
+                else doubleElapsedTimeDisplay = hour + ":0" + minute + ":" + second;
+            }
+            else
+            {
+                if (second < 10) doubleElapsedTimeDisplay = hour + ":" + minute + ":0" + second;
+                else doubleElapsedTimeDisplay = hour + ":" + minute + ":" + second;
+            }
+        }
+        else
+        {
+            if (minute < 10)
+            {
+                if (second < 10) doubleElapsedTimeDisplay = "0" + minute + ":0" + second + "." + milisecondDisp;
+                else doubleElapsedTimeDisplay = "0" + minute + ":" + second + "." + milisecondDisp;
+            }
+            else
+            {
+                if (second < 10) doubleElapsedTimeDisplay = minute + ":0" + second + "." + milisecondDisp;
+                else doubleElapsedTimeDisplay = minute + ":" + second + "." + milisecondDisp;
+            }
+        }
+
         if (pressedNumber == 0) Screens[0].text = CountUpNumberDisplay;
         if (showing2FA) Screens[1].text = identityDigit1.ToString() + " " + identityDigit2.ToString() + ".";
         if (showingTime)  Screens[1].text = DateTime.Now.ToString("HH:mm:ss");
@@ -158,6 +188,14 @@ public class passwordDestroyer : MonoBehaviour
         if (showingSolve) Screens[1].text = solvePercentage + "%";
         if (dotUnlit) Screens[4].text = "";
         else Screens[4].text = ".";
+
+        if (split == false) { 
+        Screens[2].text = doubleElapsedTimeDisplay;
+        }
+        
+        if ( doubleElapsedTime - elapsedTime > 1 && doubleElapsedTime > 0) {
+            TimeDisplay();
+        }
     }
     void initiateModule() {
         //Generate Numbers, for the first time - Sv, If, 2FAST
@@ -168,10 +206,10 @@ public class passwordDestroyer : MonoBehaviour
         int rng = Random.Range(0, 2);
         if (rng == 1) increaseFactor = -increaseFactor;
         Generate2FA();
-        StartCoroutine(TimeDisplay());
+        TimeDisplay();
         StartCoroutine(display1Cycle());
         StartCoroutine(DisplayDecimal());
-        Debug.LogFormat("[Password Destroyer #{0}]: Version v1.91", moduleId);
+        Debug.LogFormat("[Password Destroyer #{0}]: Version v2.0", moduleId);
         Debug.LogFormat("[Password Destroyer #{0}]: Initial base numbers are {1} and {2}, with starting 2FA of {3} {4}.", moduleId, CountUpBaseNumber, increaseFactor, identityDigit1, identityDigit2);
     }
     //
@@ -236,7 +274,7 @@ public class passwordDestroyer : MonoBehaviour
                 split = true;
                 StartCoroutine(Splitting());
                 tempDisp = CountUpNumberDisplay;
-                tempTime = elapsedTimeDisplay;
+                tempTime = doubleElapsedTimeDisplay;
             }
         }
         return false;
@@ -320,15 +358,15 @@ public class passwordDestroyer : MonoBehaviour
             Screens[4].text = ""; 
         }  
     }
-    IEnumerator TimeDisplay()
+    void TimeDisplay()
     {
-        while (!solvedState)
+        if (!solvedState)
         {
             if (pressedNumber != 0)
             {
                 Screens[1].text = "INPUT   ";
             }
-            elapsedTime = elapsedTime + 1;
+            elapsedTime = (int) doubleElapsedTime;
             elapsedTimeMin = elapsedTime / 60;
             elapsedTimeSec = elapsedTime % 60;
             currentTimeHourDisplay = DateTime.Now.ToString("HH");
@@ -347,7 +385,7 @@ public class passwordDestroyer : MonoBehaviour
             {   
                 timeoutreset = true;
             }
-            else if ((elapsedTime - strikedTime) % 40 == 0)
+            else if ((elapsedTime - strikedTime) % 40 == 0 && elapsedTime != 0)
             {
                 twofatimedisplay = twofatimedisplay.Remove(numofbars);
                 numofbars -= 2;
@@ -385,9 +423,8 @@ public class passwordDestroyer : MonoBehaviour
             }
             elapsedTimeDisplay = elapsedTimeMinDisplay + ":" + elapsedTimeSecDisplay;
             if (split == false) { 
-            Screens[2].text = elapsedTimeDisplay;
+            //Screens[2].text = elapsedTimeDisplay;
             }
-            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -681,89 +718,87 @@ public class passwordDestroyer : MonoBehaviour
         erroring = false;
     }
     #pragma warning disable 414
-    string TwitchHelpMessage = "Use !{0} press <number> // toggle <switches position> // time // clear // split // split at <time> // submit at <time>. The time specified must match the bottom-left display.";
+    string TwitchHelpMessage = "Use !{0} press <number> // toggle <switches position> // time // clear // split // split/submit (at/on/-) <time> // s <number> <switches (1 as up, 0 as down)> <time>.";
     #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
     {
-        command = command.ToLowerInvariant();
-        if(command.StartsWith("press "))
-        {
-            string btns = command.Replace("press ", "").Replace(" ", "");
-            char[] numbers = btns.ToCharArray();
-            List<KMSelectable> btnsToPress = new List<KMSelectable>();
-            foreach (char number in numbers)
-            {
-                if(!btnDict.ContainsKey(number.ToString()))
-                {
-                    yield return null;
-                    yield return "sendtochaterror Invalid button.";
-                    yield break;
-                }
-                btnsToPress.Add(btnDict[number.ToString()]);
-            }
-            yield return null;
-            yield return btnsToPress.ToArray();
-        }
-        else if (command.StartsWith("toggle "))
-        {
-            string sws = command.Replace("toggle ", "");
-            char[] numbers = sws.ToCharArray();
-            List<KMSelectable> swToToggle = new List<KMSelectable>();
-            foreach (char number in numbers)
-            {
-                if(!btnDict.ContainsKey(number.ToString()))
-                {
-                    yield return null;
-                    yield return "sendtochaterror Invalid switch.";
-                    yield break;
-                }
-                swToToggle.Add(switchesDict[number.ToString()]);
-            }
-            yield return null;
-            yield return swToToggle.ToArray();
-        }
-        else if (command.Equals("clear"))
-        {
-            yield return null;
+        command = command.ToLowerInvariant().Trim();
+        Match m = Regex.Match(command, @"^(?:(press ([0-9]+))|(toggle ([1-3]+))|(time|clear|split)|((submit|split)\s*(?:at|on)?\s*([0-9]+:)?([0-9]+):([0-5][0-9]))|(s\s*([0-9]{7})\s*([01]{3})\s*([0-9]+:)?([0-9]+):([0-5][0-9])))$");
+        /*Capture Groups:
+            1.  press
+            2.  .. what button
+            3.  toggle
+            4.  .. what switch
+            5.  time/clear/split
+            6.  submit/split at
+            7.  .. submit or split
+            8.  .. what hour, if any
+            9.  .. what minute
+            10. .. what sec
+            11. one command
+            12. .. what button
+            13. .. what desired switches state
+            14. .. what hour, if any
+            15. .. what minute
+            16. .. what sec
+        */
+        if (!m.Success || (m.Groups[6].Success && m.Groups[8].Success && int.Parse(m.Groups[9].Value)> 59))
+            yield break;
+        yield return null;
+        if (m.Groups[11].Success && !(m.Groups[14].Success && int.Parse(m.Groups[15].Value) > 59)) {
             clearButton.OnInteract();
-            yield break;
-        }
-        else if (command.Equals("time"))
-        {
-            yield return null;
-            yield return "sendtochat Current Time: " + DateTime.Now.ToString("MMMM dd") + ", "+ DateTime.Now.ToString("HH:mm:ss") +"; Current Display Time: " + elapsedTimeDisplay  ;
-            yield break;
-        }
-        else if (command.StartsWith("split at "))
-        {
-            string submittedTime = command.Replace("split at ", "");
-            while (submittedTime != elapsedTimeDisplay){
-                yield return new WaitForSeconds(.1f);
-                yield return "trycancel";
+            char[] numbers = m.Groups[12].Value.ToCharArray();
+            foreach (char number in numbers) {
+                yield return new WaitForSeconds(0.1f);
+                keypad[int.Parse(number.ToString())].OnInteract();
             }
             yield return null;
-            screen.OnInteract();
-            yield break;
-        }
-        else if (command.Equals("split"))
-        {
-            yield return null;
-            screen.OnInteract();
-            yield break;
-        }
-        else if (command.StartsWith("submit at "))
-        {
-            string submittedTime = command.Replace("submit at ", "");
-            while (submittedTime != elapsedTimeDisplay){
-                yield return new WaitForSeconds(.1f);
-                yield return "trycancel";
+            char[] desState = m.Groups[13].Value.ToCharArray();
+            for (int i = 0; i < 3; i++) {
+                yield return null;
+                if (Switches_State[i] != desState[i]) Switches[i].OnInteract();
             }
-            yield return null;
+
+            int commandSeconds = (!m.Groups[14].Success ? 0 : int.Parse(m.Groups[14].Value.Replace(":", ""))) * 3600 + int.Parse(m.Groups[15].Value) * 60 + int.Parse(m.Groups[16].Value);
+
+            while (elapsedTime != commandSeconds) 
+                yield return "trycancel Button wasn't pressed due to request to cancel.";
             submitButton.OnInteract();
-            yield break;
         }
-        else {
-            yield break;
+        else if (m.Groups[1].Success) {
+            char[] numbers = m.Groups[2].Value.ToCharArray();
+            foreach (char number in numbers) {
+                yield return new WaitForSeconds(0.1f);
+                keypad[int.Parse(number.ToString())].OnInteract();
+            }
+        }
+        else if (m.Groups[3].Success) {
+            char[] numbers = m.Groups[4].Value.ToCharArray();
+            foreach (char number in numbers) {
+                yield return new WaitForSeconds(0.1f);
+                Switches[int.Parse(number.ToString()) - 1].OnInteract();
+            }
+        }
+        else if (m.Groups[5].Success) {
+            switch (m.Groups[5].Value) {
+                case "time": 
+                    yield return "sendtochat Current Time: " + DateTime.Now.ToString("MMMM dd") + ", "+ DateTime.Now.ToString("HH:mm:ss") +"; Current Display Time: " + elapsedTimeDisplay;
+                    break;
+                case "clear":
+                    clearButton.OnInteract();
+                    break;
+                case "split":
+                    screen.OnInteract();
+                    break;
+            }
+        }
+        else if (m.Groups[6].Success) {
+            int commandSeconds = (!m.Groups[8].Success ? 0 : int.Parse(m.Groups[8].Value.Replace(":", ""))) * 3600 + int.Parse(m.Groups[9].Value) * 60 + int.Parse(m.Groups[10].Value);
+
+            while (elapsedTime != commandSeconds) 
+                yield return "trycancel Button wasn't pressed due to request to cancel.";
+            if (m.Groups[7].Value == "submit") submitButton.OnInteract();
+            else screen.OnInteract();
         }
     }
 
