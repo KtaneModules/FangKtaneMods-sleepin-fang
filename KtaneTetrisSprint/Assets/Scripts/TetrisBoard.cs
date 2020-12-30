@@ -17,7 +17,7 @@ public class TetrisBoard {
 		for (int i = 0; i < w * h; i++) {
 			grid [i] = 0;
 		}
-
+		/*
 		// Pick a random initial board
 		int boardType = Random.Range(0, 4);
 		int val1 = Random.Range (1, 4);
@@ -46,6 +46,7 @@ public class TetrisBoard {
 			initColumns (6, 7, val3);
 			break;
 		}
+		*/
 	}
 
 	public int get(int x, int y)

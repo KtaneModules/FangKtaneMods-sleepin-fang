@@ -91,58 +91,66 @@ public class tetrisSprint : MonoBehaviour {
 		}
 		scoreDisplay.text = Score.ToString();
 		numberDisplay.text = linesLeft.ToString();
+		if (moduleSolved)
+			for (int i = 0; i < 8; i++) ScreenGrid[i].SetActive(false);
+		else 
+		{
+			switch (upNext) {
+				case 0:
+					TetroDisplay = new int[] {
+						0, 1, 1, 0,
+						0, 0, 1, 1 
+					};
+					break;
+				case 1:
+					TetroDisplay = new int[] {
+						0, 0, 1, 1,
+						0, 1, 1, 0 
+					};
+					break;
+				case 2:
+					TetroDisplay = new int[] {
+						0, 1, 0, 0,
+						0, 1, 1, 1 
+					};
+					break;
+				case 3:
+					TetroDisplay = new int[] {
+						0, 0, 0, 1,
+						0, 1, 1, 1 
+					};
+					break;
+				case 4:
+					TetroDisplay = new int[] {
+						0, 0, 1, 0,
+						0, 1, 1, 1 
+					};
+					break;
+				case 5:
+					TetroDisplay = new int[] {
+						0, 0, 0, 0,
+						1, 1, 1, 1 
+					};
+					break;
+				case 6:
+					TetroDisplay = new int[] {
+						0, 1, 1, 0,
+						0, 1, 1, 0 
+					};
+					break;
+			}
 
-		switch (upNext) {
-			case 0:
-				TetroDisplay = new int[] {
-					0, 1, 1, 0,
-					0, 0, 1, 1 
-				};
-				break;
-			case 1:
-				TetroDisplay = new int[] {
-					0, 0, 1, 1,
-					0, 1, 1, 0 
-				};
-				break;
-			case 2:
-				TetroDisplay = new int[] {
-					0, 1, 0, 0,
-					0, 1, 1, 1 
-				};
-				break;
-			case 3:
-				TetroDisplay = new int[] {
-					0, 0, 0, 1,
-					0, 1, 1, 1 
-				};
-				break;
-			case 4:
-				TetroDisplay = new int[] {
-					0, 0, 1, 0,
-					0, 1, 1, 1 
-				};
-				break;
-			case 5:
-				TetroDisplay = new int[] {
-					0, 0, 0, 0,
-					1, 1, 1, 1 
-				};
-				break;
-			case 6:
-				TetroDisplay = new int[] {
-					0, 1, 1, 0,
-					0, 1, 1, 0 
-				};
-				break;
+			for (int i = 0; i < 8; i++) {
+				if (TetroDisplay[i] != 0) {
+					ScreenGrid[i].SetActive (true);
+				} else {
+					ScreenGrid[i].SetActive(false);
+				}
+			}
 		}
 
-		for (int i = 0; i < 8; i++) {
-			if (TetroDisplay[i] != 0) {
-				ScreenGrid[i].SetActive (true);
-			} else {
-				ScreenGrid[i].SetActive(false);
-			}
+		if (moduleSolved) {
+
 		}
 	}
 
@@ -190,13 +198,13 @@ public class tetrisSprint : MonoBehaviour {
 				if (linesLeft > 0) {
 					tetr = new Tetromino (G_WIDTH, GameBoard, GetPiece());
 				} else {
-					UpdateGrid ();
-					Module.HandlePass ();
+					soundEffect.StopSound();
 					moduleSolved = true;
 					tetr = null;
 					timeDisplay.color = new Color (0, 255, 0);
-					soundEffect.StopSound();
-					Debug.LogFormat("[Tetris Sprint #{0}] {1} is completed with a score of {2}, in {3}.", moduleId, targetDisplay.text, Score, elapsedTimeDisplay);				}
+					Debug.LogFormat("[Tetris Sprint #{0}] {1} is completed with a score of {2}, in {3}.", moduleId, targetDisplay.text, Score, elapsedTimeDisplay);				
+					Module.HandlePass ();
+					}
 				UpdateGrid ();
 			}
             else
@@ -270,7 +278,8 @@ public class tetrisSprint : MonoBehaviour {
 	void Start()
 	{
 		moduleId = moduleIdCounter++;
-		Module.OnActivate += delegate { linesLeft = FindThreshold(); targetDisplay.text = linesLeft.ToString() + "L";}; 
+		//Module.OnActivate += delegate { linesLeft = FindThreshold(); targetDisplay.text = linesLeft.ToString() + "L";}; 
+		Module.OnActivate += delegate { linesLeft = 1; targetDisplay.text = "1L"; };//testing code
 	}
 
 	protected void OnActivation()
@@ -310,7 +319,7 @@ public class tetrisSprint : MonoBehaviour {
 
 		if (elapsedTime >= .3f && !TwitchPlaysActive)
             {
-				if (tetr != null) {
+				if (tetr != null && !moduleSolved) {
 					tetr.MoveLeft ();
 					UpdateGrid ();
 				}
@@ -327,7 +336,7 @@ public class tetrisSprint : MonoBehaviour {
 
             if (elapsedTime >= .3f && !TwitchPlaysActive)
             {
-				if (tetr != null) {
+				if (tetr != null && !moduleSolved) {
 					tetr.MoveRight ();
 					UpdateGrid ();
 				}
@@ -339,7 +348,7 @@ public class tetrisSprint : MonoBehaviour {
 	bool TurnLeft()
 	{
 		GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
-		if (tetr != null) {
+		if (tetr != null && !moduleSolved) {
 			tetr.TurnLeft ();
 			UpdateGrid ();
 		}
@@ -349,7 +358,7 @@ public class tetrisSprint : MonoBehaviour {
 	bool TurnRight()
 	{
 		GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
-		if (tetr != null) {
+		if (tetr != null && !moduleSolved) {
 			tetr.TurnRight ();
 			UpdateGrid ();
 		}
@@ -359,7 +368,7 @@ public class tetrisSprint : MonoBehaviour {
 	bool Down()
 	{
 		GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
-		ApplyTetromino ();
+		if (!moduleSolved) ApplyTetromino ();
 		return false;
 	}
 	bool Mute()
