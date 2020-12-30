@@ -127,7 +127,7 @@ public class passwordDestroyer : MonoBehaviour
         decimal solvePercentage = Math.Round( Math.Max ((decimal)1, (((decimal) Bomb.GetSolvedModuleNames().Count) * (decimal) 100)/ (decimal) Bomb.GetModuleNames().Count), 2);
 
         if (!initiated || erroring) return;
-        doubleElapsedTime += Time.deltaTime;
+        if (!solvedState) doubleElapsedTime += Time.deltaTime;
 
         double milisecond = Math.Floor(Math.Round(doubleElapsedTime % 60, 2) * 100 % 100);
         string milisecondDisp;
@@ -209,7 +209,7 @@ public class passwordDestroyer : MonoBehaviour
         TimeDisplay();
         StartCoroutine(display1Cycle());
         StartCoroutine(DisplayDecimal());
-        Debug.LogFormat("[Password Destroyer #{0}]: Version v2.0", moduleId);
+        Debug.LogFormat("[Password Destroyer #{0}]: Version v2.01", moduleId);
         Debug.LogFormat("[Password Destroyer #{0}]: Initial base numbers are {1} and {2}, with starting 2FA of {3} {4}.", moduleId, CountUpBaseNumber, increaseFactor, identityDigit1, identityDigit2);
     }
     //
