@@ -198,7 +198,7 @@ public class tetrisSprint : MonoBehaviour {
 				if (linesLeft > 0) {
 					tetr = new Tetromino (G_WIDTH, GameBoard, GetPiece());
 				} else {
-					soundEffect.StopSound();
+					if (soundEffect != null) soundEffect.StopSound();
 					moduleSolved = true;
 					tetr = null;
 					timeDisplay.color = new Color (0, 255, 0);
@@ -278,8 +278,8 @@ public class tetrisSprint : MonoBehaviour {
 	void Start()
 	{
 		moduleId = moduleIdCounter++;
-		//Module.OnActivate += delegate { linesLeft = FindThreshold(); targetDisplay.text = linesLeft.ToString() + "L";}; 
-		Module.OnActivate += delegate { linesLeft = 1; targetDisplay.text = "1L"; };//testing code
+		Module.OnActivate += delegate { linesLeft = FindThreshold(); targetDisplay.text = linesLeft.ToString() + "L";}; 
+		//Module.OnActivate += delegate { linesLeft = 1; targetDisplay.text = "1L"; };//testing code
 	}
 
 	protected void OnActivation()
