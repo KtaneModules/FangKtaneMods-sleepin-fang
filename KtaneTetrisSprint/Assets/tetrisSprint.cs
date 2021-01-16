@@ -167,7 +167,7 @@ public class tetrisSprint : MonoBehaviour {
     }
 
 	void ApplyTetromino() {
-		if (tetr != null) {
+		if (tetr != null && started) {
 			List<IntPair> list = tetr.GetTileCoordinates ();
 			if (tetr.isValid ()) {
 				Score += 10;
@@ -278,7 +278,8 @@ public class tetrisSprint : MonoBehaviour {
 	void Start()
 	{
 		moduleId = moduleIdCounter++;
-		Module.OnActivate += delegate { linesLeft = FindThreshold(); targetDisplay.text = linesLeft.ToString() + "L";}; 
+		linesLeft = FindThreshold(); 
+		targetDisplay.text = linesLeft.ToString() + "L"; 
 		//Module.OnActivate += delegate { linesLeft = 1; targetDisplay.text = "1L"; };//testing code
 	}
 
