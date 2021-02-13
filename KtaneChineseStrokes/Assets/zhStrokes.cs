@@ -52,9 +52,9 @@ public class zhStrokes : MonoBehaviour
         int index;
         //
         if (stageNumber == 1) index = UnityEngine.Random.Range(0, 694);
-        else if (stageNumber == 2) index = UnityEngine.Random.Range(694, 5440); //7
-        else if (stageNumber == 3) index = UnityEngine.Random.Range(5440, 7628); //13
-        else index = UnityEngine.Random.Range(7629, 7890); //19
+        else if (stageNumber == 2) index = UnityEngine.Random.Range(694, 4648); //7
+        else if (stageNumber == 3) index = UnityEngine.Random.Range(4648, 6967); //13
+        else index = UnityEngine.Random.Range(6967, 7721); //19
         textOption = textOptions[index];
         textDisplay.text = textOption.text.ToString();
         //Randomize();
