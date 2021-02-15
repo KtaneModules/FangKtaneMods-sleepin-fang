@@ -178,7 +178,8 @@ public class passwordDestroyer : MonoBehaviour
             }
         }
 
-        if (pressedNumber == 0) Screens[0].text = CountUpNumberDisplay;
+        if (pressedNumber == 0 && (elapsedTime - strikedTime)% 2400 == 0) Screens[0].text = "-------";
+        else if (pressedNumber == 0) Screens[0].text = CountUpNumberDisplay;
         if (showing2FA) Screens[1].text = identityDigit1.ToString() + " " + identityDigit2.ToString() + ".";
         if (showingTime)  Screens[1].text = DateTime.Now.ToString("HH:mm:ss");
         if (showingStrike) {
