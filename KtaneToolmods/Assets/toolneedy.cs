@@ -1,4 +1,4 @@
-    using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +10,14 @@ using System.Text.RegularExpressions;
 public class toolneedy : MonoBehaviour
 {
     public new KMAudio audio;
+    public KMSelectable solveButton;
     public KMBombInfo bomb;
     public KMNeedyModule module;
     public TextMesh[] Displays;
     public Color[] Color;
     private static int moduleIdCounter = 1;
     private int moduleId;
-    private bool moduleSolved, bombSolved;
+    private bool bombSolved;
     private float elapsedTime;
     private double startupsec, startupms;
     private string elapsedTimeDisplay, startupmsDisplay;
@@ -26,15 +27,17 @@ public class toolneedy : MonoBehaviour
     void Awake()
     {
         moduleId = moduleIdCounter++;
-        moduleSolved = false;
-
+        bombSolved = false;
+        solveButton.OnInteract += delegate () { buttonPress(); return false; };
         Displays[0].text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        module.OnTimerExpired += OnTimerExpired;
         module.OnActivate += startElapsedTime;
-        StartCoroutine(timeGlitchiness());
+        
     }
 
     void Update ()
     {
+        if (ZenModeActive) module.SetNeedyTimeRemaining(99.4f);
         Displays[2].text = DateTime.Now.ToString("HH:mm:ss");
         elapsedTime += Time.deltaTime;
         double milisecond = Math.Floor(Math.Round(elapsedTime % 60, 2) * 100 % 100);
@@ -51,12 +54,12 @@ public class toolneedy : MonoBehaviour
             if (minute < 10)
             {
                 if (second < 10) elapsedTimeDisplay = "0" + hour + ":0" + minute + ":0" + second;
-                else elapsedTimeDisplay = "0" + hour + ":0" + minute + ":" + second;
+                else             elapsedTimeDisplay = "0" + hour + ":0" + minute + ":" + second;
             }
             else
             {
                 if (second < 10) elapsedTimeDisplay = "0" + hour + ":" + minute + ":0" + second;
-                else elapsedTimeDisplay = "0" + hour + ":" + minute + ":" + second;
+                else             elapsedTimeDisplay = "0" + hour + ":" + minute + ":" + second;
             }
         }
         else if (hour != 0)
@@ -64,12 +67,12 @@ public class toolneedy : MonoBehaviour
             if (minute < 10)
             {
                 if (second < 10) elapsedTimeDisplay = hour + ":0" + minute + ":0" + second;
-                else elapsedTimeDisplay = hour + ":0" + minute + ":" + second;
+                else             elapsedTimeDisplay = hour + ":0" + minute + ":" + second;
             }
             else
             {
                 if (second < 10) elapsedTimeDisplay = hour + ":" + minute + ":0" + second;
-                else elapsedTimeDisplay = hour + ":" + minute + ":" + second;
+                else             elapsedTimeDisplay = hour + ":" + minute + ":" + second;
             }
         }
         else
@@ -191,10 +194,6 @@ public class toolneedy : MonoBehaviour
         z = a.ElementAt(0);
         return z;
     }
-    void Start()
-    {
-
-    }
     void startElapsedTime()
     {
         startupms = Math.Floor(Math.Round(elapsedTime % 60, 2) * 100 % 100);
@@ -211,22 +210,15 @@ public class toolneedy : MonoBehaviour
             Debug.LogFormat("[Toolneedy #{0}] Elapsed time on bomb solved: {1} after bomb activation.", moduleId, elapsedTimeDisplay);
         }
     }
-    IEnumerator timeGlitchiness() {
-        while (!moduleSolved) {
-            int displayedtimeremaining = Convert.ToInt32(Math.Floor(module.GetNeedyTimeRemaining()));
-            yield return new WaitForSeconds(0.25f);
-            while (solvedPercentage - module.GetNeedyTimeRemaining() >= 2 ) {
-                yield return null;
-                module.SetNeedyTimeRemaining(module.GetNeedyTimeRemaining() + 1);
-                yield return new WaitForSeconds(0.25f);
-            }
-            module.SetNeedyTimeRemaining(solvedPercentage);
-        }
-    }
+
+    void buttonPress()              { if (!ZenModeActive) module.HandlePass();   }
+    protected void OnActivate()     { if (!ZenModeActive) module.HandleStrike(); }
+    protected void OnTimerExpired() { if (!ZenModeActive) module.HandleStrike(); }
+
 #pragma warning disable 414
 	bool TimeModeActive;
 	bool ZenModeActive;
-    string TwitchHelpMessage = "Do nothing.";
+    string TwitchHelpMessage = "Do anything.";
 #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
     {
@@ -235,7 +227,7 @@ public class toolneedy : MonoBehaviour
         if (m.Success)
         {
             yield return null;
-            yield return "sendtochaterror Invalid command.";
+            solveButton.OnInteract();
             yield break;
         }
     }
