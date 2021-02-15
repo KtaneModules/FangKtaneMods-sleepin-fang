@@ -209,7 +209,7 @@ public class passwordDestroyer : MonoBehaviour
         TimeDisplay();
         StartCoroutine(display1Cycle());
         StartCoroutine(DisplayDecimal());
-        Debug.LogFormat("[Password Destroyer #{0}]: Version v2.01", moduleId);
+        Debug.LogFormat("[Password Destroyer #{0}]: Version v2.02", moduleId);
         Debug.LogFormat("[Password Destroyer #{0}]: Initial base numbers are {1} and {2}, with starting 2FA of {3} {4}.", moduleId, CountUpBaseNumber, increaseFactor, identityDigit1, identityDigit2);
     }
     //
@@ -266,15 +266,17 @@ public class passwordDestroyer : MonoBehaviour
     bool SplitSeconds() {
         GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, screen.transform);
         screen.AddInteractionPunch(0.25f);
-        if (inputMode == true) {
-            if (split == true) {
-                split = false;
-            }
-            else if (split == false) {
-                split = true;
-                StartCoroutine(Splitting());
-                tempDisp = CountUpNumberDisplay;
-                tempTime = doubleElapsedTimeDisplay;
+        if ((elapsedTime - strikedTime)% 2400 > 0) {
+            if (inputMode == true) {
+                if (split == true) {
+                    split = false;
+                }
+                else if (split == false) {
+                    split = true;
+                    StartCoroutine(Splitting());
+                    tempDisp = CountUpNumberDisplay;
+                    tempTime = doubleElapsedTimeDisplay;
+                }
             }
         }
         return false;
