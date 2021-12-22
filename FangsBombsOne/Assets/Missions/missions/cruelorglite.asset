@@ -6,16 +6,16 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_enabled: 1
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -548183353, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: cruelorglite
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   DisplayName: 'MIB: Moved to Back - Lite'
   Description: Credit to RyanDuarte56 for the mission name!
   GeneratorSetting:
     TimeLimit: 5580
-    NumStrikes: 10
+    NumStrikes: 8
     TimeBeforeNeedyActivation: 90
     FrontFaceOnly: 0
     OptionalWidgetCount: 5

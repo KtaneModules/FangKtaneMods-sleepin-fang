@@ -15,7 +15,7 @@ MonoBehaviour:
   Description: All-in-one jumble pack ultimate collection, you're welcome.
   GeneratorSetting:
     TimeLimit: 36360
-    NumStrikes: 10
+    NumStrikes: 8
     TimeBeforeNeedyActivation: 90
     FrontFaceOnly: 0
     OptionalWidgetCount: 5
@@ -607,12 +607,6 @@ MonoBehaviour:
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - RAM
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
       - pwDestroyer
     - Count: 1
       AllowedSources: 2
@@ -620,4 +614,10 @@ MonoBehaviour:
       SpecialComponentType: 0
       ModTypes:
       - zhStrokes
+    - Count: 1
+      AllowedSources: 2
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - pwGenerator
   PacingEventsEnabled: 0

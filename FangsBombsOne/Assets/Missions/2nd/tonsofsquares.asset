@@ -9,411 +9,380 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -548183353, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
-  m_Name: cruelorg
+  m_Name: tonsofsquares
   m_EditorClassIdentifier: 
-  DisplayName: 'MIB: Moved to Back'
-  Description: '...is it not obvious enough?'
+  DisplayName: Squares of Death
+  Description: No squares are harmed before, during and after the bomb.
   GeneratorSetting:
-    TimeLimit: 30720
-    NumStrikes: 10
+    TimeLimit: 4575
+    NumStrikes: 5
     TimeBeforeNeedyActivation: 90
     FrontFaceOnly: 0
     OptionalWidgetCount: 5
     ComponentPools:
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - 3dTunnels
+      - SquaresOfMisery
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - spwiz3DMaze
+      - DecoloredSquaresModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - bamboozledAgain
+      - VaricoloredSquaresModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - bamboozlingButton
+      - DiscoloredSquaresModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - bamboozlingButtonGrid
+      - DividedSquaresModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - blueCipher
+      - UncoloredSquaresModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - bombDiffusal
+      - ColoredSquaresModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - burgerAlarm
+      - safetySquare
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - buttonGrid
+      - MysticSquareModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - crypticCycle
+      - ButtonV2
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - CursedDoubleOhModule
+      - rotatingSquares
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
+      ComponentTypes: 04000000
+      SpecialComponentType: 0
+      ModTypes: []
+    - Count: 1
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - disorderedKeys
+      - ForeignExchangeRates
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - dragonEnergy
+      - LetterKeys
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - EncryptedMorse
+      - alphabet
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - factoryMaze
+      - BitmapsModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - ForgetMeNow
+      - TextField
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - LEDEnc
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - MinesweeperModule
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - SetModule
+    - Count: 1
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
       - GameOfLifeCruel
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - graphicMemory
+      - GameOfLifeSimple
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - greenCipher
+      - NonogramModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - hillCycle
+      - visual_impairment
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - indigoCipher
+      - digitalRoot
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - jumbleCycle
+      - complexKeypad
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - lasers
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - PatternCubeModule
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - shikaku
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - boggle
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - boolMaze
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - ColorfulMadness
+    - Count: 1
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
       - KudosudokuModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - LEGOModule
+      - SueetWall
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - lightspeed
+      - unrelatedAnagrams
     - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - Mastermind Cruel
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - KritMicroModules
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - misorderedKeys
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - numberNimbleness
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - OddOneOutModule
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - oldFogey
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - quintuples
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - orangeCipher
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - recordedKeys
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - reorderedKeys
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - redCipher
-    - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
       - ShapesBombs
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - SimonSendsModule
+      - simonScrambles
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - SimonSingsModule
+      - ColorfulInsanity
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - simonStores
+      - megaMan2
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - TenButtonColorCode
+      - Wavetapping
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - cube
+      - pictionaryModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - TheHypercubeModule
+      - cruelDigitalRootModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - jewelVault
+      - faultyDigitalRootModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - necronomicon
+      - langtonAnt
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - sphere
+      - snakesAndLadders
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - TheUltracubeModule
+      - FlashMemory
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - theRule
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - boolMazeCruel
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - memorableButtons
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - scavengerHunt
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - 15MysticLights
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - the_cRule
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - hereditaryBaseNotationModule
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - pwGenerator
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - NotKeypad
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - lyingIndicators
+    - Count: 1
+      AllowedSources: 0
+      ComponentTypes: 
+      SpecialComponentType: 0
+      ModTypes:
+      - snowflakes
+    - Count: 1
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
       - turtleRobot
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - ultimateCycle
+      - AdjacentLettersModule
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - UltraStores
+      - ThreeCrypticSteps
     - Count: 1
-      AllowedSources: 2
+      AllowedSources: 0
       ComponentTypes: 
       SpecialComponentType: 0
       ModTypes:
-      - unfairCipher
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - violetCipher
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - wastemanagement
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - yellowCipher
-    - Count: 2
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - organizationModule
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - faultyrgbMaze
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - robotProgramming
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - lgndLombaxCubes
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - blackCipher
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - borderedKeys
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - sevenChooseFour
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - ultimateCipher
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - whiteCipher
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - grayCipher
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - ksmRainbowArrows
-    - Count: 1
-      AllowedSources: 2
-      ComponentTypes: 
-      SpecialComponentType: 0
-      ModTypes:
-      - rgbMaze
+      - pwDestroyer
   PacingEventsEnabled: 0
