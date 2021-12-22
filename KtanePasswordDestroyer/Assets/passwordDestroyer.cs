@@ -77,7 +77,7 @@ public class passwordDestroyer : MonoBehaviour
     int numofbars;
     string finalAnswer;
     string elapsedTimeDisplay, doubleElapsedTimeDisplay, elapsedTimeMinDisplay, elapsedTimeSecDisplay, twofatimedisplay, strikedTimeDisplay, tempDisp, tempTime;
-    bool showing2FA, showingTime, showingStrike, showingSolve, dotUnlit, initiated;
+    bool showing2FA, showingTime, showingStrike, dotUnlit, initiated;
 
     // Use this for initialization
     void Awake()
@@ -128,67 +128,25 @@ public class passwordDestroyer : MonoBehaviour
 
         if (!initiated || erroring) return;
         if (!solvedState) doubleElapsedTime += Time.deltaTime;
-
-        double milisecond = Math.Floor(Math.Round(doubleElapsedTime % 60, 2) * 100 % 100);
-        string milisecondDisp;
-        if (milisecond < 10) milisecondDisp = "0" + milisecond.ToString();
-        else milisecondDisp = milisecond.ToString();
-
-        double second = Math.Floor(doubleElapsedTime % 60);
+        double second = Math.Round(doubleElapsedTime % 60, 2);
         double minute = Math.Floor(doubleElapsedTime / 60 % 60);
         double hour = Math.Floor(doubleElapsedTime / 3600);
 
-        if (hour != 0 && hour < 10)
-        {
-            if (minute < 10)
-            {
-                if (second < 10) doubleElapsedTimeDisplay = "0" + hour + ":0" + minute + ":0" + second;
-                else doubleElapsedTimeDisplay = "0" + hour + ":0" + minute + ":" + second;
-            }
-            else
-            {
-                if (second < 10) doubleElapsedTimeDisplay = "0" + hour + ":" + minute + ":0" + second;
-                else doubleElapsedTimeDisplay = "0" + hour + ":" + minute + ":" + second;
-            }
-        }
-        else if (hour != 0)
-        {
-            if (minute < 10)
-            {
-                if (second < 10) doubleElapsedTimeDisplay = hour + ":0" + minute + ":0" + second;
-                else doubleElapsedTimeDisplay = hour + ":0" + minute + ":" + second;
-            }
-            else
-            {
-                if (second < 10) doubleElapsedTimeDisplay = hour + ":" + minute + ":0" + second;
-                else doubleElapsedTimeDisplay = hour + ":" + minute + ":" + second;
-            }
-        }
-        else
-        {
-            if (minute < 10)
-            {
-                if (second < 10) doubleElapsedTimeDisplay = "0" + minute + ":0" + second + "." + milisecondDisp;
-                else doubleElapsedTimeDisplay = "0" + minute + ":" + second + "." + milisecondDisp;
-            }
-            else
-            {
-                if (second < 10) doubleElapsedTimeDisplay = minute + ":0" + second + "." + milisecondDisp;
-                else doubleElapsedTimeDisplay = minute + ":" + second + "." + milisecondDisp;
-            }
-        }
+		doubleElapsedTimeDisplay =
+			(hour > 0 ?  hour.ToString("00")  + ":" + minute.ToString("00") + ":" + second.ToString("00")
+				  	  : minute.ToString("00") + ":" + (doubleElapsedTime % 60).ToString("00.00"));
 
-        if (pressedNumber == 0 && (elapsedTime - strikedTime)% 2400 == 0) Screens[0].text = "-------";
-        else if (pressedNumber == 0) Screens[0].text = CountUpNumberDisplay;
+        if (pressedNumber == 0 && (elapsedTime - strikedTime)% 2400 == 0)
+            Screens[0].text = "-------";
+        else if (pressedNumber == 0)
+            Screens[0].text = CountUpNumberDisplay;
+
         if (showing2FA) Screens[1].text = identityDigit1.ToString() + " " + identityDigit2.ToString() + ".";
         if (showingTime)  Screens[1].text = DateTime.Now.ToString("HH:mm:ss");
         if (showingStrike) {
             Screens[1].text = strikedTimeDisplay;
             Screens[1].color = Colours[1];
         }
-        if (showingSolve) Screens[1].text = solvePercentage + "%";
-        if (dotUnlit) Screens[4].text = "";
-        else Screens[4].text = ".";
 
         if (split == false) { 
         Screens[2].text = doubleElapsedTimeDisplay;
@@ -197,6 +155,12 @@ public class passwordDestroyer : MonoBehaviour
         if ( doubleElapsedTime - elapsedTime > 1 && doubleElapsedTime > 0) {
             TimeDisplay();
         }
+
+        if (pressedNumber == 0 && inputMode == true && second % 1 < 0.5)
+            Screens[4].text = ".";
+        else 
+            Screens[4].text = "";
+
     }
     void initiateModule() {
         //Generate Numbers, for the first time - Sv, If, 2FAST
@@ -209,7 +173,6 @@ public class passwordDestroyer : MonoBehaviour
         Generate2FA();
         TimeDisplay();
         StartCoroutine(display1Cycle());
-        StartCoroutine(DisplayDecimal());
         Debug.LogFormat("[Password Destroyer #{0}]: Version v2.02", moduleId);
         Debug.LogFormat("[Password Destroyer #{0}]: Initial base numbers are {1} and {2}, with starting 2FA of {3} {4}.", moduleId, CountUpBaseNumber, increaseFactor, identityDigit1, identityDigit2);
     }
@@ -246,9 +209,7 @@ public class passwordDestroyer : MonoBehaviour
     //
     // Switch Animation
     private float easeOutSine(float time, float duration, float from, float to)
-    {
-        return (to - from) * Mathf.Sin(time / duration * (Mathf.PI / 2)) + from;
-    }
+        {   return (to - from) * Mathf.Sin(time / duration * (Mathf.PI / 2)) + from; }
     //
     // When a key is pressed
     bool PressKey(KMSelectable key) {
@@ -318,12 +279,6 @@ public class passwordDestroyer : MonoBehaviour
                 if (pressedNumber == 0) { yield return new WaitForSeconds(1f); };
             }
             showingTime = false;
-            for (int i = 0; i < 5; i++)
-            {
-                if (!solvedState && pressedNumber == 0) showingSolve = true;
-                if (pressedNumber == 0) { yield return new WaitForSeconds(1f); };
-            }
-            showingSolve = false;
             if (!solvedState && pressedNumber == 0 && strikedatleastonce == true) showingStrike = true;
             for (int i = 0; i < 5; i++)
             {
@@ -348,18 +303,6 @@ public class passwordDestroyer : MonoBehaviour
                 if (split == true) yield return new WaitForSeconds(1f);
             }
         }
-    }
-    IEnumerator DisplayDecimal() {
-        while (!solvedState) {
-            yield return null;
-            while (pressedNumber == 0 && inputMode == true) {
-                dotUnlit = false;
-                yield return new WaitForSeconds(0.5f);
-                dotUnlit = true;
-                yield return new WaitForSeconds(0.5f);
-            }  
-            Screens[4].text = ""; 
-        }  
     }
     void TimeDisplay()
     {

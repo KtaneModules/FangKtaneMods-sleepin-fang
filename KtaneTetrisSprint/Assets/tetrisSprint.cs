@@ -18,6 +18,8 @@ public class tetrisSprint : MonoBehaviour {
 	public Material BoxFull;
 	public Material BoxEmpty;
 	public Material BoxError;
+	public Material solvedMat;
+	public Renderer modFrame;
 	public KMSelectable ModuleSelectable;
 	public TextMesh numberDisplay;
 	public TextMesh scoreDisplay;
@@ -49,7 +51,7 @@ public class tetrisSprint : MonoBehaviour {
 		Module = GetComponent<KMBombModule>();
  		if (Application.isEditor)
 			focused = true;
-        ModuleSelectable.OnFocus += delegate () { focused = true; };
+        ModuleSelectable.OnInteract += delegate () { focused = true; return false;};
         ModuleSelectable.OnDefocus += delegate () { focused = false; };
 		ObjectGrid = new GameObject[G_WIDTH, G_HEIGHT];
 		_screenGrid = new GameObject[4, 2];
@@ -76,7 +78,7 @@ public class tetrisSprint : MonoBehaviour {
 
 		ModuleSelectable.OnInteract += delegate
 		{
-			if (!started)
+			if (!started && !moduleSolved)
 			{
 				GetPiece();
 			}
@@ -129,17 +131,17 @@ public class tetrisSprint : MonoBehaviour {
 			if (settings != null)
 			{
 				if (settings.linesToClear < 10)
-					return 40;
+					return 10;
 				else if (settings.linesToClear > 10000)
 					return 10000;
 				else return settings.linesToClear;
 			}
-			else return 10;
+			else return 20;
 		}
 		catch (JsonReaderException e)
 		{
 			Debug.LogFormat("[Tetris Sprint #{0}] JSON reading failed with error {1}, using default number.", moduleId, e.Message);
-			return 40;
+			return 20;
 		}
 	}
 
@@ -198,33 +200,38 @@ public class tetrisSprint : MonoBehaviour {
 
 	public void Solve() 
 	{
-		Module.HandlePass ();
+		Module.HandlePass();
+		for (int x = 0; x < 4; x++)
+		{
+			for (int y = 0; y < 2; y++)
+			{
+				_screenGrid[x, y] = ScreenGrid[8 - (4 - x) - 4 * y];
+				_screenGrid[x, y].SetActive(false);
+			}
+		}
+		modFrame.material = solvedMat;
 		moduleSolved = true;
 		started = false;
 		_grabBag.Clear();
 		_nextPiece = null;
 		_currentPiece = null;
 		_tetrisBoard.Clear();
-		ResetBoard();
 		timeDisplay.color = new Color (0, 255, 0);
 		//Debug.LogFormat("[Tetris Sprint #{0}] {1} is completed with a score of {2}, in {3}.", moduleId, targetDisplay.text, Score, elapsedTimeDisplay);				
 	}
-////////
-	private KeyCode[] TheKeys =
-	{
-        KeyCode.LeftArrow, KeyCode.RightArrow,
-        KeyCode.Z, KeyCode.X, 
-        KeyCode.UpArrow, KeyCode.DownArrow,
-        KeyCode.Space//, KeyCode.C,
-	};
+
+	private KeyCode[] TheKeys = {
+        KeyCode.LeftArrow,  KeyCode.RightArrow, KeyCode.Z,  KeyCode.X,  KeyCode.UpArrow,  KeyCode.DownArrow,    KeyCode.Space, //KeyCode.C,
+        KeyCode.A,          KeyCode.D,          KeyCode.Q,  KeyCode.E,  KeyCode.W,        KeyCode.S
+    };
 	private bool focused = false;
-	private bool[] buttonHeld = new bool[7]; 
+	private bool[] buttonHeld = new bool[13]; 
 	private bool TwitchPlaysActive;
 
 	void handlePress (int keypos) {
 		if (_currentPiece != null) {
-			if (keypos == 5 && TwitchPlaysActive) SoftDrop(); 
-			else switch (keypos) {         //KeyCode.LeftArrow, KeyCode.RightArrow,KeyCode.Z, KeyCode.X,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.Space
+			if (keypos % 7 == 5 && TwitchPlaysActive) SoftDrop(); 
+			else switch (keypos % 7) {         //KeyCode.LeftArrow, KeyCode.RightArrow,KeyCode.Z, KeyCode.X,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.Space
 				case 0: _currentPiece.MoveHorizontal(false); break;
 				case 1:	_currentPiece.MoveHorizontal(true);  break;
 				case 2:	_currentPiece.Rotate(false);  break;
@@ -242,14 +249,14 @@ public class tetrisSprint : MonoBehaviour {
 		while (buttonHeld[keypos] && !TwitchPlaysActive) {
 			heldTime += Time.deltaTime;
 			yield return null;
-			if (keypos == 5 && !TwitchPlaysActive) {
-				yield return new WaitForSeconds(.1f);
+			if (keypos % 7 == 5 && !TwitchPlaysActive) {
+				yield return new WaitForSeconds(.05f);
 				SoftDrop();
 			}	
 			else if (heldTime >= .3f && !TwitchPlaysActive)
 			{
 				yield return null;
-				switch (keypos) { 
+				switch (keypos % 7) { 
 					case 0: _currentPiece.MoveHorizontal(false); break;
 					case 1:	_currentPiece.MoveHorizontal(true);  break;
 					default: break;
@@ -257,11 +264,11 @@ public class tetrisSprint : MonoBehaviour {
 			}
 		}
 	}
-	public readonly string TwitchHelpMessage = "Press keys with !{0} AZ DX; possible keys are WASD, ZX, and Spaces. Note: Twitch will automatically remove duplicate simultaneous spaces.";
+	public readonly string TwitchHelpMessage = "Press keys with !{0} AZ DX; possible keys are WASD, ZX/QE, and _ or / to hard drop.";
 	public IEnumerator ProcessTwitchCommand(string command)
     {
 		command = command.ToUpperInvariant();
-		if (!Regex.IsMatch(command, @"^[ZXWASD ]+$")) yield break;
+		if (!Regex.IsMatch(command, @"^[ZXQEWASD/_]+$")) yield break;
 		else {
 			yield return null;
 			for (int i = 0; i < command.Length; i++) {
@@ -270,10 +277,13 @@ public class tetrisSprint : MonoBehaviour {
 					case 'A': handlePress(0); break;
 					case 'D': handlePress(1); break;
 					case 'Z': handlePress(2); break;
+					case 'Q': handlePress(2); break;
 					case 'X': handlePress(3); break;
+					case 'E': handlePress(3); break;
 					case 'W': handlePress(4); break;
 					case 'S': handlePress(5); break;
-					case ' ': handlePress(6); break;
+					case '/': handlePress(6); break;
+					case '_': handlePress(6); break;
 				}
 			}
 		}
