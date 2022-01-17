@@ -19,6 +19,8 @@ public class tetrisSprint : MonoBehaviour {
 	public Material BoxEmpty;
 	public Material BoxError;
 	public Material solvedMat;
+	public Material strikedMat;
+	public Material normalMat;
 	public Renderer modFrame;
 	public KMSelectable ModuleSelectable;
 	public TextMesh numberDisplay;
@@ -51,12 +53,12 @@ public class tetrisSprint : MonoBehaviour {
 		Module = GetComponent<KMBombModule>();
  		if (Application.isEditor)
 			focused = true;
-        ModuleSelectable.OnInteract += delegate () { focused = true; return false;};
+        ModuleSelectable.OnInteract += delegate () { focused = true; return true;};
         ModuleSelectable.OnDefocus += delegate () { focused = false; };
 		ObjectGrid = new GameObject[G_WIDTH, G_HEIGHT];
 		_screenGrid = new GameObject[4, 2];
 		// Populate the grid
-		for (int x = 0; x < G_WIDTH; x++)
+		for (int x = 0; x < G_WIDTH; x++) 
 		{
 			for (int y = 0; y < G_HEIGHT; y++)
 			{
@@ -89,7 +91,7 @@ public class tetrisSprint : MonoBehaviour {
 	}
 	void Update()
 	{
-		if (started && !moduleSolved)
+		if (started && !moduleSolved && focused)
 			UpdateTime(Time.deltaTime);
 
 		if (numberDisplay.text == "0" && !moduleSolved) Solve();
@@ -163,7 +165,7 @@ public class tetrisSprint : MonoBehaviour {
 		if (!_currentPiece.CanSpawn)
 		{
 			UpdateTime(20);
-			ResetBoard();
+			StartCoroutine(ResetBoard());
 			return;
 		}
 		int newPiece = Random.Range(0, _grabBag.Count);
@@ -171,7 +173,7 @@ public class tetrisSprint : MonoBehaviour {
 		_grabBag.RemoveAt(newPiece);
 		
 	}
-	void ResetBoard()
+	IEnumerator ResetBoard()
 	{
 		Module.HandleStrike();
 		started = false;
@@ -179,7 +181,10 @@ public class tetrisSprint : MonoBehaviour {
 		_nextPiece = null;
 		_currentPiece = null;
 		_tetrisBoard.Clear();
-	}
+        modFrame.material = strikedMat;
+        yield return new WaitForSeconds(1f);
+        modFrame.material = normalMat;
+    }
 	void SoftDrop()
 	{
 		if (_currentPiece != null) {
@@ -229,7 +234,7 @@ public class tetrisSprint : MonoBehaviour {
 	private bool TwitchPlaysActive;
 
 	void handlePress (int keypos) {
-		if (_currentPiece != null) {
+		if (_currentPiece != null && focused) {
 			if (keypos % 7 == 5 && TwitchPlaysActive) SoftDrop(); 
 			else switch (keypos % 7) {         //KeyCode.LeftArrow, KeyCode.RightArrow,KeyCode.Z, KeyCode.X,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.Space
 				case 0: _currentPiece.MoveHorizontal(false); break;
