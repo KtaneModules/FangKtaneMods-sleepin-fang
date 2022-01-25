@@ -173,7 +173,7 @@ public class passwordDestroyer : MonoBehaviour
         Generate2FA();
         TimeDisplay();
         StartCoroutine(display1Cycle());
-        Debug.LogFormat("[Password Destroyer #{0}]: Version v2.02", moduleId);
+        Debug.LogFormat("[Password Destroyer #{0}]: Version v2.1", moduleId);
         Debug.LogFormat("[Password Destroyer #{0}]: Initial base numbers are {1} and {2}, with starting 2FA of {3} {4}.", moduleId, CountUpBaseNumber, increaseFactor, identityDigit1, identityDigit2);
     }
     //
@@ -397,8 +397,10 @@ public class passwordDestroyer : MonoBehaviour
         if (inputMode == true)
         {
         solvePercentage = Math.Max (1, ((Bomb.GetSolvedModuleNames().Count * 100)/Bomb.GetModuleNames().Count));
-        Debug.LogFormat("[Password Destroyer #{0}]: Submit button was pressed on elapsed time of {1} seconds.", moduleId, elapsedTime);
         GenerateCorrectTime();
+        GenerateSwitchesAnswer();
+        GeneratePINAnswer();
+        Debug.LogFormat("[Password Destroyer #{0}]: Submit button was pressed on elapsed time of {1} seconds.", moduleId, elapsedTime);
                 if (elapsedTime % 10 != correctTime) {
                     Debug.LogFormat("[Password Destroyer #{0}] Incorrect submission time. Module reset.", moduleId);
                     GetComponent<KMBombModule>().HandleStrike();
@@ -409,12 +411,7 @@ public class passwordDestroyer : MonoBehaviour
                     switchesTrue = true;
                     ResetModule();
                 }
-                else {
-                    Debug.LogFormat("[Password Destroyer #{0}]: Submit button was pressed in correct time. Generating password.", moduleId);
-                    GenerateSwitchesAnswer();
-                    GeneratePINAnswer();
-                    //If PIN was correct
-                    if (submitKey == finalAnswer && switchesTrue == true)
+                else if (submitKey == finalAnswer && switchesTrue == true)
                     {
                         Debug.LogFormat("[Password Destroyer #{0}]: You have inputted correct answer. Module solved.", moduleId);
                         GetComponent<KMBombModule>().HandlePass();
@@ -427,7 +424,7 @@ public class passwordDestroyer : MonoBehaviour
                         Screens[1].text = "NICE ";
                         Screens[3].text = "";
                     }
-                    else if (switchesTrue == false) {
+                else if (switchesTrue == false) {
                         GetComponent<KMBombModule>().HandleStrike();
                         Audio.PlaySoundAtTransform("wrong", transform);
                         Debug.LogFormat("[Password Destroyer #{0}] Switch State: You submitted {1}, but it was expected to be {2}", moduleId, NumbersToArrows(Switches_State), NumbersToArrows(Submission_State));
@@ -437,7 +434,7 @@ public class passwordDestroyer : MonoBehaviour
                         switchesTrue = true;
                         ResetModule();
                     }
-                    else
+                else
                     {
                         Debug.LogFormat("[Password Destroyer #{0}]: Switch State: You submitted {1}, expected {2}, which is correct.", moduleId, NumbersToArrows(Switches_State), NumbersToArrows(Submission_State));
                         Debug.LogFormat("[Password Destroyer #{0}]: You have inputted {1}, expected {2}, which is the wrong answer. Module striked and reset.", moduleId, submitKey, finalAnswer);
@@ -449,7 +446,6 @@ public class passwordDestroyer : MonoBehaviour
                         ResetModule();
                     }
                 }
-        }
         return false;
     }
     void GenerateCorrectTime() {
