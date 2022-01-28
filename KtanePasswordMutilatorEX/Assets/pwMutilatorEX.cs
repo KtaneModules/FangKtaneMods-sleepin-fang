@@ -8,32 +8,111 @@ using Random = UnityEngine.Random;
 using System.Text;
 using System.Text.RegularExpressions;
 
-public class pwMutilator : MonoBehaviour
+public class pwMutilatorEX : MonoBehaviour
 {
+    public KMBombInfo bomb;
+    public KMBombModule module;
+    public KMSelectable[] keyboard;
+    public KMSelectable[] timeBtns;
+    public TextMesh[] displayTextsLeft;
+    public TextMesh[] displayTextsRight;
+    public TextMesh[] timeTexts;
+    public Renderer[] modFrames;
+    public Renderer   modBackground;
+    public Material[] Materials;
 
-    private const string digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    bool moduleSolved = false;
+    bool moduleActivated = false;
+
+    private readonly Dictionary<char, int> HTMLCharCodes = new Dictionary<char, int>();
+
     // Logging
     static int moduleIdCounter = 1;
     int moduleId;
+
+    double[] times = { 0.00, 0.00 }; //Elapsed, Bomb RT
 
     // Use this for initialization
     void Awake()
     {
         // Assigning buttons
-        foreach (KMSelectable key in keypad)
+        foreach (KMSelectable key in keyboard)
         {
             KMSelectable pressedKey = key;
-        }        //
+            key.OnInteract += () => HandlePress(pressedKey);
+        }
+
+
+
         //Module ID
         moduleId = moduleIdCounter++;
         //
         //
         //
+        StartCoroutine(ColorCycle());
+        module.OnActivate += delegate { moduleActivated = true; InitModule(); };
     }
-    void Update() {
+
+    private IEnumerator ColorCycle()
+    {
+        Material tempMat = Materials[0];
+        float hue = 0;
+        while (true)
+        {
+            hue = (hue + 0.005f) % 1f;
+            tempMat.color = Color.HSVToRGB(hue, 1f, 0.5f);
+            foreach (Renderer modFrame in modFrames)
+            {
+                if (moduleSolved) modFrame.material = Materials[1];
+                modFrame.material = tempMat;
+            }
+            modBackground.material = tempMat;
+            yield return new WaitForSeconds(.1f);
+        }
     }
+
+    void InitModule()
+    {
+
+    }
+    bool HandlePress(KMSelectable key)
+    {
+        GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, key.transform);
+        key.AddInteractionPunch(0.25f);
+        Debug.Log(key.GetComponentInChildren<TextMesh>().text.ToString());
+        return false;
+    } 
+    void Update()
+    {
+        if (!moduleActivated) return;
+        //Timer Multiplier for bomb RT
+        double multiplier;
+        switch (bomb.GetStrikes())
+        {
+            case 0:  multiplier = 1; break;
+            case 1:  multiplier = 1.25; break;
+            case 2:  multiplier = 1.5; break;
+            case 3:  multiplier = 1.75; break;
+            default: multiplier = 2; break;
+        }
+        //Displaying times
+        times[0] += Time.deltaTime;
+        times[1]  = bomb.GetTime() / multiplier;
+
+        for (int i = 0; i < 2; i++)
+        {
+            double second = Math.Round(times[i] % 60, 2);
+            double minute = Math.Floor(times[i] / 60 % 60);
+            double hour = Math.Floor(times[i] / 3600);
+
+            timeTexts[i].text = (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00")
+                                     : minute.ToString("00") + ":" + (times[i] % 60).ToString("00.00"));
+        }
+    }
+
+
     #pragma warning disable 414
-    string TwitchHelpMessage = "Use !{0} press <number> // toggle <switches position> // time // clear // split // split/submit (at/on/-) <time> // s <number> <switches (1 as up, 0 as down)> <time>.";
+    readonly string TwitchHelpMessage = "Use !{0} press <number> // toggle <switches position> // time // clear // split // split/submit (at/on/-) <time> // s <number> <switches (1 as up, 0 as down)> <time>.";
     #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
     {
@@ -45,7 +124,4 @@ public class pwMutilator : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator TwitchHandleForcedSolve()
-    {
-    }
 }

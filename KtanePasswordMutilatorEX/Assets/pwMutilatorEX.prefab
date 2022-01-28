@@ -628,7 +628,7 @@ GameObject:
   - component: {fileID: 102109112967812202}
   - component: {fileID: 114797038747794208}
   m_Layer: 0
-  m_Name: CounterText3
+  m_Name: CounterText1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1241,7 +1241,7 @@ GameObject:
   - component: {fileID: 33672397828015132}
   - component: {fileID: 114844088872706984}
   m_Layer: 0
-  m_Name: Counter3 HL
+  m_Name: Counter2 HL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1912,7 +1912,7 @@ GameObject:
   - component: {fileID: 33476803193803384}
   - component: {fileID: 114887929872034654}
   m_Layer: 0
-  m_Name: Counter3 HL
+  m_Name: Counter1 HL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2165,7 +2165,7 @@ GameObject:
   - component: {fileID: 102018304393183848}
   - component: {fileID: 114486367523336014}
   m_Layer: 0
-  m_Name: CounterText3
+  m_Name: CounterText2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2324,7 +2324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4996598422895340}
   m_Layer: 0
-  m_Name: Clamp
+  m_Name: Clamps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3915,7 +3915,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4996598422895340}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4194481624022262
 Transform:
@@ -3963,8 +3963,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1748086516163618}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0466, y: 0.014999997, z: -0.072699994}
-  m_LocalScale: {x: 0.08, y: 0.0010000005, z: 0.019000007}
+  m_LocalPosition: {x: 0.0444, y: 0.014999997, z: -0.072699994}
+  m_LocalScale: {x: 0.075, y: 0.001, z: 0.019000007}
   m_Children:
   - {fileID: 4477003230630644}
   - {fileID: 4280035200585012}
@@ -4749,8 +4749,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1658762373065642}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.466, y: 0.5999999, z: 0.06099908}
-  m_LocalScale: {x: 0.009500001, y: 0.030000025, z: 0}
+  m_LocalPosition: {x: 0.448, y: 0.5999999, z: 0.060999054}
+  m_LocalScale: {x: 0.010133334, y: 0.030000048, z: 0}
   m_Children: []
   m_Father: {fileID: 4202448282659224}
   m_RootOrder: 0
@@ -5670,7 +5670,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4996598422895340}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4827151637407146
 Transform:
@@ -6121,8 +6121,8 @@ Transform:
   m_Children:
   - {fileID: 4709510207553388}
   - {fileID: 4934934569003130}
-  - {fileID: 4825391247157572}
   - {fileID: 4186924191231366}
+  - {fileID: 4825391247157572}
   m_Father: {fileID: 4165269415343850}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11689,7 +11689,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1088146617621112}
-  m_Text: 0123456789
+  m_Text: 012 456
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -12944,7 +12944,7 @@ MonoBehaviour:
   m_Script: {fileID: -119419473, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModuleType: pwMutilator
+  ModuleType: pwMutilatorEX
   ModuleDisplayName: Password Mutilator EX
   RequiresTimerVisibility: 0
 --- !u!114 &114044897950717654
@@ -15956,104 +15956,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f81e7718e42e625478b30dfa36cd3566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Audio: {fileID: 114961692581660618}
-  Bomb: {fileID: 114993637549721224}
-  Module: {fileID: 114044696856092294}
-  keypad:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  clearButton: {fileID: 0}
-  submitButton: {fileID: 0}
-  screen: {fileID: 114106079944376268}
-  Switches:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  Screens:
+  bomb: {fileID: 114993637549721224}
+  module: {fileID: 114044696856092294}
+  keyboard:
+  - {fileID: 114603898940364408}
+  - {fileID: 114685194538681056}
+  - {fileID: 114241553907533358}
+  - {fileID: 114973231616269416}
+  - {fileID: 114689470184216260}
+  - {fileID: 114586512261212536}
+  - {fileID: 114135750642892888}
+  - {fileID: 114045401622629348}
+  - {fileID: 114077202553103318}
+  - {fileID: 114336543641574002}
+  - {fileID: 114531998474852698}
+  - {fileID: 114478433271940572}
+  - {fileID: 114562202880588386}
+  - {fileID: 114151679922283826}
+  - {fileID: 114650655282607100}
+  - {fileID: 114477011281110734}
+  - {fileID: 114555880294254850}
+  - {fileID: 114780959830095248}
+  - {fileID: 114370830465926828}
+  - {fileID: 114308184207384408}
+  - {fileID: 114683408206842918}
+  - {fileID: 114829992425962956}
+  - {fileID: 114967063006244092}
+  - {fileID: 114723112652762912}
+  - {fileID: 114931448173916188}
+  - {fileID: 114131940022970768}
+  - {fileID: 114599825444257252}
+  - {fileID: 114215127626726116}
+  - {fileID: 114931992930008294}
+  - {fileID: 114886995415024120}
+  - {fileID: 114045595276106520}
+  - {fileID: 114397392939384062}
+  - {fileID: 114179428444878656}
+  - {fileID: 114821175374331636}
+  - {fileID: 114145455290569634}
+  - {fileID: 114991034149127716}
+  - {fileID: 114384161168220892}
+  - {fileID: 114559990917341054}
+  - {fileID: 114640086342659244}
+  - {fileID: 114220328478199298}
+  - {fileID: 114087253738965316}
+  - {fileID: 114829558209958780}
+  - {fileID: 114000447809720786}
+  - {fileID: 114961525221411236}
+  - {fileID: 114539755027912176}
+  - {fileID: 114575843501223008}
+  - {fileID: 114427989916649824}
+  - {fileID: 114635239898014366}
+  - {fileID: 114172055492761890}
+  - {fileID: 114641226886687342}
+  - {fileID: 114564608713506144}
+  - {fileID: 114348737646888446}
+  - {fileID: 114431627172919912}
+  - {fileID: 114344688837630672}
+  - {fileID: 114459873591109528}
+  - {fileID: 114596827691573618}
+  timeBtns:
+  - {fileID: 114106079944376268}
+  - {fileID: 114147180693602868}
+  displayTextsLeft:
+  - {fileID: 102165862250878796}
+  - {fileID: 102260268376470194}
+  - {fileID: 102408785135481162}
+  - {fileID: 102956506025590282}
+  displayTextsRight:
+  - {fileID: 102969801260442668}
+  - {fileID: 102983422532713912}
   - {fileID: 102303595423359136}
-  - {fileID: 0}
+  timeTexts:
   - {fileID: 102109112967812202}
-  - {fileID: 0}
-  - {fileID: 0}
-  Colours:
-  - r: 1
-    g: 1
-    b: 1
-    a: 1
-  - r: 1
-    g: 0
-    b: 0
-    a: 1
-  - r: 0
-    g: 1
-    b: 0
-    a: 1
-  - r: 1
-    g: 1
-    b: 0
-    a: 1
-  switchesTrue: 1
-  solvedState: 0
-  erroring: 0
-  switchToToggle1: 0
-  switchToToggle2: 0
-  pressedNumber: 0
-  inputMode: 0
-  strikedatleastonce: 0
-  forceSolved: 0
-  split: 0
-  submitKey: 
-  currentTimeHourDisplay: 
-  currentTimeMinDisplay: 
-  currentTimeMin: 0
-  currentTimeHour: 0
-  currentMonth: 0
-  currentDay: 0
-  timeoutreset: 0
-  seven: 0
-  moduleId: 0
-  identityDigit: 0
-  identityDigit1: 0
-  identityDigit2: 0
-  CountUpNumber: 0
-  CountUpBaseNumber: 0
-  increaseFactor: 0
-  CountUpNumberDisplay: 
-  elapsedTime: 0
-  elapsedTimeMin: 0
-  elapsedTimeSec: 0
-  strikedTime: 0
-  correctTime: 0
-  doubleElapsedTime: 0
-  bombSerialNumber: 0
-  moduleSerialNumber: 0
-  solvePercentage: 0
-  numofbars: 0
-  finalAnswer: 
-  elapsedTimeDisplay: 
-  doubleElapsedTimeDisplay: 
-  elapsedTimeMinDisplay: 
-  elapsedTimeSecDisplay: 
-  twofatimedisplay: 
-  strikedTimeDisplay: 
-  tempDisp: 
-  tempTime: 
-  showing2FA: 0
-  showingTime: 0
-  showingStrike: 0
-  dotUnlit: 0
-  initiated: 0
-  TwitchHelpMessage: Use !{0} press <number> // toggle <switches position> // time
-    // clear // split // split/submit (at/on/-) <time> // s <number> <switches (1
-    as up, 0 as down)> <time>.
+  - {fileID: 102018304393183848}
+  modFrames:
+  - {fileID: 23132590348909338}
+  - {fileID: 23557856365858124}
+  - {fileID: 23700367857233352}
+  - {fileID: 23175481876017518}
+  modBackground: {fileID: 23385401607835616}
+  Materials:
+  - {fileID: 2100000, guid: dec1a6a2d3fb8c646bee3d55b6402abb, type: 2}
+  - {fileID: 2100000, guid: 7334e4166f2def04e800f4fa7574fb76, type: 2}
 --- !u!114 &114843302350003696
 MonoBehaviour:
   m_ObjectHideFlags: 1
