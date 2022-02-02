@@ -2397,6 +2397,7 @@ GameObject:
   - component: {fileID: 114015021219080616}
   - component: {fileID: 114842087094306368}
   - component: {fileID: 114961692581660618}
+  - component: {fileID: 114424144086157382}
   m_Layer: 0
   m_Name: pwMutilatorEX
   m_TagString: Untagged
@@ -4371,7 +4372,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1749926766773970}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: 1.21, z: 0}
+  m_LocalPosition: {x: 0, y: 1.21, z: -0.117}
   m_LocalScale: {x: 0.040000003, y: 0.040000018, z: 2.500001}
   m_Children: []
   m_Father: {fileID: 4296068674529016}
@@ -11699,7 +11700,7 @@ TextMesh:
   m_FontSize: 144
   m_FontStyle: 0
   m_RichText: 0
-  m_Font: {fileID: 12800000, guid: 4466925acddd7854c86fcad39db44c4e, type: 3}
+  m_Font: {fileID: 12800000, guid: aa52bc6b0b6061a42a3e4da21e456ebf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -11825,7 +11826,7 @@ TextMesh:
   m_FontSize: 144
   m_FontStyle: 0
   m_RichText: 0
-  m_Font: {fileID: 12800000, guid: 4466925acddd7854c86fcad39db44c4e, type: 3}
+  m_Font: {fileID: 12800000, guid: aa52bc6b0b6061a42a3e4da21e456ebf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -11836,7 +11837,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1160529521465340}
-  m_Text: "\u2192"
+  m_Text: '>'
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -11857,7 +11858,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1749926766773970}
-  m_Text: "\u2191"
+  m_Text: ^
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -11888,7 +11889,7 @@ TextMesh:
   m_FontSize: 144
   m_FontStyle: 0
   m_RichText: 0
-  m_Font: {fileID: 12800000, guid: 4466925acddd7854c86fcad39db44c4e, type: 3}
+  m_Font: {fileID: 12800000, guid: aa52bc6b0b6061a42a3e4da21e456ebf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -12014,7 +12015,7 @@ TextMesh:
   m_FontSize: 144
   m_FontStyle: 0
   m_RichText: 0
-  m_Font: {fileID: 12800000, guid: 4466925acddd7854c86fcad39db44c4e, type: 3}
+  m_Font: {fileID: 12800000, guid: aa52bc6b0b6061a42a3e4da21e456ebf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -12046,7 +12047,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1986780397967464}
-  m_Text: "\u2193"
+  m_Text: v
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -12613,7 +12614,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1091473006206622}
-  m_Text: "\u2190"
+  m_Text: <
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -12676,7 +12677,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1432397319936602}
-  m_Text: '  Stage  000 / 000'
+  m_Text: 
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -12686,7 +12687,7 @@ TextMesh:
   m_FontSize: 144
   m_FontStyle: 0
   m_RichText: 0
-  m_Font: {fileID: 12800000, guid: 4466925acddd7854c86fcad39db44c4e, type: 3}
+  m_Font: {fileID: 12800000, guid: aa52bc6b0b6061a42a3e4da21e456ebf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -12707,7 +12708,7 @@ TextMesh:
   m_FontSize: 144
   m_FontStyle: 0
   m_RichText: 0
-  m_Font: {fileID: 12800000, guid: 4466925acddd7854c86fcad39db44c4e, type: 3}
+  m_Font: {fileID: 12800000, guid: aa52bc6b0b6061a42a3e4da21e456ebf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -12728,7 +12729,7 @@ TextMesh:
   m_FontSize: 144
   m_FontStyle: 0
   m_RichText: 0
-  m_Font: {fileID: 12800000, guid: 4466925acddd7854c86fcad39db44c4e, type: 3}
+  m_Font: {fileID: 12800000, guid: aa52bc6b0b6061a42a3e4da21e456ebf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -14276,6 +14277,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShaderNames:
   - GUI/KT 3D Text
+--- !u!114 &114424144086157382
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1723781013675948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96a2fc4ae3e690a498a0d85a2b5e0b99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114427989916649824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15958,6 +15970,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bomb: {fileID: 114993637549721224}
   module: {fileID: 114044696856092294}
+  boss: {fileID: 114424144086157382}
   keyboard:
   - {fileID: 114603898940364408}
   - {fileID: 114685194538681056}
@@ -16015,6 +16028,16 @@ MonoBehaviour:
   - {fileID: 114344688837630672}
   - {fileID: 114459873591109528}
   - {fileID: 114596827691573618}
+  functionKeys:
+  - {fileID: 114685194538681056}
+  - {fileID: 114241553907533358}
+  - {fileID: 114973231616269416}
+  - {fileID: 114689470184216260}
+  - {fileID: 114586512261212536}
+  - {fileID: 114135750642892888}
+  - {fileID: 114045401622629348}
+  - {fileID: 114077202553103318}
+  - {fileID: 114336543641574002}
   timeBtns:
   - {fileID: 114106079944376268}
   - {fileID: 114147180693602868}

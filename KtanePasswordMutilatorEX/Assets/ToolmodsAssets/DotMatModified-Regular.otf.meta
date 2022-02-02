@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4466925acddd7854c86fcad39db44c4e
+guid: c1ca15ce5e79ff54db6ebff71f013896
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: My Font
+  fontName: DotMatModified
   fontNames:
-  - My Font
+  - DotMatModified
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
