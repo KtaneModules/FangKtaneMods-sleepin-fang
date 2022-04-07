@@ -11458,7 +11458,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 051f5230244534b48845178794d11c27, type: 2}
+  - {fileID: 2100000, guid: c16c4eac240310340b79226aaeee1d8e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16809,8 +16809,8 @@ MonoBehaviour:
   BoxEmpty: {fileID: 2100000, guid: effdc22c8f054f94c8570d52e6fed2d2, type: 2}
   BoxError: {fileID: 2100000, guid: 03a61549a5d9afa489de43f57567da2d, type: 2}
   solvedMat: {fileID: 2100000, guid: 7ee1bb1732cb0e444b8af1d197a11a83, type: 2}
-  strikedMat: {fileID: 2100000, guid: 1503a87d014a4ff4cb11bc016b53be64, type: 2}
-  normalMat: {fileID: 2100000, guid: 051f5230244534b48845178794d11c27, type: 2}
+  strikedMat: {fileID: 2100000, guid: 58cccbb13d22c1d4d9c934f7542b50d5, type: 2}
+  normalMat: {fileID: 2100000, guid: c16c4eac240310340b79226aaeee1d8e, type: 2}
   modFrame: {fileID: 23581151885423892}
   ModuleSelectable: {fileID: 114656564070182488}
   numberDisplay: {fileID: 102857007534303052}

@@ -15,83 +15,83 @@ public class tetrisSprint : MonoBehaviour {
         public string note;
     }
 
-	public Material BoxFull;
-	public Material BoxEmpty;
-	public Material BoxError;
-	public Material solvedMat;
-	public Material strikedMat;
-	public Material normalMat;
-	public Renderer modFrame;
-	public KMSelectable ModuleSelectable;
-	public TextMesh numberDisplay;
-	public TextMesh scoreDisplay;
-	public TextMesh timeDisplay;
-	public TextMesh targetDisplay;
-	public KMModSettings modSettings;
-	private const int G_WIDTH = 10; // Width of grid
-	private const int G_HEIGHT = 20; // Height of grid
+    public Material BoxFull;
+    public Material BoxEmpty;
+    public Material BoxError;
+    public Material solvedMat;
+    public Material strikedMat;
+    public Material normalMat;
+    public Renderer modFrame;
+    public KMSelectable ModuleSelectable;
+    public TextMesh numberDisplay;
+    public TextMesh scoreDisplay;
+    public TextMesh timeDisplay;
+    public TextMesh targetDisplay;
+    public KMModSettings modSettings;
+    private const int G_WIDTH = 10; // Width of grid
+    private const int G_HEIGHT = 20; // Height of grid
 
-	private KMBombModule Module;
-	private GameObject[,] ObjectGrid;
-	public GameObject[] ScreenGrid;
-	private int moduleId = 0;
-	private static int moduleIdCounter = 1;
-	private float elapsedTime;
-	private bool started = false;
-	private bool moduleSolved = false;
+    private KMBombModule Module;
+    private GameObject[,] ObjectGrid;
+    public GameObject[] ScreenGrid;
+    private int moduleId = 0;
+    private static int moduleIdCounter = 1;
+    private float elapsedTime;
+    private bool started = false;
+    private bool moduleSolved = false;
 
-	//SRS
-	private TetrisSRS.TetrisBoard _tetrisBoard;
-	private TetrisPiece _currentPiece = null;
-	public GameObject[] CellObjects;
-	private List<TetrisSRS.Tetromino> _grabBag = new List<TetrisSRS.Tetromino>();
-	private TetrisSRS.TetrisBoard _nextPieceBoard;
-	private GameObject[,] _screenGrid;
-	private TetrisPiece _nextPiece = null;
-	void Awake()
-	{
-		Module = GetComponent<KMBombModule>();
- 		if (Application.isEditor)
-			focused = true;
-        ModuleSelectable.OnInteract += delegate () { focused = true; return true;};
+    //SRS
+    private TetrisSRS.TetrisBoard _tetrisBoard;
+    private TetrisPiece _currentPiece = null;
+    public GameObject[] CellObjects;
+    private List<TetrisSRS.Tetromino> _grabBag = new List<TetrisSRS.Tetromino>();
+    private TetrisSRS.TetrisBoard _nextPieceBoard;
+    private GameObject[,] _screenGrid;
+    private TetrisPiece _nextPiece = null;
+    void Awake()
+    {
+        Module = GetComponent<KMBombModule>();
+        if (Application.isEditor)
+            focused = true;
+        ModuleSelectable.OnInteract += delegate () { focused = true; return true; };
         ModuleSelectable.OnDefocus += delegate () { focused = false; };
-		ObjectGrid = new GameObject[G_WIDTH, G_HEIGHT];
-		_screenGrid = new GameObject[4, 2];
-		// Populate the grid
-		for (int x = 0; x < G_WIDTH; x++) 
-		{
-			for (int y = 0; y < G_HEIGHT; y++)
-			{
-				ObjectGrid[x, y] = CellObjects[G_HEIGHT * x + y];
-				ObjectGrid[x, y].SetActive(false);
-			}
-		}
-		for (int x = 0; x < 4; x++)
-		{
-			for (int y = 0; y < 2; y++)
-			{
-				_screenGrid[x, y] = ScreenGrid[8 - (4 - x) - 4 * y];
-				_screenGrid[x, y].SetActive(false);
-			}
-		}
-		_tetrisBoard = new TetrisSRS.TetrisBoard(G_WIDTH, G_HEIGHT, ObjectGrid, BoxFull, BoxEmpty, BoxError, scoreDisplay, numberDisplay);
-		_nextPieceBoard = new TetrisSRS.TetrisBoard(4, 2, _screenGrid, BoxFull, BoxEmpty, BoxError);
-		
+        ObjectGrid = new GameObject[G_WIDTH, G_HEIGHT];
+        _screenGrid = new GameObject[4, 2];
+        // Populate the grid
+        for (int x = 0; x < G_WIDTH; x++)
+        {
+            for (int y = 0; y < G_HEIGHT; y++)
+            {
+                ObjectGrid[x, y] = CellObjects[G_HEIGHT * x + y];
+                ObjectGrid[x, y].SetActive(false);
+            }
+        }
+        for (int x = 0; x < 4; x++)
+        {
+            for (int y = 0; y < 2; y++)
+            {
+                _screenGrid[x, y] = ScreenGrid[8 - (4 - x) - 4 * y];
+                _screenGrid[x, y].SetActive(false);
+            }
+        }
+        _tetrisBoard = new TetrisSRS.TetrisBoard(G_WIDTH, G_HEIGHT, ObjectGrid, BoxFull, BoxEmpty, BoxError, scoreDisplay, numberDisplay);
+        _nextPieceBoard = new TetrisSRS.TetrisBoard(4, 2, _screenGrid, BoxFull, BoxEmpty, BoxError);
 
-		ModuleSelectable.OnInteract += delegate
-		{
-			if (!started && !moduleSolved)
-			{
-				GetPiece();
-			}
-			started = true;
-			return true;
-		};
 
-	}
-	void Update()
-	{
-		if (started && !moduleSolved && focused)
+        ModuleSelectable.OnInteract += delegate
+        {
+            if (!started && !moduleSolved)
+            {
+                GetPiece();
+            }
+            started = true;
+            return true;
+        };
+
+    }
+    void Update()
+    {
+        if (started && !moduleSolved && (focused || TwitchPlaysActive))
 			UpdateTime(Time.deltaTime);
 
 		if (numberDisplay.text == "0" && !moduleSolved) Solve();
