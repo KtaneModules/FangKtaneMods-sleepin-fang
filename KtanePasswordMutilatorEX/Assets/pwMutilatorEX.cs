@@ -12,9 +12,11 @@ using System.Text.RegularExpressions;
 public class pwMutilatorEX : MonoBehaviour
 #pragma warning restore IDE1006
 {
+    public KMAudio sound;
     public KMBombInfo bomb;
     public KMBombModule module;
     public KMBossModule boss;
+    
 
     public KMSelectable[] keyboard;
     public KMSelectable[] functionKeys;
@@ -57,8 +59,8 @@ public class pwMutilatorEX : MonoBehaviour
     int moduleId;
 
     float[] times = { 0.00f, 0.00f, 10.00f }; //Elapsed, Bomb RT, Countdown timer
-    float[] countdownTimer = { 2.00f, 10.00f, 5.00f }; //Delayer, or Reset timer or Input phase >> times[2];
-    float[] defaultTimes = { 2.00f, 10.00f };
+    float[] countdownTimer = { 20.00f, 10.00f, 5.00f }; //Delayer, or Reset timer or Input phase >> times[2];
+    float[] defaultTimes = { 20.00f, 10.00f };
     
 
     void Awake()
@@ -198,17 +200,17 @@ public class pwMutilatorEX : MonoBehaviour
         GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, key.transform);
         key.AddInteractionPunch(0.25f);
         switch (key.GetComponentInChildren<TextMesh>().text)
-        { 
-            case "F1": ; break;
-            case "F2": ; break;
-            case "F3": ; break;
-            case "F4": if (phases[3]) SubmitStage(); break;
-            case "<": ; break;
-            case "v": ; break;
-            case "^": ; break;
-            case ">": ; break;
-            case "Backspace": if (inputAnswerString.Length > 0) inputAnswerString = inputAnswerString.Remove(inputAnswerString.Length-1, 1); break;
-            default: if (phases[3]) inputAnswerString += key.GetComponentInChildren<TextMesh>().text; break;
+        {
+            case "F1": if (phases[0]) SubmitAns(); break;
+            case "F2": if (phases[1] && moduleWaiting && countdownTimer[0] > 2f) countdownTimer[0] = 2f; break;
+            case "F3": if (phases[2] && countdownTimer[0] > 0.1f) countdownTimer[2] = 0.01f; break;
+            case "F4": if (phases[3]) SubmitAns(); break;
+            case "<":; break;
+            case "v":; break;
+            case "^":; break;
+            case ">":; break;
+            case "Backspace": if (inputAnswerString.Length > 0) inputAnswerString = inputAnswerString.Remove(inputAnswerString.Length - 1, 1); break;
+            default: if (phases[0] || phases[3]) inputAnswerString += key.GetComponentInChildren<TextMesh>().text; break;
         }
 
         return false;   
@@ -284,15 +286,17 @@ public class pwMutilatorEX : MonoBehaviour
         }
         else if (phases[0])
         {   //Pre-stage phase, transition.
-            phases[0] = false;
-            phases[1] = true;
-            GenStage(1);
+
         }
         else if (phases[0] && currSolved > 0)
         {
             float countdown = 30f;
             countdown -= Time.deltaTime;
             if (countdown <= 0f) { module.HandleStrike(); countdown = 30f; } ;
+        }
+        else if (phases[0])
+        {
+
         }
 
         //Displaying times
@@ -301,7 +305,7 @@ public class pwMutilatorEX : MonoBehaviour
         times[2]  = phases[2] ? countdownTimer[2]: moduleWaiting ? countdownTimer[0] : countdownTimer[1];
         for (int i = (phases[3] ? 1 : 2); i >= 0; i--)
         {
-            if (defaultTimes[0] - countdownTimer[0] >= 5f && i != 2 ) return;
+            if (defaultTimes[0] - countdownTimer[0] <= 5f && currStage != 0 && i != 2 ) return;
             double second = Math.Round(times[i] % 60, 2);
             double minute = Math.Floor(times[i] / 60 % 60);
             double hour = Math.Floor(times[i] / 3600);
@@ -310,11 +314,13 @@ public class pwMutilatorEX : MonoBehaviour
                                      : minute.ToString("00") + ":" + (second).ToString("00.00"));
             if (i == 1) timeTexts[i].text = "-" + timeTexts[i].text;
         }
+    }
 
-        
+    void InitStage()
+    {
+        finalAnswerString = "000"; 
 
     }
-    
     void GenStage(int stageNumber)
         //Generate stage when next stage/timer runs out.
     {
@@ -337,7 +343,7 @@ public class pwMutilatorEX : MonoBehaviour
         if (!phases[1]) yield break;
              
         displayTextsLeft[0].text = (stageInformation[1] / 1000).ToString("000") + " " + (stageInformation[1] % 1000).ToString("000");
-        displayTextsLeft[3].text = "  Stage  " + stageInformation[0].ToString("000") + " / " + (totalStage-1).ToString("000");     //"  Stage  000 / 000"
+        displayTextsLeft[4].text = "  Stage  " + stageInformation[0].ToString("000") + " / " + (totalStage-1).ToString("000");     //"  Stage  000 / 000"
         
         List<int> increaseFactorPool = new int[] { stageInformation[2] - 2, stageInformation[2] - 1, stageInformation[2], stageInformation[2] + 1, stageInformation[2] + 2 }.ToList();
         int rawValue = stageInformation[3];
@@ -410,12 +416,21 @@ public class pwMutilatorEX : MonoBehaviour
         displayTextsRight[1].text = ""; 
     }
     
-    void SubmitStage()
+    void SubmitAns()
     {
-        if (finalAnswerString == inputAnswerString)
+        if (finalAnswerString == inputAnswerString && phases[0])
+        {
+            phases[1] = true;
+            phases[0] = false;
+            GenStage(1);
+            inputAnswerString = "";
+        }
+        if (finalAnswerString == inputAnswerString && phases[3])
         {
             module.HandlePass();
+            sound.PlaySoundAtTransform("Windows NT Startup", transform);
             moduleSolved = true;
+            // !! missing solve disp transition
         }
         else module.HandleStrike();
     }

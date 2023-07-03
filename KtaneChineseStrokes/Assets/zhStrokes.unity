@@ -217,6 +217,17 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 102019837472151308, guid: 6222726d6f9f4444eae5fa54fe7ba328,
+        type: 2}
+      propertyPath: m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 86e4b2f185d80c64686e46226c939134,
+        type: 3}
+    - target: {fileID: 23093630168473610, guid: 6222726d6f9f4444eae5fa54fe7ba328,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 67072379bcbfc534ea3675b30828d235, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6222726d6f9f4444eae5fa54fe7ba328, type: 2}
   m_IsPrefabParent: 0

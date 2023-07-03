@@ -55,8 +55,9 @@ public class zhStrokes : MonoBehaviour
             case 1: index = UnityEngine.Random.Range(   0,  673); break;
             case 2: index = UnityEngine.Random.Range( 673, 4669); break;
             case 3: index = UnityEngine.Random.Range(4648, 5938); break;
-           default: index = UnityEngine.Random.Range(5938, 6536); break;
+           default: index = UnityEngine.Random.Range(5938, 6500); break;
         }
+        //Debug
         textOption = textOptions[index];
         textDisplay.text = textOption.text.ToString();
         //Randomize();

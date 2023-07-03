@@ -1,4 +1,4 @@
-[ 
+[  //index = line - 2
     { "text": "一", "number": 1 },
     { "text": "乙", "number": 1 },
     { "text": "二", "number": 2 },
@@ -5509,8 +5509,6 @@
     { "text": "缪", "number": 14 },
     { "text": "缫", "number": 14 },
     { "text": "䓫", "number": 14 },
-    { "text": "䓬", "number": 14 },
-    { "text": "䓨", "number": 14 },
     { "text": "䓛", "number": 14 },
     { "text": "䣘", "number": 14 },
     { "text": "耤", "number": 14 },
@@ -6514,7 +6512,6 @@
     { "text": "襞", "number": 19 },
     { "text": "骥", "number": 19 },
     { "text": "缵", "number": 19 },
-    { "text": "䴖", "number": 19 },
     { "text": "䗴", "number": 19 },
     { "text": "嚭", "number": 19 },
     { "text": "㰀", "number": 19 },
