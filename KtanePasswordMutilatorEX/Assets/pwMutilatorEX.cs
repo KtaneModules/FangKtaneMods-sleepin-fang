@@ -56,7 +56,7 @@ public class pwMutilatorEX : MonoBehaviour
     float v = 0f;
 
     private Dictionary<string, string> altKeysDict = new Dictionary<string, string>();
-    private Dictionary<int, char> htmlDict = new Dictionary<int, char>();
+    
 
     // Logging
     static int moduleIdCounter = 1;
@@ -161,10 +161,17 @@ public class pwMutilatorEX : MonoBehaviour
     void Activate()
     {
         totalStage = bomb.GetSolvableModuleNames().Where(x => !ignoredModules.Contains(x)).Count();
-        stageAnswer = new int[totalStage];
-        finalAnswer = new char[totalStage];
+        if (totalStage < 3) {
+            module.HandlePass();
+            moduleSolved = true;
+            Debug.LogFormat ("[Password Mutilator EX #{0}]: Non-ignored modules is less than 3, autosolving..", moduleId);
+        }
+        else {
+            stageAnswer = new int[totalStage];
+            finalAnswer = new char[totalStage];
 
-        InitModule();
+            InitModule();
+        }
     }
     private IEnumerator ColorCycle()
     {
@@ -209,7 +216,7 @@ public class pwMutilatorEX : MonoBehaviour
             case "^": inputPosition = Math.Max(inputPosition - 20, 1); break;
             case ">": if (inputPosition < inputAnswerString.Length + 1) inputPosition++; break;
             case "Backspace": 
-                if (inputAnswerString.Length > 0) {
+                if (inputAnswerString.Length > 0 && inputPosition > 1) {
                     inputAnswerString = inputAnswerString.Remove(inputPosition - 2, 1);
                     inputPosition--;
                 } 
@@ -589,22 +596,25 @@ public class pwMutilatorEX : MonoBehaviour
 
 #pragma warning disable 414
 bool ZenModeActive;
+    #pragma warning disable 414
+    readonly string TwitchHelpMessage = "Use !{0} AZC-,... (for inputs) | (l)eft/(u)p/(d)own/(r)ight/(b)ackspace/(c)lear/(s)ubmit (for actions, first letter only). Note that the command is CAPS SENSITIVE and inputs must be same as keyboard labels.";
+    #pragma warning restore 414 
 
-#pragma warning disable 414
-    /* readonly string TwitchHelpMessage = "Use !{0} <letters> for input.";
-    #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
         //Twitch Plays.
     {
-        command = command.ToLowerInvariant().Trim();
-        Match m = Regex.Match
-            (command, 
-            @"^(?:(press ([0-9]+))|(toggle ([1-3]+))|(time|clear|split)|((submit|split)\s*(?:at|on)?\s*([0-9]+:)?([0-9]+):([0-5][0-9]))|(s\s*([0-9]{7})\s*([01]{3})\s*([0-9]+:)?([0-9]+):([0-5][0-9])))$");
+        command = command.Trim().Replace(" ", "");
+        string validInputs = "`sldurb1234567890-=\\QWERTYUIOP[]ASDFGHJKL;'ZXCVBNM,./";
 
-        if (!m.Success || (m.Groups[6].Success && m.Groups[8].Success && int.Parse(m.Groups[9].Value)> 59))
+        Match m = Regex.Match(command, @"^([ludrbsA-Z0-9\`\-\=\[\]\\\;\'\,\.\/]+)$");
+        if (!m.Success)
             yield break;
         yield return null;
+        foreach (char cmd in command) //execute;
+        {
+            yield return new WaitForSeconds(.1f);
+            keyboard[(validInputs.IndexOf(cmd))].OnInteract();
+        }
     }
-    */
 
 }

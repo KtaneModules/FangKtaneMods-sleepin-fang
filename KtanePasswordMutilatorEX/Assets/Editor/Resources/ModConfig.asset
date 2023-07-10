@@ -16,6 +16,6 @@ MonoBehaviour:
   author: Fang
   description: "This thing is not as secure as 256-bit security, I think.\n\r\nmoduleID:
     pwMutilatorEX\n\nModule created by Fang.\r\n\r\nManual: https://fang1217.github.io/pwMutilatorEX/"
-  version: b1.02c
+  version: b1.04
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 5e0ae44fbb628154bac5caea29386307, type: 3}
