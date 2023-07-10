@@ -52,8 +52,8 @@ public class pwMutilatorEX : MonoBehaviour
     int[] stageInformation;
     int[] stageAnswer;
 
-    float h;
-    float v;
+    float h = 0f;
+    float v = 0f;
 
     private Dictionary<string, string> altKeysDict = new Dictionary<string, string>();
     private Dictionary<int, char> htmlDict = new Dictionary<int, char>();
@@ -169,7 +169,6 @@ public class pwMutilatorEX : MonoBehaviour
     private IEnumerator ColorCycle()
     {
         Material tempMat = Materials[0];
-
         while (true)
         {
             h = (h + 0.0005f) % 1f;
@@ -396,7 +395,7 @@ public class pwMutilatorEX : MonoBehaviour
             rawValue = (rawValue + increaseFactorPool[rng]) % (radix * radix * radix * radix);
             displayTextsLeft[1].text = DecimalToArbitrarySystem(rawValue, radix);
             increaseFactorPool.RemoveAt(rng);
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -430,11 +429,22 @@ public class pwMutilatorEX : MonoBehaviour
 
     void CalStage()
         //Calculate stage when next stage is shown, but prior to input phase.
+
+        /*
+            0: Stage
+            1: 2FAST
+            2: Increase factor (decimal)
+            3: startingNumber, 
+            4: Radix
+        */
     {
         stageAnswer[stageInformation[0]] = stageInformation[1] % 9 + stageInformation[2] + Convert.ToInt32(Math.Floor(times[0] % 60)) + Convert.ToInt32(Math.Floor(times[1] / 60 % 60));
         
-        Debug.LogFormat("Stage {0}: 2FAST: {1}, If = {2}, CT = {3}+{4}, Cv = {5}", 
-            stageInformation[0], stageInformation[1], stageInformation[2], Convert.ToInt32(Math.Floor(times[0] % 60)), Convert.ToInt32(Math.Floor(times[1] / 60 % 60)), 
+        Debug.LogFormat
+            ("[Password Mutilator EX #{0}]: Stage {1}: 2FAST: {2}, If = {3} ({4} in Base {5}), CT = {6}+{7}, Cv = {8}", 
+            moduleId, stageInformation[0], stageInformation[1], stageInformation[2], 
+            DecimalToArbitrarySystem(stageInformation[2], stageInformation[4]), stageInformation[4], 
+            Convert.ToInt32(Math.Floor(times[0] % 60)), Convert.ToInt32(Math.Floor(times[1] / 60 % 60)), 
             stageAnswer[stageInformation[0]]);
     }
     
@@ -505,10 +515,8 @@ public class pwMutilatorEX : MonoBehaviour
 			//Part I: First letter of SN
 			char firstletter = bomb.GetSerialNumberLetters().First();
 			var firstCharPos = char.ToUpperInvariant(firstletter) - 'A' + 1;
-			Debug.LogFormat("[Password Mutilator EX #{0}]: The numerical position of the first character of serial number is {1}", moduleId, firstCharPos);
 
             string convertedLetter = abc[firstCharPos % 6];
-			Debug.LogFormat("[Password Mutilator EX #{0}]: The calculated answer for Part I is {1}.", moduleId, convertedLetter);
 
             //Part II: Indicators, Batt, Ports
             string convertedBatteries = abc[bomb.GetBatteryCount() % 6];
@@ -523,7 +531,6 @@ public class pwMutilatorEX : MonoBehaviour
             }
 			else
 			{
-                Debug.LogFormat("[Password Mutilator EX #{0}]: There are different number of batteries, indicators and ports.", moduleId);
                 correctPart2 = convertedBatteries + convertedIndicators + convertedPorts;
 			}
 			// Part III: Symbols
@@ -584,7 +591,7 @@ public class pwMutilatorEX : MonoBehaviour
 bool ZenModeActive;
 
 #pragma warning disable 414
-    readonly string TwitchHelpMessage = "Use !{0} <letters> for input.";
+    /* readonly string TwitchHelpMessage = "Use !{0} <letters> for input.";
     #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
         //Twitch Plays.
@@ -598,5 +605,6 @@ bool ZenModeActive;
             yield break;
         yield return null;
     }
+    */
 
 }
