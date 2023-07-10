@@ -156,7 +156,6 @@ public class pwMutilatorEX : MonoBehaviour
                 "Timing is Everything",
                 "Turn the Key"
             });
-
     }
 
     void Activate()
@@ -310,7 +309,10 @@ public class pwMutilatorEX : MonoBehaviour
             displayTextsLeft[0].text = "Activation code:";
             displayTextsLeft[4].text = "      Pre-stage";
             inputStage();
-
+        }
+        else {
+            displayTextsLeft[0].text = "Password Mutilator\nEX";
+            displayTextsLeft[4].text = "By Fang ._.";            
         }
         //Displaying times
         if(!phases[3] && !phases[0]) times[0] += Time.deltaTime; //bottom left time disp
@@ -327,8 +329,8 @@ public class pwMutilatorEX : MonoBehaviour
             if (i == j && phases[0] && (currSolved > 0)) i = 0;
             timeTexts[i].text = (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00")
                                      : minute.ToString("00") + ":" + (second).ToString("00.00"));
-            if (i == 1 || (i == 0 && phases[0] && (currSolved > 0))) timeTexts[i].text = "-" + timeTexts[i].text;
-        }
+            if (i == 1 && !ZenModeActive || (i == 0 && phases[0] && (currSolved > 0))) timeTexts[i].text = "-" + timeTexts[i].text;
+        }   
     }
     void inputStage() {                 
         try {
@@ -577,6 +579,10 @@ public class pwMutilatorEX : MonoBehaviour
             bomb.GetModuleNames().Any(mod => ((string[])Module).Any(param => mod.ToLowerInvariant().Contains(param))) : 
             bomb.GetModuleNames().Any(mod => mod.ToLowerInvariant().Contains((string)Module)));
     }
+
+#pragma warning disable 414
+bool ZenModeActive;
+
 #pragma warning disable 414
     readonly string TwitchHelpMessage = "Use !{0} <letters> for input.";
     #pragma warning restore 414
@@ -584,7 +590,9 @@ public class pwMutilatorEX : MonoBehaviour
         //Twitch Plays.
     {
         command = command.ToLowerInvariant().Trim();
-        Match m = Regex.Match(command, @"^(?:(press ([0-9]+))|(toggle ([1-3]+))|(time|clear|split)|((submit|split)\s*(?:at|on)?\s*([0-9]+:)?([0-9]+):([0-5][0-9]))|(s\s*([0-9]{7})\s*([01]{3})\s*([0-9]+:)?([0-9]+):([0-5][0-9])))$");
+        Match m = Regex.Match
+            (command, 
+            @"^(?:(press ([0-9]+))|(toggle ([1-3]+))|(time|clear|split)|((submit|split)\s*(?:at|on)?\s*([0-9]+:)?([0-9]+):([0-5][0-9]))|(s\s*([0-9]{7})\s*([01]{3})\s*([0-9]+:)?([0-9]+):([0-5][0-9])))$");
 
         if (!m.Success || (m.Groups[6].Success && m.Groups[8].Success && int.Parse(m.Groups[9].Value)> 59))
             yield break;

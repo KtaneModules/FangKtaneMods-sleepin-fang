@@ -11383,7 +11383,9 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1088146617621112}
-  m_Text: 
+  m_Text: 'Password Mutilator
+
+    EX'
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -11656,7 +11658,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1279040252246106}
-  m_Text: 
+  m_Text: By Fang._.
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
