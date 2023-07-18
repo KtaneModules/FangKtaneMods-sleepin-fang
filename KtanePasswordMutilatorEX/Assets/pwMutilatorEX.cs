@@ -63,8 +63,8 @@ public class pwMutilatorEX : MonoBehaviour
     int moduleId;
 
     float[] times = { 0.00f, 0.00f, 10.00f, 0f }; //Elapsed, bomb RT, Countdown timer, Strike timer 
-    float[] countdownTimer = { 0, 0, 5 }; //Delayer, or Reset timer or Input phase >> times[2];
-    float[] defaultTimes = { 10.00f, 300.00f, 180.00f }; 
+    float[] countdownTimer = { 0, 0, 0 }; //Delayer, or Reset timer or Input phase >> times[2];
+    float[] defaultTimes = { 10.00f, 300.00f, 180.00f, 5.00f }; //Next stage, Stage reset, Input phase, Timer freeze time
 
     void Awake()
         //Initializations
@@ -207,14 +207,14 @@ public class pwMutilatorEX : MonoBehaviour
         switch (key.GetComponentInChildren<TextMesh>().text)
         {
             case "Fn": 
-                if (phases[1] && moduleWaiting && countdownTimer[0] > 2f) countdownTimer[0] = 2f;
-                else if (phases[2] && countdownTimer[0] > 0.1f) countdownTimer[2] = 0.01f;
+                if (!moduleSolved && phases[1] && moduleWaiting && countdownTimer[0] > 2f) countdownTimer[0] = 2f;
+                else if (phases[2] && countdownTimer[1] > 0.1f) countdownTimer[2] = 0.01f;
                 else SubmitAns(); 
                 break;
-            case "<": if (inputPosition > 1) inputPosition -= 1; break;
+            case "<": if (!moduleSolved && inputPosition > 1) inputPosition -= 1; break;
             case "v": inputPosition = Math.Min(inputPosition + 20, inputAnswerString.Length + 1); break;
             case "^": inputPosition = Math.Max(inputPosition - 20, 1); break;
-            case ">": if (inputPosition < inputAnswerString.Length + 1) inputPosition++; break;
+            case ">": if (!moduleSolved && inputPosition < inputAnswerString.Length + 1) inputPosition++; break;
             case "Backspace": 
                 if (inputAnswerString.Length > 0 && inputPosition > 1) {
                     inputAnswerString = inputAnswerString.Remove(inputPosition - 2, 1);
@@ -222,7 +222,7 @@ public class pwMutilatorEX : MonoBehaviour
                 } 
                 break;
             default: 
-                if (phases[0] || phases[3]) {
+                if (!moduleSolved && phases[0] || phases[3]) {
                     inputAnswerString = inputAnswerString.Insert(inputPosition - 1, key.GetComponentInChildren<TextMesh>().text);
                     inputPosition += 1; 
                 }
@@ -259,16 +259,22 @@ public class pwMutilatorEX : MonoBehaviour
             displayTextsLeft[4].text = "        Input";
             InputStage();
         }
-        else if (currStage == totalStage && countdownTimer[2] > 0 )
+        else if (phases[2] && currStage == totalStage && countdownTimer[2] > 0 )
         {   //Input phase commencing.
-            phases[1] = false;
-            phases[2] = true;
             displayTextsLeft[0].text = "--- ---";
             displayTextsLeft[1].text = "----";
             displayTextsLeft[4].text = "      Pre-input";
             displayTextsRight[0].text = "Next phase:";
             displayTextsRight[0].color = Color.yellow;
+            countdownTimer[0] -= Time.deltaTime;
             countdownTimer[2] -= Time.deltaTime;
+        }
+        else if (currStage == totalStage) 
+        {
+            phases[1] = false;
+            phases[2] = true;
+            countdownTimer[0] = defaultTimes[0];
+            countdownTimer[2] = defaultTimes[2];
         }
         else if (phases[1] && countdownTimer[0] <= 0f && currSolved > currStage)
         {   //Stage phase - Solved something AND time depleted.
@@ -277,6 +283,7 @@ public class pwMutilatorEX : MonoBehaviour
             GenStage(currStage);
             countdownTimer[0] = defaultTimes[0];
             countdownTimer[1] = defaultTimes[1];
+
         }
         else if (phases[1] && currSolved > currStage)
         {   //Stage phase - Solved something before time depleted.
@@ -326,7 +333,7 @@ public class pwMutilatorEX : MonoBehaviour
         times[2]  = phases[2] ? countdownTimer[2]: moduleWaiting ? countdownTimer[0] : countdownTimer[1]; //top right time disp
         for (int i = (phases[3] | phases[0] ? 1 : 2), j = 3; i >= 0; i--)
         {
-            if ((phases[1] && (defaultTimes[0] - countdownTimer[0] <= 3f) && i != 2)) return;
+            if (((phases[1] || phases[2]) && (defaultTimes[0] - countdownTimer[0] <= defaultTimes[3]) && i != 2)) return;
             //animation for temporary stop
             if (i == 0 && phases[0] && (currSolved > 0)) i = j;
             double second = Math.Round(times[i] % 60, 2);
@@ -362,8 +369,7 @@ public class pwMutilatorEX : MonoBehaviour
     }
     void InitStage()
     {
-        finalAnswerString = "000"; 
-
+        finalAnswerString = "";
     }
     void GenStage(int stageNumber)
         //Generate stage when next stage/timer runs out.
@@ -445,13 +451,13 @@ public class pwMutilatorEX : MonoBehaviour
             4: Radix
         */
     {
-        stageAnswer[stageInformation[0]] = stageInformation[1] % 9 + stageInformation[2] + Convert.ToInt32(Math.Floor(times[0] % 60)) + Convert.ToInt32(Math.Floor(times[1] / 60 % 60));
+        stageAnswer[stageInformation[0]] = stageInformation[1] % 9 + stageInformation[2] + Convert.ToInt32(Math.Floor(times[0] % 60)) + Convert.ToInt32(Math.Floor(times[1] % 60));
         
         Debug.LogFormat
             ("[Password Mutilator EX #{0}]: Stage {1}: 2FAST: {2}, If = {3} ({4} in Base {5}), CT = {6}+{7}, Cv = {8}", 
             moduleId, stageInformation[0], stageInformation[1], stageInformation[2], 
             DecimalToArbitrarySystem(stageInformation[2], stageInformation[4]), stageInformation[4], 
-            Convert.ToInt32(Math.Floor(times[0] % 60)), Convert.ToInt32(Math.Floor(times[1] / 60 % 60)), 
+            Convert.ToInt32(Math.Floor(times[0] % 60)), Convert.ToInt32(Math.Floor(times[1] % 60)), 
             stageAnswer[stageInformation[0]]);
     }
     
@@ -476,9 +482,12 @@ public class pwMutilatorEX : MonoBehaviour
     
     void SubmitAns()
     {
+        Debug.LogFormat("[Password Mutilator EX #{0}]: Submitted input: {1}", moduleId, inputAnswerString);
         if (phases[0])
         {
             finalAnswerString = pwGeneratorAnswer();
+            Debug.LogFormat("[Password Mutilator EX #{0}]: Expected input: {1}", moduleId, finalAnswerString);
+
             if (finalAnswerString == inputAnswerString) {
                 phases[1] = true;
                 phases[0] = false;              
@@ -577,7 +586,6 @@ public class pwMutilatorEX : MonoBehaviour
 
 			//Contenating the calculated answer
 			generatedInput = convertedLetter + correctPart2 + symbol + correctPart4;
-			Debug.LogFormat("[Password Mutilator EX #{0}]: The final input is {1}.", moduleId, generatedInput);
 		}
 		//Whether is the input correct
         return generatedInput.ToLowerInvariant();

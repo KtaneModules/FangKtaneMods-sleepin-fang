@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf2299c8864afe4ab42466f546ae20d, type: 3}
   m_Name: WorkshopItem
   m_EditorClassIdentifier: 
-  WorkshopPublishedFileID: 3001554850
-  Title: Password Mutilator EX (BETA)
+  WorkshopPublishedFileID: 3003017456
+  Title: Password Mutilator EX
   Tags:
   - Regular Module
