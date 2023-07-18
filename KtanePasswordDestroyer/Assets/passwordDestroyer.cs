@@ -124,7 +124,7 @@ public class passwordDestroyer : MonoBehaviour
         //
     }
     void Update() {
-        decimal solvePercentage = Math.Round( Math.Max ((decimal)1, (((decimal) Bomb.GetSolvedModuleNames().Count) * (decimal) 100)/ (decimal) Bomb.GetModuleNames().Count), 2);
+        decimal solvePercentage = Math.Round( Math.Max ((decimal)1, (((decimal) Bomb.GetSolvedModuleNames().Count) * (decimal) 100)/ (decimal) Bomb.GetSolvableModuleNames().Count), 2);
 
         if (!initiated || erroring) return;
         if (!solvedState) doubleElapsedTime += Time.deltaTime;
@@ -396,7 +396,7 @@ public class passwordDestroyer : MonoBehaviour
 
         if (inputMode == true)
         {
-        solvePercentage = Math.Max (1, ((Bomb.GetSolvedModuleNames().Count * 100)/Bomb.GetModuleNames().Count));
+        solvePercentage = Math.Max (1, ((Bomb.GetSolvedModuleNames().Count * 100)/Bomb.GetSolvableModuleNames().Count));
         GenerateCorrectTime();
         GenerateSwitchesAnswer();
         GeneratePINAnswer();
