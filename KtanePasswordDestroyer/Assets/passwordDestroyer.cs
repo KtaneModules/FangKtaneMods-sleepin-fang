@@ -262,6 +262,17 @@ public class passwordDestroyer : MonoBehaviour
     void ResetModule()
     {
         split = false;
+        timeoutreset = false;
+        strikedatleastonce = true;
+        CountUpBaseNumber = Random.Range(1000000, 10000000);
+        increaseFactor = Random.Range(100000, 1000001);
+        int rng = Random.Range(0,2);
+        if (rng == 1) increaseFactor = -increaseFactor;
+        strikedTimeDisplay = Screens[2].text;
+        strikedTime = elapsedTime;
+        Generate2FA();
+        identityDigit = identityDigit1 * 1000 + identityDigit2;
+        Debug.LogFormat("[Password Destroyer #{0}]: Generated at {1}, the new base numbers are {2} and {3}, with starting 2FA of {4} and starting switches position of {5}.", moduleId, strikedTimeDisplay, CountUpBaseNumber, increaseFactor, identityDigit, NumbersToArrows(Switches_State));
     }
     IEnumerator display1Cycle()
     {
