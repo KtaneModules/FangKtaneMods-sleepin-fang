@@ -36,6 +36,10 @@ public class CustomKMMissionEditor : Editor
     private int activeComponentPool;
     private int currentAddGeneratorSettingIndex;
     private Vector2 scrollPosition;
+    private Vector2 dmgScrollPosition;
+    
+    private string errorMessage = null;
+    private string dmgString;
 
     public void OnEnable()
     {
@@ -43,9 +47,13 @@ public class CustomKMMissionEditor : Editor
         activeComponentPool = -1;
         currentAddGeneratorSettingIndex = 1;
         scrollPosition = Vector2.zero;
+        dmgScrollPosition = Vector2.zero;
         if (target != null)
             readCurrentMission();
         Undo.undoRedoPerformed += onUndoRedoPerformed;
+        
+        dmgString = DMGMissionLoader.GetDmgString(serializedObject.targetObject as KMMission);
+        errorMessage = null;
     }
 
     public void OnDisable()
@@ -120,9 +128,13 @@ public class CustomKMMissionEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        bool validModification = true;
+
         if (target != null)
         {
             serializedObject.Update();
+            
+            EditorGUI.BeginChangeCheck();
 
             //Basic mission meta-data
             EditorGUILayout.BeginHorizontal();
@@ -132,13 +144,12 @@ public class CustomKMMissionEditor : Editor
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("ID In-Game");
-            if (ModConfig.Instance != null)
-                EditorGUILayout.SelectableLabel(string.Format("mod_{0}_{1}", ModConfig.ID, serializedObject.targetObject.name));
-            else
-                EditorGUILayout.HelpBox("Configure your mod to get the mission In-Game ID.", MessageType.Error);
+            EditorGUILayout.SelectableLabel(string.Format("mod_{0}_{1}", ModConfig.ID, serializedObject.targetObject.name));
             EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("DisplayName"));
+            SerializedProperty displayNameProperty = serializedObject.FindProperty("DisplayName");
+            EditorGUILayout.PropertyField(displayNameProperty);
+            displayNameProperty.stringValue = displayNameProperty.stringValue.Trim();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("Description"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("PacingEventsEnabled"));
 
@@ -190,15 +201,25 @@ public class CustomKMMissionEditor : Editor
             EditorGUILayout.Separator();
             EditorGUILayout.LabelField("Generator Settings");
 
-            EditorGUILayout.BeginVertical("box");
+            List<string> unusedGeneratorSettings = new List<string>();
             List<KeyValuePair<int, string>> tabMap = new List<KeyValuePair<int, string>>();
             tabMap.Add(new KeyValuePair<int, string>(0, "Bomb 0"));
             foreach (KeyValuePair<int, KeyValuePair<KMGeneratorSetting, int>> kv in multipleBombsGeneratorSettings)
             {
                 if (kv.Key < totalBombCount || factoryMode >= FactoryMode.InfiniteSequence)
                     tabMap.Add(new KeyValuePair<int, string>(kv.Key, "Bomb " + kv.Key));
+                else
+                    unusedGeneratorSettings.Add(kv.Key.ToString());
             }
             tabMap.Sort((x, y) => x.Key.CompareTo(y.Key));
+
+            if (unusedGeneratorSettings.Count > 0)
+            {
+                string unusedGeneratorSettingsWarningMessage = "The mission contains unused generator settings (for " + (unusedGeneratorSettings.Count > 1 ? "bombs " + string.Join(", ", unusedGeneratorSettings.ToArray()) : "bomb " + unusedGeneratorSettings[0]) + ").";
+                EditorGUILayout.HelpBox(unusedGeneratorSettingsWarningMessage, MessageType.Warning);
+            }
+
+            EditorGUILayout.BeginVertical("box");
             int currentTab = activeGeneratorSetting != -1 ? tabMap.FindIndex((x) => x.Key == activeGeneratorSetting) : tabMap.Count;
             if (currentTab == -1)
             {
@@ -322,8 +343,124 @@ public class CustomKMMissionEditor : Editor
                 }
             }
             EditorGUILayout.EndVertical();
+            
+            //DMG String
+            EditorGUILayout.PrefixLabel("DMG Mission String");
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                dmgString = DMGMissionLoader.GetDmgString((KMMission) serializedObject.targetObject);
+            }
+
+            dmgScrollPosition = EditorGUILayout.BeginScrollView(dmgScrollPosition, GUILayout.Height(15 * EditorGUIUtility.singleLineHeight));
+            dmgString = EditorGUILayout.TextArea(dmgString,  GUILayout.ExpandHeight(true));
+            EditorGUILayout.EndScrollView();
+            if (GUILayout.Button("Refresh DMG Mission String"))
+            {
+                activeComponentPool = -1;
+                dmgString = DMGMissionLoader.GetDmgString((KMMission) serializedObject.targetObject);
+                errorMessage = null;
+            }
+
+            if (GUILayout.Button("Load from DMG Mission String"))
+            {
+                activeComponentPool = -1;
+                validModification = LoadFromDMGString();
+            }
+
+            if (GUILayout.Button("Open DMG Documentation"))
+            {
+                Application.OpenURL("https://github.com/red031000/ktane-DynamicMissionGenerator/blob/master/README.md");
+            }
+
+            if (errorMessage != null)
+            {
+                GUIStyle s = new GUIStyle(EditorStyles.boldLabel);
+                s.normal.textColor = Color.red;
+                EditorGUILayout.LabelField("Error: " + errorMessage, s);
+            }
         }
-        serializedObject.ApplyModifiedProperties();
+        
+        if (validModification)
+        {
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+    
+     private bool LoadFromDMGString()
+    {
+        // Reset error message
+        errorMessage = null;
+
+        // Parse mission
+        KMMission mission;
+        try
+        {
+            mission = DMGMissionLoader.CreateMissionFromDmgString(dmgString);
+        }
+        catch (DMGMissionLoader.ParseException e)
+        {
+            errorMessage = e.Message;
+            return false;
+        }
+
+        // Load mission properties
+        serializedObject.FindProperty("PacingEventsEnabled").boolValue = mission.PacingEventsEnabled;
+        serializedObject.FindProperty("DisplayName").stringValue = mission.DisplayName;
+        serializedObject.FindProperty("Description").stringValue = mission.Description;
+
+        serializedObject.FindProperty("GeneratorSetting.TimeLimit").floatValue = mission.GeneratorSetting.TimeLimit;
+        serializedObject.FindProperty("GeneratorSetting.NumStrikes").intValue = mission.GeneratorSetting.NumStrikes;
+        serializedObject.FindProperty("GeneratorSetting.TimeBeforeNeedyActivation").intValue =
+            mission.GeneratorSetting.TimeBeforeNeedyActivation;
+        serializedObject.FindProperty("GeneratorSetting.OptionalWidgetCount").intValue =
+            mission.GeneratorSetting.OptionalWidgetCount;
+        serializedObject.FindProperty("GeneratorSetting.FrontFaceOnly").boolValue =
+            mission.GeneratorSetting.FrontFaceOnly;
+
+        // Delete current pools
+        var componentPools = serializedObject.FindProperty("GeneratorSetting.ComponentPools");
+        if (componentPools.arraySize > 0)
+        {
+            for (int i = componentPools.arraySize - 1; i >= 0; i--)
+            {
+                componentPools.DeleteArrayElementAtIndex(i);
+            }
+        }
+
+        // Save pools
+        var pools = mission.GeneratorSetting.ComponentPools;
+        for (int i = 0; i < pools.Count; i++)
+        {
+            componentPools.InsertArrayElementAtIndex(i);
+            var element = componentPools.GetArrayElementAtIndex(i);
+            var pool = pools[i];
+            element.FindPropertyRelative("Count").intValue = pool.Count;
+            element.FindPropertyRelative("SpecialComponentType").intValue = (int) pool.SpecialComponentType;
+
+            element.FindPropertyRelative("ComponentTypes").arraySize =
+                pool.ComponentTypes == null ? 0 : pool.ComponentTypes.Count;
+            if (pool.ComponentTypes != null)
+            {
+                for (int j = 0; j < pool.ComponentTypes.Count; j++)
+                {
+                    element.FindPropertyRelative("ComponentTypes").GetArrayElementAtIndex(j).intValue =
+                        (int) pool.ComponentTypes[j];
+                }
+            }
+
+            element.FindPropertyRelative("ModTypes").arraySize = pool.ModTypes == null ? 0 : pool.ModTypes.Count;
+            if (pool.ModTypes != null)
+            {
+                for (int j = 0; j < pool.ModTypes.Count; j++)
+                {
+                    element.FindPropertyRelative("ModTypes").GetArrayElementAtIndex(j).stringValue =
+                        pool.ModTypes[j];
+                }
+            }
+        }
+
+        return true;
     }
 
     private void drawGeneratorSetting(SerializedProperty generatorSetting, bool isDefaultGeneratorSetting)
@@ -434,8 +571,7 @@ public class CustomKMMissionEditor : Editor
         SerializedProperty componentPool = generatorSetting.FindPropertyRelative("ComponentPools").GetArrayElementAtIndex(index);
 
         EditorGUILayout.BeginHorizontal();
-         componentPool.FindPropertyRelative("Count").intValue = Math.Max(EditorGUILayout.IntField(
-            componentPool.FindPropertyRelative("Count").intValue, GUILayout.Width(60)), 1);
+        componentPool.FindPropertyRelative("Count").intValue = Math.Max(EditorGUILayout.IntField(componentPool.FindPropertyRelative("Count").intValue, GUILayout.Width(60)), 1);
         drawComponentPoolSummaryLabel(componentPool);
         if (GUILayout.Button("Edit", EditorStyles.miniButtonLeft, GUILayout.Width(60)))
         {
@@ -558,7 +694,14 @@ public class CustomKMMissionEditor : Editor
                         EditorGUILayout.EndVertical();
                     }
 
-                    EditorGUILayout.PropertyField(componentPool.FindPropertyRelative("ModTypes"), true);
+                    SerializedProperty modTypesProperty = componentPool.FindPropertyRelative("ModTypes");
+                    EditorGUILayout.PropertyField(modTypesProperty, true);
+                    for (int i = 0; i < modTypesProperty.arraySize; i++)
+                    {
+                        SerializedProperty element = modTypesProperty.GetArrayElementAtIndex(i);
+                        element.stringValue = element.stringValue.Trim();
+                    }
+
                     if (componentPool.FindPropertyRelative("ModTypes").arraySize != 0)
                         componentPool.FindPropertyRelative("SpecialComponentType").intValue = (int)KMComponentPool.SpecialComponentTypeEnum.None;
                 }
