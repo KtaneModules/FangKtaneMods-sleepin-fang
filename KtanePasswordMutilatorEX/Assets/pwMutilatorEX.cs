@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 using System.Text;
 using System.Text.RegularExpressions;
 
-// PS: Looking back at this 2 years later (of procrastination), yes it's just speghetti codes.
+// PS: Looking back at this 2 years later (of procrastination), yes it's just spaghetti codes.
 
 #pragma warning disable IDE1006
 public class pwMutilatorEX : MonoBehaviour
@@ -141,7 +141,7 @@ public class pwMutilatorEX : MonoBehaviour
 
     void Activate()
     {
-        totalStage = Math.Max(bomb.GetSolvableModuleNames().Count(), 5);
+        totalStage = Math.Max(bomb.GetSolvableModuleNames().Count()/2, 5);
         stageAnswer = new int[totalStage];
         twoFactor = new int[totalStage];
         startingNumber = new int[totalStage];
@@ -404,14 +404,14 @@ public class pwMutilatorEX : MonoBehaviour
         displayTextsLeft[4].text = "  Stage  " + currStage.ToString("000") + " / " + (totalStage-1).ToString("000");     //"  Stage  000 / 000"
         displayTextsLeft[5].text = "";
         
-        List<int> increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 2, increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1, increaseFactorAverage[currStage] + 2 }.ToList();
+        List<int> increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1}.ToList();
         int rawValue = startingNumber[currStage];
         int r = radix[currStage];
         int rng = 0;
         while (phases[1])
         {
             if (increaseFactorPool.Count() == 0)
-                increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 2, increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1, increaseFactorAverage[currStage] + 2 }.ToList();
+                increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1 }.ToList();
             else rng = Random.Range(0, increaseFactorPool.Count());
             rawValue = (rawValue + increaseFactorPool[rng]) % (r*r*r*r);
             displayTextsLeft[1].text = DecimalToArbitrarySystem(rawValue, r);
@@ -429,14 +429,14 @@ public class pwMutilatorEX : MonoBehaviour
             displayTextsLeft[4].text = "  Stage  " + currStage.ToString("000") + " / " + (totalStage - 1).ToString("000");     //"  Stage  000 / 000"
             displayTextsLeft[5].text = "";
 
-            List<int> increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 2, increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1, increaseFactorAverage[currStage] + 2 }.ToList();
+            List<int> increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1 }.ToList();
             int rawValue = startingNumber[currStage];
             int r = radix[currStage];
             int rng = 0;
             while (phases[4] && currStage == currStageDisp && showPrev)
             {
                 if (increaseFactorPool.Count() == 0)
-                    increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 2, increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1, increaseFactorAverage[currStage] + 2 }.ToList();
+                    increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1}.ToList();
                 else rng = Random.Range(0, increaseFactorPool.Count());
                 rawValue = (rawValue + increaseFactorPool[rng]) % (r * r * r * r);
                 displayTextsLeft[1].text = DecimalToArbitrarySystem(rawValue, r);
