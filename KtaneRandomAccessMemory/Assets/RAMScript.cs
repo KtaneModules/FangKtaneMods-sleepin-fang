@@ -320,11 +320,14 @@ public class RAMScript : MonoBehaviour
     {
         while (!safeMode)
         {
-            while ((currentDigit * 100 / limitDigit) < 60) { yield return new WaitForSeconds(0.1f); }
-            clear.OnInteract();
-            yield return new WaitForSeconds(0.001f);
+            while ((currentDigit * 100 / limitDigit) < 60 && !safeMode) { yield return null; }
+            if (!safeMode)
+            {
+                clear.OnInteract();
+                yield return new WaitForSeconds(0.001f);
+            }
         }
-        while (!readytoSolve) { yield return new WaitForSeconds (0.1f);}
+        while (!readytoSolve) { yield return null; }
         clear.OnInteract();
         yield return new WaitForSeconds(0.001f);
     }
