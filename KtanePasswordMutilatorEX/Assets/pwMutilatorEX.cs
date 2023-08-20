@@ -28,7 +28,7 @@ public class pwMutilatorEX : MonoBehaviour
     public Renderer   modBackground;
     public Material[] Materials;
 
-    private readonly string[] abc = new[] { "A", "B", "C", "D", "E", "F" };
+    private readonly string[] abc = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "K" };
 
     static string[] ignoredModules;
     bool moduleSolved = false;
@@ -65,7 +65,7 @@ public class pwMutilatorEX : MonoBehaviour
 
     float[] times = { 0.00f, 0.00f, 10.00f, 0f }; //Elapsed, bomb RT, Countdown timer, Strike timer 
     float[] countdownTimer = { 0, 0, 0 }; //Delayer, or Reset timer or Input phase >> times[2];
-    float[] defaultTimes = { 5.00f, 300.00f, 180.00f, 5.00f }; //Next stage, Stage reset, Input phase, Timer freeze time
+    float[] defaultTimes = { 5.00f, 120.00f, 180.00f, 5.00f }; //Next stage, Stage reset, Input phase, Timer freeze time
 
     void Awake()
         //Initializations
@@ -390,7 +390,7 @@ public class pwMutilatorEX : MonoBehaviour
         radix[currStage] = Random.Range(5, 17);
         int r = radix[currStage];
         startingNumber[currStage] = Random.Range(r*r*r*r, r*r*r*r*r);
-        increaseFactorAverage[currStage] = Random.Range((r*r) +2, (r*r*r)-2);
+        increaseFactorAverage[currStage] = Random.Range((r*r) +1, (r*r*r)-1);
 
         StartCoroutine(DisplayStage());
     }
@@ -559,74 +559,16 @@ public class pwMutilatorEX : MonoBehaviour
 	{
         string generatedInput = "";
 
-		if (bomb.GetModuleNames().Contains("Bamboozled Again") || bomb.GetModuleNames().Contains("Ultimate Cycle") || bomb.GetModuleNames().Contains("UltraStores"))
-		{
-			generatedInput = "*DEAD*";
-			Debug.LogFormat("[Password Mutilator EX #{0}]: Bamboozled Again, UltraStores or Ultimate Cycle present, ignoring all other rules.", moduleId);
-			Debug.LogFormat("[Password Mutilator EX #{0}]: The correct input is *DEAD*.", moduleId);
-		}
-		else 
-		{
-			//Part I: First letter of SN
-			char firstletter = bomb.GetSerialNumberLetters().First();
-			var firstCharPos = char.ToUpperInvariant(firstletter) - 'A' + 1;
-
-            string convertedLetter = abc[firstCharPos % 6];
-
-            //Part II: Indicators, Batt, Ports
-            string convertedBatteries = abc[bomb.GetBatteryCount() % 6];
-            string convertedPorts = abc[bomb.GetPortCount() % 6];
-            string convertedIndicators = abc[bomb.GetIndicators().Count() % 6];
-
-			
-			string correctPart2 = "";
-			if (bomb.GetIndicators().Count() == bomb.GetBatteryCount() || bomb.GetIndicators().Count() == bomb.GetPortCount() || bomb.GetBatteryCount() == bomb.GetPortCount())
-			{
-                correctPart2 = convertedPorts + convertedIndicators + convertedBatteries;
-            }
-			else
-			{
-                correctPart2 = convertedBatteries + convertedIndicators + convertedPorts;
-			}
-			// Part III: Symbols
-            string symbol = "";
-			if (containsModule("Question Mark", true))
-				{
-					symbol = "?"; 
-				}
-			else if (containsModule("Astrology", true))
-				{	
-					symbol = "*";
-				}
-			else if (containsModule(new[] { "logic", "boolean" }, false))
-				{	
-					symbol = "&";
-				}
-			else if (containsModule("code", false))
-				{	
-					symbol = "/" ;
-				}
-			else if (containsModule("alphabet", false))
-				{	
-					symbol = "@";
-				}
-			else
-				{	
-					symbol = "-";
-				}
-			// Part IV: Solved, Unsolved, Minutes Remaining
-			int solvedCount = bomb.GetSolvedModuleNames().Count;
-			int unsolvedCount = bomb.GetSolvableModuleNames().Count - bomb.GetSolvedModuleNames().Count;
-			int minutesRemaining = (int) bomb.GetTime() / 60;
-
-			Debug.LogFormat("[Password Mutilator EX #{0}] The submit button was pressed at {1} solve(s), {2} unsolved and {3} min(s) remaining.", moduleId, solvedCount, unsolvedCount, minutesRemaining);
-			int lastDigit = bomb.GetSerialNumberNumbers().Last();
-			int correctPart4 = ( (solvedCount * unsolvedCount * minutesRemaining) + lastDigit ) % 100;
-
-			//Contenating the calculated answer
-			generatedInput = convertedLetter + correctPart2 + symbol + correctPart4;
-		}
-		//Whether is the input correct
+        if (bomb.GetModuleNames().Contains("Bamboozled Again") || bomb.GetModuleNames().Contains("Ultimate Cycle") || bomb.GetModuleNames().Contains("UltraStores"))
+        {
+            generatedInput = "*DEAD*";
+        }
+        else
+        {
+            foreach (char d in bomb.GetSerialNumber())
+                if (Char.IsDigit(d)) generatedInput += abc[int.Parse(d.ToString())];
+                else generatedInput += d;
+        }
         return generatedInput.ToLowerInvariant();
     }
 
