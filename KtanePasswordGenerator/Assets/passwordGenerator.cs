@@ -274,7 +274,7 @@ public class passwordGenerator : MonoBehaviour {
     IEnumerator ProcessTwitchCommand(string command)
     {
         command = command.Trim().ToLowerInvariant();
-		Match m = Regex.Match(command, @"^(?:(?:press) +)?(?:([a-f0-9@&?*\/\-sr]+)|(clear)|(submit))$");
+		Match m = Regex.Match(command, @"^(?:(?:press) +)?(?:([a-f0-9@&?*\/\-sr ]+)|(clear)|(submit))$");
 		if (!m.Success)
 			yield break;
 
@@ -283,7 +283,7 @@ public class passwordGenerator : MonoBehaviour {
         yield return null;
         if (m.Groups[1].Success)
         {
-			foreach (char c in m.Groups[1].Value)
+			foreach (char c in m.Groups[1].Value.Replace(" ", ""))
 			{
 				yield return new WaitForSeconds(0.1f);
 				switch (c) {
