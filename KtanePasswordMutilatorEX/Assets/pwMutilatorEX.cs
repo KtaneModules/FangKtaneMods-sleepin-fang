@@ -28,7 +28,7 @@ public class pwMutilatorEX : MonoBehaviour
     public Renderer   modBackground;
     public Material[] Materials;
 
-    private readonly string[] abc = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "K" };
+    private readonly string[] abc = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
 
     static string[] ignoredModules;
     bool moduleSolved = false;
@@ -55,6 +55,9 @@ public class pwMutilatorEX : MonoBehaviour
 
     float h = 0f;
     float v = 0f;
+    float rememberedET;
+    float rememberedBRT;
+
 
     private Dictionary<string, string> altKeysDict = new Dictionary<string, string>();
     
@@ -340,18 +343,29 @@ public class pwMutilatorEX : MonoBehaviour
         times[2]  = phases[2] ? countdownTimer[2]: moduleWaiting ? countdownTimer[0] : countdownTimer[1]; //top right time disp
         for (int i = (phases[3] || phases[4] || phases[0] ? 1 : 2), j = 3; i >= 0; i--)
         {
-            if (((phases[1] || phases[2]) && (defaultTimes[0] - countdownTimer[0] <= defaultTimes[3]) && i != 2)) return;
+            if ((currStage != 0 && (phases[1] || phases[2]) && (defaultTimes[0] - countdownTimer[0] <= defaultTimes[3]) && i != 2))
             //animation for temporary stop
+            {
+                timeTexts[0].text = getFormattedTime(rememberedET);
+                timeTexts[1].text = getFormattedTime(rememberedBRT);
+                return;
+            }
+
             if (i == 0 && phases[0] && (currSolved > 0)) i = j;
-            double second = Math.Round(times[i] % 60, 2);
-            double minute = Math.Floor(times[i] / 60 % 60);
-            double hour = Math.Floor(times[i] / 3600);
             if (i == j && phases[0] && (currSolved > 0)) i = 0;
-            timeTexts[i].text = (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00")
-                                     : minute.ToString("00") + ":" + (second).ToString("00.00"));
+            timeTexts[i].text = getFormattedTime(times[i]);
             if (i == 1 && !ZenModeActive || (i == 0 && phases[0] && (currSolved > 0))) timeTexts[i].text = "-" + timeTexts[i].text;
         }   
     }
+    string getFormattedTime(float time)
+    {
+        double second = Math.Round(time % 60, 2);
+        double minute = Math.Floor(time / 60 % 60);
+        double hour = Math.Floor(time / 3600);
+        return (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00")
+                                 : minute.ToString("00") + ":" + (second).ToString("00.00"));
+    }
+
     void inputStage() {                 
         try {
             foreach (string key in altKeysDict.Keys) 
@@ -489,13 +503,16 @@ public class pwMutilatorEX : MonoBehaviour
             4: Radix
         */
     {
-        stageAnswer[currStage] = twoFactor[currStage] % 9 + increaseFactorAverage[currStage] + Convert.ToInt32(Math.Floor(times[0] % 60)) + Convert.ToInt32(Math.Floor(times[1] % 60));
+        rememberedET = times[0];
+        rememberedBRT = times[1];
+
+        stageAnswer[currStage] = twoFactor[currStage] % 9 + increaseFactorAverage[currStage] + Convert.ToInt32(Math.Floor(rememberedET % 60)) + Convert.ToInt32(Math.Floor(rememberedBRT % 60));
         
         Debug.LogFormat
             ("[Password Mutilator EX #{0}]: Stage {1}: 2FAST: {2}, If = {3} ({4} in Base {5}), CT = {6}+{7}, Cv = {8}", 
             moduleId, currStage, twoFactor[currStage], increaseFactorAverage[currStage],
             DecimalToArbitrarySystem(increaseFactorAverage[currStage], radix[currStage]), radix[currStage], 
-            Convert.ToInt32(Math.Floor(times[0] % 60)), Convert.ToInt32(Math.Floor(times[1] % 60)), 
+            Math.Round(rememberedET % 60, 2), Math.Round(rememberedBRT % 60, 2), 
             stageAnswer[currStage]);
     }
     
