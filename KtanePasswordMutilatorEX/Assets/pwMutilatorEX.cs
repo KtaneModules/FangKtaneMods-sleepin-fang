@@ -347,7 +347,7 @@ public class pwMutilatorEX : MonoBehaviour
             //animation for temporary stop
             {
                 timeTexts[0].text = getFormattedTime(rememberedET);
-                timeTexts[1].text = getFormattedTime(rememberedBRT);
+                timeTexts[1].text = (!ZenModeActive ? "-" : "") + getFormattedTime(rememberedBRT);
                 return;
             }
 
@@ -362,7 +362,7 @@ public class pwMutilatorEX : MonoBehaviour
         double second = Math.Round(time % 60, 2);
         double minute = Math.Floor(time / 60 % 60);
         double hour = Math.Floor(time / 3600);
-        return (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00")
+        return (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + Math.Floor(second).ToString("00")
                                  : minute.ToString("00") + ":" + (second).ToString("00.00"));
     }
 
@@ -426,7 +426,7 @@ public class pwMutilatorEX : MonoBehaviour
         {
             if (increaseFactorPool.Count() == 0)
                 increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1 }.ToList();
-            else rng = Random.Range(0, increaseFactorPool.Count());
+            rng = Random.Range(0, increaseFactorPool.Count());
             rawValue = (rawValue + increaseFactorPool[rng]) % (r*r*r*r);
             displayTextsLeft[1].text = DecimalToArbitrarySystem(rawValue, r);
             increaseFactorPool.RemoveAt(rng);
@@ -451,7 +451,7 @@ public class pwMutilatorEX : MonoBehaviour
             {
                 if (increaseFactorPool.Count() == 0)
                     increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1}.ToList();
-                else rng = Random.Range(0, increaseFactorPool.Count());
+                rng = Random.Range(0, increaseFactorPool.Count());
                 rawValue = (rawValue + increaseFactorPool[rng]) % (r * r * r * r);
                 displayTextsLeft[1].text = DecimalToArbitrarySystem(rawValue, r);
                 increaseFactorPool.RemoveAt(rng);
@@ -509,11 +509,14 @@ public class pwMutilatorEX : MonoBehaviour
         stageAnswer[currStage] = twoFactor[currStage] % 9 + increaseFactorAverage[currStage] + Convert.ToInt32(Math.Floor(rememberedET % 60)) + Convert.ToInt32(Math.Floor(rememberedBRT % 60));
         
         Debug.LogFormat
-            ("[Password Mutilator EX #{0}]: Stage {1}: 2FAST: {2}, If = {3} ({4} in Base {5}), CT = {6}+{7}, Cv = {8}", 
+            ("[Password Mutilator EX #{0}]: Stage {1}: 2FAST: {2}, If = {3} ({4} in Base {5}), CT = {6}+{7}, Cv = {3}+{9}+{10}+{11} = {8}", 
             moduleId, currStage, twoFactor[currStage], increaseFactorAverage[currStage],
             DecimalToArbitrarySystem(increaseFactorAverage[currStage], radix[currStage]), radix[currStage], 
             Math.Round(rememberedET % 60, 2), Math.Round(rememberedBRT % 60, 2), 
-            stageAnswer[currStage]);
+            stageAnswer[currStage],
+            twoFactor[currStage] % 9,
+            Convert.ToInt32(Math.Floor(rememberedET % 60)), 
+            Convert.ToInt32(Math.Floor(rememberedBRT % 60)));
     }
     
     void InputStage()
@@ -600,9 +603,8 @@ public class pwMutilatorEX : MonoBehaviour
             bomb.GetModuleNames().Any(mod => mod.ToLowerInvariant().Contains((string)Module)));
     }
 
-#pragma warning disable 414
-bool ZenModeActive;
     #pragma warning disable 414
+    bool ZenModeActive;
     readonly string TwitchHelpMessage = "Use !{0} AZC-,... (for inputs) | (l)eft/(u)p/(d)own/(r)ight/(b)ackspace/(c)lear/(s)ubmit (for actions, first letter only). Note that the command is CAPS SENSITIVE and inputs must be same as keyboard labels.";
     #pragma warning restore 414 
 
