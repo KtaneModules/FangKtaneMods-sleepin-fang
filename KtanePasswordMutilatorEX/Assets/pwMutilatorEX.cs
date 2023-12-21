@@ -362,8 +362,8 @@ public class pwMutilatorEX : MonoBehaviour
         double second = Math.Round(time % 60, 2);
         double minute = Math.Floor(time / 60 % 60);
         double hour = Math.Floor(time / 3600);
-        return (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + Math.Floor(second).ToString("00")
-                                 : minute.ToString("00") + ":" + (second).ToString("00.00"));
+        return (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + ((Math.Floor(second*100))/100).ToString("00")
+                                 : minute.ToString("00") + ":" + ((Math.Floor(second * 100)) / 100).ToString("00.00"));
     }
 
     void inputStage() {                 
@@ -512,11 +512,11 @@ public class pwMutilatorEX : MonoBehaviour
             ("[Password Mutilator EX #{0}]: Stage {1}: 2FAST: {2}, If = {3} ({4} in Base {5}), CT = {6}+{7}, Cv = {3}+{9}+{10}+{11} = {8}", 
             moduleId, currStage, twoFactor[currStage], increaseFactorAverage[currStage],
             DecimalToArbitrarySystem(increaseFactorAverage[currStage], radix[currStage]), radix[currStage], 
-            Math.Round(rememberedET % 60, 2), Math.Round(rememberedBRT % 60, 2), 
+            Math.Floor( (rememberedET % 60)*100)/100, Math.Floor( (rememberedBRT % 60) * 100) / 100, 
             stageAnswer[currStage],
             twoFactor[currStage] % 9,
-            Convert.ToInt32(Math.Floor(rememberedET % 60)), 
-            Convert.ToInt32(Math.Floor(rememberedBRT % 60)));
+            Convert.ToInt32(Math.Floor( (rememberedET % 60)*100 )/100), 
+            Convert.ToInt32(Math.Floor( (rememberedBRT % 60)*100 )/100) );
     }
     
     void InputStage()
