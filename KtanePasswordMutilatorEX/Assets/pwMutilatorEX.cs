@@ -359,11 +359,12 @@ public class pwMutilatorEX : MonoBehaviour
     }
     string getFormattedTime(float time)
     {
-        double second = Math.Round(time % 60, 2);
+        double millisecond = Math.Floor((time * 100) % 100);
+        double second = Math.Floor(time % 60);
         double minute = Math.Floor(time / 60 % 60);
         double hour = Math.Floor(time / 3600);
-        return (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + ((Math.Floor(second*100))/100).ToString("00")
-                                 : minute.ToString("00") + ":" + ((Math.Floor(second * 100)) / 100).ToString("00.00"));
+        return (hour > 0 ? hour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00")
+                                 : minute.ToString("00") + ":" + second.ToString("00") + "." + millisecond.ToString("00"));
     }
 
     void inputStage() {                 
