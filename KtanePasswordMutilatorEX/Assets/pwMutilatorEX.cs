@@ -49,7 +49,7 @@ public class pwMutilatorEX : MonoBehaviour
     string finalAnswerString;
     string inputAnswerString = "";
 
-    int[] stageInformation;
+    float[,] stageTimes;
     int[] twoFactor, startingNumber, increaseFactorAverage, radix;
     int[] stageAnswer;
 
@@ -144,12 +144,15 @@ public class pwMutilatorEX : MonoBehaviour
 
     void Activate()
     {
+
         totalStage = Math.Max(bomb.GetSolvableModuleNames().Count()/2, 5);
+
         stageAnswer = new int[totalStage];
         twoFactor = new int[totalStage];
         startingNumber = new int[totalStage];
         increaseFactorAverage = new int[totalStage];
         radix = new int[totalStage];
+        stageTimes = new float[totalStage, 2];
         finalAnswer = new char[totalStage];
         InitModule();
     }
@@ -443,7 +446,9 @@ public class pwMutilatorEX : MonoBehaviour
             displayTextsLeft[0].text = (twoFactor[currStage] / 1000).ToString("000") + " " + (twoFactor[currStage] % 1000).ToString("000");
             displayTextsLeft[4].text = "  Stage  " + currStage.ToString("000") + " / " + (totalStage - 1).ToString("000");     //"  Stage  000 / 000"
             displayTextsLeft[5].text = "";
-
+            displayTextsRight[0].color = Color.white;
+            displayTextsRight[0].text = getFormattedTime(stageTimes[currStage, 0]);
+            displayTextsRight[1].text = (!ZenModeActive ? "-" : "") + getFormattedTime(stageTimes[currStage, 1]);
             List<int> increaseFactorPool = new int[] { increaseFactorAverage[currStage] - 1, increaseFactorAverage[currStage], increaseFactorAverage[currStage] + 1 }.ToList();
             int rawValue = startingNumber[currStage];
             int r = radix[currStage];
@@ -504,25 +509,28 @@ public class pwMutilatorEX : MonoBehaviour
             4: Radix
         */
     {
+        stageTimes[currStage, 0] = times[0];
+        stageTimes[currStage, 1] = times[1];
         rememberedET = times[0];
         rememberedBRT = times[1];
 
-        stageAnswer[currStage] = twoFactor[currStage] % 9 + increaseFactorAverage[currStage] + Convert.ToInt32(Math.Floor(rememberedET % 60)) + Convert.ToInt32(Math.Floor(rememberedBRT % 60));
+        double ET = (Math.Floor((rememberedET % 60) * 100) / 100);
+        double BRT = (Math.Floor((rememberedBRT % 60) * 100) / 100);
+        
+        stageAnswer[currStage] = twoFactor[currStage] % 9 + increaseFactorAverage[currStage] + Convert.ToInt32(Math.Floor(ET)) + Convert.ToInt32(Math.Floor(BRT));
         
         Debug.LogFormat
             ("[Password Mutilator EX #{0}]: Stage {1}: 2FAST: {2}, If = {3} ({4} in Base {5}), CT = {6}+{7}, Cv = {3}+{9}+{10}+{11} = {8}", 
             moduleId, currStage, twoFactor[currStage], increaseFactorAverage[currStage],
-            DecimalToArbitrarySystem(increaseFactorAverage[currStage], radix[currStage]), radix[currStage], 
-            Math.Floor( (rememberedET % 60)*100)/100, Math.Floor( (rememberedBRT % 60) * 100) / 100, 
+            DecimalToArbitrarySystem(increaseFactorAverage[currStage], radix[currStage]), radix[currStage],
+            ET.ToString("00.00"), BRT.ToString("00.00"), 
             stageAnswer[currStage],
             twoFactor[currStage] % 9,
-            Convert.ToInt32(Math.Floor( (rememberedET % 60)*100 )/100), 
-            Convert.ToInt32(Math.Floor( (rememberedBRT % 60)*100 )/100) );
+            Math.Floor(ET), Math.Floor(BRT));
     }
     
     void InputStage()
     {   //Calculate final answer, note down phase start time.
-        Debug.Log(times[0]);
         inputAnswerString = "";
         inputPosition = 1;
         for (int i = 0; i < stageAnswer.Length; i++)
